@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".booklist">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar_BookList"
+            layout="@layout/toolbar" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBookList_RequestBook"
+                app:cornerRadius="90dp"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                app:rippleColor="@color/white"
+                android:text="Request Book"
+                app:backgroundTint="@android:color/transparent"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:strokeWidth="2dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBookList_Profile"
+                app:cornerRadius="90dp"
+                app:rippleColor="@color/white"
+                android:text="Profile"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:textColor="@color/black"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:backgroundTint="@android:color/transparent"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:strokeWidth="2dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBookList_Orders"
+                app:cornerRadius="90dp"
+                app:rippleColor="@color/white"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:textColor="@color/black"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="Orders"
+                app:backgroundTint="@android:color/transparent"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:strokeWidth="2dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp" />
+        </LinearLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swpBookList_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ListView
+                android:id="@+id/lvBookList_BookList"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

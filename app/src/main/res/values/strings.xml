@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">GronthoMongol</string>
+    <string name="stay_logged_in">Stay Logged In</string>
+    <string name="type_book_details">অনুগ্রহপূর্বক বইয়ের বিস্তারিত তথ্য প্রদান করুন</string>
+    <string name="book_name">বইয়ের নাম</string>
+    <string name="writer_name">লেখকের নাম</string>
+    <string name="language">ভাষা:</string>
+    <string name="bangla">বাংলা</string>
+    <string name="bforb_efore">(বাংলা বই হলে বাংলায়, ইংরেজি বই হলে ইংরেজিতে লিখতে অনুরোধ করা যাচ্ছে)</string>
+    <string name="comment">মন্তব্য</string>
+    <string name="recipientsName">প্রাপকের নাম</string>
+    <string name="address">ঠিকানা</string>
+    <string name="phoneNumber">ফোন নাম্বার</string>
+    <string name="price">মূল্য</string>
+    <string name="place_an_order">বই অর্ডার করুন</string>
+    <string name="delivery_address">প্রাপকের ঠিকানা</string>
+    <string name="number_of_books">বইয়ের সংখ্যা</string>
+    <string name="total_price">মোট মূল্য</string>
 </resources>
