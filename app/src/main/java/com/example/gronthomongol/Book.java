@@ -1,16 +1,20 @@
 package com.example.gronthomongol;
 
 public class Book {
+    private String objectId;
     private String name;
     private String writer;
-    private String language;
-
-    public Book(String language) {
-        this.language = language;
-    }
-
     private int price;
     private int quantity;
+    private String language;
+
+//    public Book(String language) {
+//        this.language = language;
+//    }
+
+    public String getObjectId() {
+        return objectId;
+    }
 
     public String getName() {
         return name;

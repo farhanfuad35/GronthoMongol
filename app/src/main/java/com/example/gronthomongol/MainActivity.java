@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         Backendless.setUrl(CREDENTIALS.SERVER_URL);
         Backendless.initApp(getApplicationContext(), CREDENTIALS.APPLICATION_ID, CREDENTIALS.API_KEY);
 
-        Intent intent = new Intent(this, login.class);
+        Intent intent = new Intent(this, SplashScreen.class);
         startActivity(intent);
         finish();
     }

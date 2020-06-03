@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".placeOrder"></activity>
+        <activity android:name=".SplashScreen"></activity>
+        <activity android:name=".placeOrder" />
         <activity android:name=".request" />
         <activity android:name=".booklist" />
         <activity android:name=".register" />

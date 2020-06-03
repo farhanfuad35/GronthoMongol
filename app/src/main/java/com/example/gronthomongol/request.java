@@ -10,13 +10,14 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class request extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class request extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     EditText etName;
     EditText etWriter;
     EditText etComment;
     Spinner spinner;
-    Book requestedBook = new Book("বাংলা");
+    Book requestedBook;
+    ArrayAdapter<CharSequence> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class request extends AppCompatActivity implements AdapterView.OnItemClic
 
         initializeGUIElements();
         initializeSpinner();         // Language Option Spinner initialization
-        spinner.setOnItemClickListener(this);
+        spinner.setOnItemSelectedListener(request.this);
 
 
     }
@@ -43,7 +44,7 @@ public class request extends AppCompatActivity implements AdapterView.OnItemClic
 
     private void initializeSpinner(){
 // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+        adapter = ArrayAdapter.createFromResource(this,
                 R.array.language_array, android.R.layout.simple_spinner_item);
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -53,9 +54,19 @@ public class request extends AppCompatActivity implements AdapterView.OnItemClic
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         requestedBook.setLanguage((String) parent.getItemAtPosition(position));
 
         Log.i("bookreq", "Language Selected: " + requestedBook.getLanguage());
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 }

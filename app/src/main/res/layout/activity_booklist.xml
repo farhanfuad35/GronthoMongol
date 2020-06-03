@@ -32,7 +32,7 @@
                 android:textColor="@color/black"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="10dp"
-                app:rippleColor="@color/white"
+                app:rippleColor="@color/black"
                 android:text="Request Book"
                 app:backgroundTint="@android:color/transparent"
                 app:strokeColor="@color/colorPrimaryDark"
@@ -44,8 +44,9 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBookList_Profile"
                 app:cornerRadius="90dp"
-                app:rippleColor="@color/white"
+                app:rippleColor="@color/black"
                 android:text="Profile"
+                android:visibility="gone"
                 android:backgroundTint="@color/colorPrimaryLight"
                 android:textColor="@color/black"
                 android:layout_marginLeft="10dp"
@@ -60,7 +61,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBookList_Orders"
                 app:cornerRadius="90dp"
-                app:rippleColor="@color/white"
+                app:rippleColor="@color/black"
                 android:backgroundTint="@color/colorPrimaryLight"
                 android:textColor="@color/black"
                 android:layout_marginRight="20dp"
