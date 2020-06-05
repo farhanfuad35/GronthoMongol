@@ -2,6 +2,7 @@ package com.example.gronthomongol;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,16 +80,16 @@ public class OrderlistAdapterRV extends RecyclerView.Adapter<OrderlistAdapterRV.
         holder.tvPrice.setText(order.getTotal_Price() + "/=");
         if(order.isDelivered()){
             holder.tvStatus.setText("Delivered");
-            holder.tvStatus.setTextColor(R.color.green);
+            holder.tvStatus.setTextColor(Color.parseColor("#157015"));
         }
         else{
             if(order.isPaid()){
                 holder.tvStatus.setText("Pending");
-                holder.tvStatus.setTextColor(R.color.yellow);
+                holder.tvStatus.setTextColor(Color.parseColor("#918200"));
             }
             else{
                 holder.tvStatus.setText("Payment Incomplete");
-                holder.tvStatus.setTextColor(R.color.red);
+                holder.tvStatus.setTextColor(Color.parseColor("#800A0A"));
             }
         }
 

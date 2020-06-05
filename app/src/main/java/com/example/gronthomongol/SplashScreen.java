@@ -133,18 +133,22 @@ public class SplashScreen extends AppCompatActivity {
 
                                     // TODO retrieve myOrders here
                                     if(!(boolean)CONSTANTS.getCurrentUser().getProperty("admin")){
+                                        CONSTANTS.setMYORDEROFFSET(0);
+
                                         final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-                                        String whereClause = "user = " + CONSTANTS.getCurrentUser().getObjectId();
+                                        final String whereClause = "user.email = '" + CONSTANTS.getCurrentUser().getEmail() + "'";
                                         queryBuilder.setWhereClause(whereClause);
                                         queryBuilder.addAllProperties();
                                         queryBuilder.setSortBy("created DESC");
-                                        queryBuilder.setPageSize( CONSTANTS.getPageSize() ).setOffset( CONSTANTS.getOFFSET() );
-                                        Backendless.Data.of(Order.class).find(new AsyncCallback<List<Order>>() {
+                                        queryBuilder.setPageSize( CONSTANTS.getMyOrderPageSize() ).setOffset( CONSTANTS.getMYORDEROFFSET() );
+                                        Backendless.Data.of(Order.class).find(queryBuilder, new AsyncCallback<List<Order>>() {
                                             @Override
                                             public void handleResponse(List<Order> response) {
-                                                Log.i("myOrders_retrieve", "handleResponse: My orders retrieved. response size = " + response.size());
+                                                //Log.i("myOrders_retrieve", "SplashScreen/handleResponse: where Clause: " + whereClause);
+                                                Log.i("myOrders_retrieve", "SplashScreen/handleResponse: My orders retrieved. response size = " + response.size());
                                                 CONSTANTS.setMyOrdersCached(response);
                                                 CONSTANTS.setOrderListQueryBuilder(queryBuilder);
+                                                CONSTANTS.setMYORDEROFFSET(CONSTANTS.getMYORDEROFFSET() + CONSTANTS.getMyOrderPageSize());
 
                                                 // Get out of splash screen & proceed to book list
                                                 Intent intent = new Intent(getApplicationContext(), com.example.gronthomongol.booklist.class);

@@ -1,5 +1,7 @@
 package com.example.gronthomongol;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -11,17 +13,21 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 
 public class BackendlessAPIMethods {
-    public static void logOut(final Context context) {
+    public static void logOut(final Context context, final Dialog dialog) {
         Backendless.UserService.logout(new AsyncCallback<Void>() {
             @Override
             public void handleResponse(Void response) {
                 Toast.makeText(context, "You are successfully logged out!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, login.class);
+                ((Activity)context).finish();
                 context.startActivity(intent);
+                dialog.dismiss();
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
+                dialog.dismiss();
+                Log.e("logout", "handleFault: " + fault.getCode() + "\t" + fault.getMessage());
                 Toast.makeText(context, "Sorry couldn't logout right now. Please check your connection", Toast.LENGTH_SHORT).show();
             }
         });

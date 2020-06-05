@@ -71,6 +71,14 @@ public class login extends AppCompatActivity {
 
             }
         });
+
+        tvForgetpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(login.this, forgotPassword.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -84,21 +92,24 @@ public class login extends AppCompatActivity {
                 // registerDeviceForNotification();         //TODO
 
                 CONSTANTS.setCurrentUser(response);
+                CONSTANTS.setMYORDEROFFSET(0);
 
                 // If user is not an admin, load my offers
                 if(!(boolean)response.getProperty("admin")){
                     final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-                    String whereClause = "user = " + CONSTANTS.getCurrentUser().getObjectId();
+                    final String whereClause = "user.email = '" + CONSTANTS.getCurrentUser().getEmail().toString().trim() + "'";
                     queryBuilder.setWhereClause(whereClause);
                     queryBuilder.addAllProperties();
                     queryBuilder.setSortBy("created DESC");
-                    queryBuilder.setPageSize( CONSTANTS.getPageSize() ).setOffset( CONSTANTS.getOFFSET() );
-                    Backendless.Data.of(Order.class).find(new AsyncCallback<List<Order>>() {
+                    queryBuilder.setPageSize( CONSTANTS.getMyOrderPageSize() ).setOffset( CONSTANTS.getMYORDEROFFSET() );
+                    Backendless.Data.of(Order.class).find(queryBuilder, new AsyncCallback<List<Order>>() {
                         @Override
                         public void handleResponse(List<Order> response) {
-                            Log.i("myOrders_retrieve", "handleResponse: My orders retrieved. response size = " + response.size());
+                            //Log.i("myOrders_retrieve", "handleResponse: where Clause: " + whereClause);
+                            Log.i("myOrders_retrieve", "login/handleResponse: My orders retrieved. response size = " + response.size());
                             CONSTANTS.setMyOrdersCached(response);
                             CONSTANTS.setOrderListQueryBuilder(queryBuilder);
+                            CONSTANTS.setMYORDEROFFSET(CONSTANTS.getMYORDEROFFSET() + CONSTANTS.getMyOrderPageSize());
 
                             // Get out of splash screen & proceed to book list
                             Intent intent = new Intent(getApplicationContext(), com.example.gronthomongol.booklist.class);
@@ -125,7 +136,7 @@ public class login extends AppCompatActivity {
             @Override
             public void handleFault(BackendlessFault fault) {
                 btnLogin.setText("Login");
-                if(fault.getCode().equals(3003)){
+                if(fault.getCode().equals("3003")){
                     tvInvalidLogin.setVisibility(View.VISIBLE);
                 }
 
@@ -134,7 +145,7 @@ public class login extends AppCompatActivity {
 
                 }
 
-                Log.i("deviceid", fault.getMessage());
+                Log.i("deviceid", fault.getMessage() + "\t" + fault.getCode());
             }
         }, stayLoggedIn);
     }

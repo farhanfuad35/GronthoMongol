@@ -25,4 +25,6 @@
     <string name="posting_your_offer">অর্ডার সম্পন্ন করা হচ্ছে...</string>
     <string name="please_wait">অপেক্ষা করুন...</string>
     <string name="name">নাম</string>
+    <string name="bkash">বিকাশ</string>
+    <string name="confirm_payment_bkash">পেমেন্ট বিকাশ করার পরে Orders এ গিয়ে বিকাশ ট্রানজেকশন আইডি প্রদান করে আপনার পেমেন্ট কনফার্ম করুন</string>
 </resources>

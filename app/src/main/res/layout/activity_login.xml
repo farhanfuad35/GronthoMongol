@@ -80,7 +80,7 @@
     </LinearLayout>
 
     <com.google.android.material.textview.MaterialTextView
-        android:text="Invalid login or password"
+        android:text="Invalid email or password"
         android:id="@+id/tvLogin_invalidLogin"
         android:layout_marginLeft="40dp"
         android:textColor="#dd0000"

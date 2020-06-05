@@ -5,25 +5,33 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
+import com.backendless.persistence.LoadRelationsQueryBuilder;
 import com.backendless.rt.data.EventHandler;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.OnOrderClickListener {
     private OrderlistAdapterRV orderlistAdapterRV;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
+    private TextView tvNoOrder;
     private RecyclerView.LayoutManager rvLayoutManager;
     private EndlessScrollEventListener endlessScrollEventListener;
     private EventHandler<Order> orderEventHandler = Backendless.Data.of(Order.class).rt();
@@ -41,13 +49,66 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         initializeGUIElements();
-        initializeRecyclerView();
+        if(CONSTANTS.myOrdersCached.isEmpty()){
+            recyclerView.setVisibility(View.GONE);
+            tvNoOrder.setVisibility(View.VISIBLE);
+        }
+        else {
+            initializeRecyclerView();
+            initiateRealTimeDatabaseListeners();
+        }
     }
 
+
+    public void initiateRealTimeDatabaseListeners() {
+        // Update Listener
+        Log.i(TAG, "initiateRealTimeDatabaseListeners: update Listener initiated");
+        String whereClause = "Recipient_Email = '" + CONSTANTS.getCurrentUser().getEmail() + "'";
+        orderEventHandler.addUpdateListener( whereClause, new AsyncCallback<Order>() {
+            @Override
+            public void handleResponse(Order updatedOrder) {
+                Log.i(TAG, "handleResponse: update listener triggered");
+                for(int i=0; i<CONSTANTS.myOrdersCached.size(); i++){
+                    if(CONSTANTS.myOrdersCached.get(i).equals(updatedOrder)){
+                        CONSTANTS.myOrdersCached.remove(i);
+                        CONSTANTS.myOrdersCached.add(i, updatedOrder);
+                        orderlistAdapterRV.notifyDataSetChanged();
+                    }
+                }
+                Log.i(TAG, "an Order object has been updated. Object ID - " + updatedOrder.getObjectId());
+
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.e(TAG, "Server reported an error while Updating book listener " + fault.getDetail());
+            }
+        });
+
+        // Delete Listener
+//
+//        orderEventHandler.addDeleteListener(new AsyncCallback<Order>() {
+//            @Override
+//            public void handleResponse(Book deletedBook) {
+//                Log.i(TAG, "an Order object has been deleted. Object ID - " + deletedBook.getObjectId());
+//                if (CONSTANTS.bookListCached.contains(deletedBook)) {
+//                    CONSTANTS.bookListCached.remove(deletedBook);
+//                    booklistAdapterRV.notifyDataSetChanged();
+//                }
+//            }
+//
+//            @Override
+//            public void handleFault(BackendlessFault fault) {
+//                Log.e(TAG, "Server reported an error " + fault.getDetail());
+//            }
+//        });
+
+    }
 
     private void initializeGUIElements(){
         recyclerView = findViewById(R.id.rvOrderList_OrderList);
         progressBar = findViewById(R.id.pbOrderlist_progressBar);
+        tvNoOrder = findViewById(R.id.tvViewOrders_NoOrder);
     }
 
     private void initializeRecyclerView() {
@@ -61,28 +122,31 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
             @Override
             public void onLoadMore(int pageNum, RecyclerView recyclerView) {
 
-                progressBar.setVisibility(View.VISIBLE);
+                if(CONSTANTS.myOrdersCached.size() > CONSTANTS.getPageSize() - 1) {
 
-                DataQueryBuilder queryBuilder = CONSTANTS.getOrderListQueryBuilder();
-                queryBuilder.prepareNextPage();
+                    progressBar.setVisibility(View.VISIBLE);
 
-                Log.i(TAG, "onLoadMore: Came to OnloadMore");
+                    DataQueryBuilder queryBuilder = CONSTANTS.getOrderListQueryBuilder();
+                    queryBuilder.prepareNextPage();
 
-                Backendless.Data.of(Order.class).find(queryBuilder, new AsyncCallback<List<Order>>() {
-                    @Override
-                    public void handleResponse(List<Order> response) {
-                        CONSTANTS.myOrdersCached.addAll(response);
-                        progressBar.setVisibility(View.GONE);
-                        orderlistAdapterRV.notifyDataSetChanged();
-                        Log.i(TAG, "handleResponse: Order list refreshed");
-                    }
+                    Log.i(TAG, "onLoadMore: Came to OnloadMore");
 
-                    @Override
-                    public void handleFault(BackendlessFault fault) {
-                        Log.i(TAG, "handleFault: " + fault.getMessage());
-                        Toast.makeText(getApplicationContext(), "Error retrieving data from the database", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    Backendless.Data.of(Order.class).find(queryBuilder, new AsyncCallback<List<Order>>() {
+                        @Override
+                        public void handleResponse(List<Order> response) {
+                            CONSTANTS.myOrdersCached.addAll(response);
+                            progressBar.setVisibility(View.GONE);
+                            orderlistAdapterRV.notifyDataSetChanged();
+                            Log.i(TAG, "handleResponse: Order list refreshed");
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Log.i(TAG, "handleFault: " + fault.getMessage());
+                            Toast.makeText(getApplicationContext(), "Error retrieving data from the database", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
             }
         };
 
@@ -90,7 +154,37 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
     }
 
     @Override
-    public void onOrderClick(int position) {
-        Toast.makeText(getApplicationContext(), "You have clicked an order", Toast.LENGTH_SHORT).show();
+    public void onOrderClick(final int position) {
+        //Toast.makeText(getApplicationContext(), "You have clicked an order", Toast.LENGTH_SHORT).show();
+
+        LoadRelationsQueryBuilder<Book> loadRelationsQueryBuilder;
+        loadRelationsQueryBuilder = LoadRelationsQueryBuilder.of( Book.class );
+        loadRelationsQueryBuilder.setRelationName( "orderedBookList" );
+        String parentObjectId = CONSTANTS.myOrdersCached.get(position).getObjectId();
+
+        Backendless.Data.of("Order").loadRelations(parentObjectId, loadRelationsQueryBuilder, new AsyncCallback<List<Book>>() {
+            @Override
+            public void handleResponse(List<Book> response) {
+                // TODO: Do something with it
+                ArrayList<Book> orderedBooks = new ArrayList<>(response);
+                Log.i(TAG, "handleResponse: Loading orderedBooks successful. List size: " + orderedBooks.size());
+                Intent intent = new Intent(viewOrders.this, orderDetails.class);
+                intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdViewOrders());
+                intent.putExtra("orderedBooks", orderedBooks);
+                intent.putExtra("currentOrder", (Serializable) CONSTANTS.myOrdersCached.get(position));
+                startActivity(intent);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.i(TAG, "handleFault: loading ordered books failed" + fault.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

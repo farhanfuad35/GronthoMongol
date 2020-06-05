@@ -41,9 +41,8 @@ public class register extends AppCompatActivity {
 
                 boolean hasError = false;
 
-                if(contactNo.length() != 11){
-                    hasError = true;
-                    etContactNo.setError("Please type your valid Contact Number");
+                if(contactNo.isEmpty()){
+                    contactNo = CONSTANTS.NULLMARKER;
                 }
                 if(!isEmailValid(email)) {
                     hasError = true;
@@ -85,7 +84,7 @@ public class register extends AppCompatActivity {
                         public void handleFault(BackendlessFault fault) {
                             btnRegister.setText("Create Account");
                             Log.i("register", "handleFault: " + fault.getCode() + "\t" + fault.getMessage());
-                            if(fault.getCode().equals(3033)){
+                            if(fault.getCode().equals("3033")){
                                 Toast.makeText(getApplicationContext(), "SignUp Failed. Email already exists" , Toast.LENGTH_SHORT).show();
                             }
                             else{

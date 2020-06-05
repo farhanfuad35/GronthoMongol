@@ -43,17 +43,18 @@ public class placeOrder extends AppCompatActivity {
     private EditText etComment;
     private Button btnAddress;
     private Button btnPlaceOrder;
-    private ArrayList<Book> orderedBooks = new ArrayList<Book>(5);
+    private ArrayList<Book> orderedBooks = new ArrayList<Book>(CONSTANTS.getMaxNoOfBooksPerUserPerOrder());
     private int followedByProcessID;
     private Button btnAddMore;
+    private String Recipient_Name;
+    private String Contact_No;
 
     //    private String Book_Name;
     //    private String Writer_Name;
     //    private int pricePerUnit;
     //    private String bkashTxnId;
 
-    private String Recipient_Name;
-    private String Contact_No;
+
 
     private int Total_Price = 0;    // Updated As soon as the activity starts. Check SetValues()
     private String Comment;
@@ -159,6 +160,10 @@ public class placeOrder extends AppCompatActivity {
                 // Update Total Price
                 Total_Price = Total_Price + newBook.getPrice();
                 etTotal_Price.setText(Integer.toString(Total_Price));
+                if(orderedBooks.size() == CONSTANTS.getMaxNoOfBooksPerUserPerOrder()) {
+                    Toast.makeText(getApplicationContext(), "You can't order more than 10 books", Toast.LENGTH_SHORT).show();
+                    btnAddMore.setVisibility(View.INVISIBLE);
+                }
             }
         }
 
@@ -183,6 +188,7 @@ public class placeOrder extends AppCompatActivity {
                 etTotal_Price.setText(Integer.toString(Total_Price));
                 orderedBooks.remove(position);
                 placeOrderAdapterRV.notifyDataSetChanged();
+                btnAddMore.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), "Book Removed", Toast.LENGTH_SHORT).show();
             }
         };
@@ -226,12 +232,17 @@ public class placeOrder extends AppCompatActivity {
     }
     private void setFields(){
         etRecipient_Name.setText((CharSequence) Backendless.UserService.CurrentUser().getProperty("name"));
-        etContact_No.setText((CharSequence) Backendless.UserService.CurrentUser().getProperty("contact_no"));
+        Contact_No = (String) CONSTANTS.getCurrentUser().getProperty("contact_no");
+        if(Contact_No.equals(CONSTANTS.NULLMARKER)){}
+        else {
+            etContact_No.setText((CharSequence) CONSTANTS.getCurrentUser().getProperty("contact_no"));
+        }
+        Total_Price = orderedBooks.get(0).getPrice();   // Total Price Updated
+        etTotal_Price.setText(Integer.toString(Total_Price));
 //        etBook_Name.setText(orderedBooks.get(0).getName());
 //        etWriter_Name.setText(orderedBooks.get(0).getWriter());
 //        etpricePerUnit.setText(Integer.toString(orderedBooks.get(0).getPrice()));
-        Total_Price = orderedBooks.get(0).getPrice();   // Total Price Updated
-        etTotal_Price.setText(Integer.toString(Total_Price));
+
     }
     private boolean isEmpty(EditText editText){
         if(editText.getText().toString().isEmpty()){

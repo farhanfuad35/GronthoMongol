@@ -65,7 +65,7 @@
                 app:boxCornerRadiusBottomStart="40dp"
                 app:boxCornerRadiusTopEnd="40dp"
                 app:boxCornerRadiusTopStart="40dp"
-                android:hint="Contact Number">
+                android:hint="Contact Number (Optional)">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etRegister_ContactNumber"

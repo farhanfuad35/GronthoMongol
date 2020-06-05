@@ -28,4 +28,17 @@
         android:indeterminateTint="@color/colorPrimary"
         android:visibility="gone" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvViewOrders_NoOrder"
+        android:text="You don't have any order"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

@@ -111,7 +111,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
                 for(int i=0; i<CONSTANTS.bookListCached.size(); i++){
                     if(CONSTANTS.bookListCached.get(i).equals(updatedBook)){
                         CONSTANTS.bookListCached.remove(i);
-                        CONSTANTS.bookListCached.add(updatedBook);
+                        CONSTANTS.bookListCached.add(i, updatedBook);
                         booklistAdapterRV.notifyDataSetChanged();
                     }
                 }
@@ -196,13 +196,22 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
         if (id == R.id.menuMain_Logout) {
 
             // Updating device ID while logging out to ensure no more notification is sent to that device
+            final Dialog dialog = new Dialog(booklist.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog_logging_out);
+            dialog.show();
 
-            BackendlessUser user = Backendless.UserService.CurrentUser();
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    BackendlessUser user = Backendless.UserService.CurrentUser();
+                    BackendlessAPIMethods.updateDeviceId(booklist.this, user, "");
+                    BackendlessAPIMethods.logOut(booklist.this, dialog);
+                }
+            });
 
-            BackendlessAPIMethods.updateDeviceId(booklist.this, user, "");
-
-
-            BackendlessAPIMethods.logOut(booklist.this);
+            thread.start();
 
         }
 

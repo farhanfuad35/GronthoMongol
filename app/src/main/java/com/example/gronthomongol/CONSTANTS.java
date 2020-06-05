@@ -22,18 +22,22 @@ import com.backendless.persistence.local.UserTokenStorageFactory;
 import java.util.List;
 
 public class CONSTANTS {
+    private static int MAX_NO_OF_BOOKS_PER_USER_PER_ORDER = 10;
     private static int MAX_NO_OF_ORDERS_PER_USER_PER_BOOK = 2;
     private static int MIN_NO_OF_ORDERS_PER_USER_PER_BOOK = 1;
     private static int ID_BOOKLIST = 17;
     private static int ID_SPALSH_SCREEN = 29;
     private static int ID_LOGIN = 31;
     private static int ID_PLACE_ORDER = 19;
+    private static int ID_VIEW_ORDERS = 37;
     private static int ID_PLACE_ORDER_ADD_MORE_BOOK = 23;
     private static BackendlessUser currentUser;
     public static List<Book> bookListCached;
     public static List<Order> myOrdersCached;
-    private static int OFFSET = 0;
-    private static int PAGE_SIZE = 10;
+    private static int OFFSET = 0;      // Explicitly for booklist
+    private static int MYORDEROFFSET = 0;
+    private static int PAGE_SIZE = 13;
+    private static int MY_ORDER_PAGE_SIZE = 13;
     private  static DataQueryBuilder bookListQueryBuilder;
     private  static DataQueryBuilder orderListQueryBuilder;
     public static String NULLMARKER = "N/A_AUTO";
@@ -54,12 +58,28 @@ public class CONSTANTS {
         return ID_LOGIN;
     }
 
+    public static int getMyOrderPageSize() {
+        return MY_ORDER_PAGE_SIZE;
+    }
+
     public static BackendlessUser getCurrentUser() {
         return currentUser;
     }
 
+    public static int getIdViewOrders() {
+        return ID_VIEW_ORDERS;
+    }
+
     public static void setCurrentUser(BackendlessUser currentUser) {
         CONSTANTS.currentUser = currentUser;
+    }
+
+    public static int getMYORDEROFFSET() {
+        return MYORDEROFFSET;
+    }
+
+    public static void setMYORDEROFFSET(int MYORDEROFFSET) {
+        CONSTANTS.MYORDEROFFSET = MYORDEROFFSET;
     }
 
     public static DataQueryBuilder getOrderListQueryBuilder() {
@@ -68,6 +88,10 @@ public class CONSTANTS {
 
     public static void setOrderListQueryBuilder(DataQueryBuilder orderListQueryBuilder) {
         CONSTANTS.orderListQueryBuilder = orderListQueryBuilder;
+    }
+
+    public static int getMaxNoOfBooksPerUserPerOrder() {
+        return MAX_NO_OF_BOOKS_PER_USER_PER_ORDER;
     }
 
     public static int getPageSize() {

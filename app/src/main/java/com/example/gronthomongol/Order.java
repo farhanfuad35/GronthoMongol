@@ -1,10 +1,16 @@
 package com.example.gronthomongol;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
@@ -12,16 +18,17 @@ import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Order {
+public class Order implements Serializable {
     private String objectId;
     private Date created;
     private String orderId;
     private String Recipient_Name;
-//    private String Recipient_Email;
+    private String Recipient_Email;
 //    private String Book_Name;
 //    private String Writer_Name;
 //    private String Book_Object_ID;
@@ -48,7 +55,7 @@ public class Order {
         Address = address;
         bKashTxnId = CONSTANTS.NULLMARKER;
         delivered=false;
-//        Recipient_Email = orderingUser.getEmail();
+        Recipient_Email = orderingUser.getEmail();
 //        Book_Object_ID = orderedBook.getObjectId();
         this.user = orderingUser;
         orderedBookList = orderedBook;
@@ -93,7 +100,8 @@ public class Order {
     }
 
     public String generateOrderId(String orderingUserName){
-        orderingUserName.toLowerCase();
+        orderingUserName = orderingUserName.toLowerCase();
+        Log.i("orderid", "generateOrderId: ordering User Name: " + orderingUserName);
         String orderId = orderingUserName.substring(0, 3);
         SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
         Date date = new Date();
@@ -113,13 +121,13 @@ public class Order {
 //        Book_Object_ID = book_Object_ID;
 //    }
 //
-//    public String getRecipient_Email() {
-//        return Recipient_Email;
-//    }
-//
-//    public void setRecipient_Email(String recipient_Email) {
-//        Recipient_Email = recipient_Email;
-//    }
+    public String getRecipient_Email() {
+        return Recipient_Email;
+    }
+
+    public void setRecipient_Email(String recipient_Email) {
+        Recipient_Email = recipient_Email;
+    }
 
     public String getObjectId() {
         return objectId;
@@ -151,6 +159,18 @@ public class Order {
 
     public void setRecipient_Name(String recipient_Name) {
         Recipient_Name = recipient_Name;
+    }
+
+    @Override
+    public boolean equals(Object order) {
+        if (!(order instanceof Order)) {
+            return false;
+        }
+
+        Order thatOrder = (Order) order;
+
+        // Custom equality check here.
+        return this.objectId.equals(thatOrder.objectId);
     }
 
 //    public String getBook_Name() {
@@ -233,6 +253,8 @@ public class Order {
                                     public void handleResponse(Integer response) {
                                         Log.i("backendless_order", "handleResponse: User Relation Set Successfully. All done nicely");
 
+                                        CONSTANTS.myOrdersCached.add(0,savedOrder);     // New Order always added at the beginning. STRICT last first sort must always be true
+
                                         // Update the remaining books number in the database
                                         for(int i=0; i<orderedBooks.size(); i++){
                                             int quantity = orderedBooks.get(i).getQuantity();
@@ -245,10 +267,25 @@ public class Order {
                                                     Toast.makeText((Activity)context, "Order placed successfully!", Toast.LENGTH_SHORT).show();
 
                                                     dialog.dismiss();       // Dismissing the progressbar dialog before finishing the activity to prevent window leak
-                                                    ((Activity)context).finish();
-
                                                     Log.i("backendless_order", "handleResponse: Book number has been updated");
+
+                                                    // Show bkash txnid insert instruction
+                                                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder((Activity)context);
+                                                    alertDialogBuilder.setTitle(R.string.bkash);
+                                                    alertDialogBuilder.setMessage(R.string.confirm_payment_bkash);
+                                                    alertDialogBuilder.setPositiveButton("Okay",
+                                                            new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface arg0, int arg1) {
+                                                                    //Toast.makeText(Splash_Screen.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                                                                    ((Activity)context).finish();
+                                                                }
+                                                            });
+
+                                                    AlertDialog alertDialog = alertDialogBuilder.create();
+                                                    alertDialog.show();
                                                 }
+
                                                 @Override
                                                 public void handleFault( BackendlessFault fault )
                                                 {
@@ -297,5 +334,35 @@ public class Order {
                 Log.i("backendless_order", "handleFault: " + fault.getMessage());
             }
         });
+    }
+
+    public void updateOrderOnDatabase(final Context context, final Dialog dialog, final String updateCode){
+        Backendless.Data.of( Order.class ).save( this, new AsyncCallback<Order>() {
+            @Override
+            public void handleResponse( Order updatedOrder )
+            {
+                // Contact instance has been updated
+                if(updateCode.equals("bkash")){
+                    Button button = ((Activity)context).findViewById(R.id.btnOrderDetails_SubmitBkash);
+                    button.setVisibility(View.GONE);
+                    EditText etBkash = ((Activity)context).findViewById(R.id.etOrderDetails_BkashTxnId);
+                    etBkash.setCursorVisible(false);
+                    etBkash.setFocusableInTouchMode(false);
+                    etBkash.setClickable(false);
+                    etBkash.setFocusable(false);
+                }
+                dialog.dismiss();
+                Toast.makeText((Activity)context, "TxnId Submitted", Toast.LENGTH_SHORT).show();
+
+            }
+            @Override
+            public void handleFault( BackendlessFault fault )
+            {
+                Toast.makeText((Activity)context, "Error occured while saving the data", Toast.LENGTH_SHORT).show();
+                Log.e("update_order", "handleFault: " + fault.getMessage() + "\tCode: " + fault.getCode() );
+                dialog.dismiss();
+                // an error has occurred, the error code can be retrieved with fault.getCode()
+            }
+        } );
     }
 }
