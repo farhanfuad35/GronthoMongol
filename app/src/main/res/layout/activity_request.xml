@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".request">
+    tools:context=".postRequest">
 
     <ScrollView
         android:id="@+id/svRequest_scrollview"
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
             <include
-                android:id="@+id/toolbar_PostOffer"
+                android:id="@+id/toolbar_Request"
                 layout="@layout/toolbar" />
 
             <TextView
@@ -42,6 +42,11 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:boxCornerRadiusBottomEnd="40dp"
+                app:boxCornerRadiusBottomStart="40dp"
+                app:boxCornerRadiusTopEnd="40dp"
+                app:boxCornerRadiusTopStart="40dp"
+                app:boxStrokeWidth="0dp"
                 android:hint="@string/book_name">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -58,6 +63,11 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:boxCornerRadiusBottomEnd="40dp"
+                app:boxCornerRadiusBottomStart="40dp"
+                app:boxCornerRadiusTopEnd="40dp"
+                app:boxCornerRadiusTopStart="40dp"
+                app:boxStrokeWidth="0dp"
                 android:hint="@string/writer_name">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -100,6 +110,11 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:boxCornerRadiusBottomEnd="40dp"
+                app:boxCornerRadiusBottomStart="40dp"
+                app:boxCornerRadiusTopEnd="40dp"
+                app:boxCornerRadiusTopStart="40dp"
+                app:boxStrokeWidth="0dp"
                 android:hint="@string/comment">
 
                 <com.google.android.material.textfield.TextInputEditText

@@ -14,22 +14,31 @@
             android:layout_weight="6"
             android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tvRow_BookName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Book Name"
-            android:textColor="#909090"
-            android:textSize="20dp"
-            android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvOrderRow_OrderId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Order Id"
+                    android:textColor="#909090"
+                    android:textSize="17dp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvRow_Writer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Book Writer"
-            android:textColor="@color/black"
-            android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/tvOrderRow_Date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
+                <TextView
+                    android:id="@+id/tvOrderRow_Status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Status"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+
 
         </LinearLayout>
 
@@ -41,7 +50,7 @@
             android:layout_height="match_parent" >
 
                 <TextView
-                    android:id="@+id/tvBookList_price"
+                    android:id="@+id/tvOrderList_price"
                     android:layout_width="wrap_content"
                     android:text="200"
                     android:textColor="@color/black"

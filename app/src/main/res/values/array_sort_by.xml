@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sortByArray">
+        <item>@string/book_name</item>
+        <item>@string/writer_name</item>
+    </string-array>
+</resources>

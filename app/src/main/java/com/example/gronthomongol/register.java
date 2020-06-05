@@ -3,6 +3,7 @@ package com.example.gronthomongol;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,10 +57,15 @@ public class register extends AppCompatActivity {
                     hasError = true;
                     etConfirmPassword.setError("The passwords don't match");
                 }
+                if(name.length() < 3){
+                    hasError = true;
+                    etName.setError("Name should be at least 3 characters");
+                }
 
                 // TODO
 
                 if(!hasError){
+                    btnRegister.setText("Creating Account...");
                     BackendlessUser user = new BackendlessUser();
                     user.setPassword(password);
                     user.setEmail(email);
@@ -77,7 +83,15 @@ public class register extends AppCompatActivity {
 
                         @Override
                         public void handleFault(BackendlessFault fault) {
-                            Toast.makeText(getApplicationContext(), "SignUp Failed. Please check if you are already registered" , Toast.LENGTH_SHORT).show();
+                            btnRegister.setText("Create Account");
+                            Log.i("register", "handleFault: " + fault.getCode() + "\t" + fault.getMessage());
+                            if(fault.getCode().equals(3033)){
+                                Toast.makeText(getApplicationContext(), "SignUp Failed. Email already exists" , Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "SignUp Failed. " + fault.getMessage() , Toast.LENGTH_SHORT).show();
+                            }
+
                         }
                     });
                 }

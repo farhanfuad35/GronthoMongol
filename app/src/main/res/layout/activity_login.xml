@@ -79,6 +79,17 @@
 
     </LinearLayout>
 
+    <com.google.android.material.textview.MaterialTextView
+        android:text="Invalid login or password"
+        android:id="@+id/tvLogin_invalidLogin"
+        android:layout_marginLeft="40dp"
+        android:textColor="#dd0000"
+        android:textStyle="italic"
+        android:textSize="10dp"
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnLogin_Login"
         android:layout_width="match_parent"

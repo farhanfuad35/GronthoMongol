@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:background="#dddddd"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="60dp"
+    android:paddingRight="60dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_height="wrap_content" >
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvDialog_sortBy"
+        android:text="Sort By"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:paddingBottom="15dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+
+    <TextView
+        android:id="@+id/tvDialog_sortByBookName"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:text="@string/book_name"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:clickable="true"
+        android:paddingBottom="5dp"
+        android:textColor="#222222" />
+
+    <TextView
+        android:id="@+id/tvDialog_sortByWriterName"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_width="match_parent"
+        android:text="@string/writer_name"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:clickable="true"
+        android:textColor="#222222" />
+
+</LinearLayout>

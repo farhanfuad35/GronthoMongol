@@ -7,7 +7,7 @@
     <string name="language">ভাষা:</string>
     <string name="bangla">বাংলা</string>
     <string name="bforb_efore">(বাংলা বই হলে বাংলায়, ইংরেজি বই হলে ইংরেজিতে লিখতে অনুরোধ করা যাচ্ছে)</string>
-    <string name="comment">মন্তব্য</string>
+    <string name="comment">মন্তব্য (ঐচ্ছিক)</string>
     <string name="recipientsName">প্রাপকের নাম</string>
     <string name="address">ঠিকানা</string>
     <string name="phoneNumber">ফোন নাম্বার</string>
@@ -16,4 +16,13 @@
     <string name="delivery_address">প্রাপকের ঠিকানা</string>
     <string name="number_of_books">বইয়ের সংখ্যা</string>
     <string name="total_price">মোট মূল্য</string>
+    <string name="add_more_book">আরও যোগ করুন</string>
+    <string name="connectionErrorMessageBackendless">Unable to resolve host \"api.backendless.com\": No address associated with hostname</string>
+    <string name="activityIDName">activityID</string>
+    <string name="orderedBookList">orderedBookList</string>
+    <string name="newlySelectedBook">newlySelectedBook</string>
+    <string name="add_atleast_one_book">অর্ডার করতে অন্তত একটি বই যোগ করুন</string>
+    <string name="posting_your_offer">অর্ডার সম্পন্ন করা হচ্ছে...</string>
+    <string name="please_wait">অপেক্ষা করুন...</string>
+    <string name="name">নাম</string>
 </resources>

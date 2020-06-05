@@ -18,6 +18,7 @@ import com.backendless.BackendlessUser;
 import com.backendless.DeviceRegistration;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.push.DeviceRegistrationResult;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class login extends AppCompatActivity {
     private TextView tvSignup;
     private TextView tvForgetpassword;
     private CheckBox cbStayLoggedIn;
+    private TextView tvInvalidLogin;
 
 
     @Override
@@ -53,7 +55,7 @@ public class login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
+                tvInvalidLogin.setVisibility(View.INVISIBLE);
                 btnLogin.setText("Logging in...");
                 final String email = etEmail.getText().toString().toLowerCase();
                 final String password = etPassword.getText().toString();
@@ -78,27 +80,59 @@ public class login extends AppCompatActivity {
         Backendless.UserService.login(email, password, new AsyncCallback<BackendlessUser>() {
             @Override
             public void handleResponse(BackendlessUser response) {
-//                CONSTANTS.setCurrentUserEmail(email);
-//                CONSTANTS.setCurrentSavedUser(response);
-//
-//                FileMethods.writes(getApplicationContext(), email);
-//                System.out.println("logged in "+email);
-//
-//                Log.i("deviceid", "Login Successful");
-
-                // If login successful, register user to the database with deviceID
 
                 // registerDeviceForNotification();         //TODO
 
-                Intent intent = new Intent(getApplicationContext(), com.example.gronthomongol.booklist.class);
-                startActivity(intent);
-                finish();
+                CONSTANTS.setCurrentUser(response);
+
+                // If user is not an admin, load my offers
+                if(!(boolean)response.getProperty("admin")){
+                    final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                    String whereClause = "user = " + CONSTANTS.getCurrentUser().getObjectId();
+                    queryBuilder.setWhereClause(whereClause);
+                    queryBuilder.addAllProperties();
+                    queryBuilder.setSortBy("created DESC");
+                    queryBuilder.setPageSize( CONSTANTS.getPageSize() ).setOffset( CONSTANTS.getOFFSET() );
+                    Backendless.Data.of(Order.class).find(new AsyncCallback<List<Order>>() {
+                        @Override
+                        public void handleResponse(List<Order> response) {
+                            Log.i("myOrders_retrieve", "handleResponse: My orders retrieved. response size = " + response.size());
+                            CONSTANTS.setMyOrdersCached(response);
+                            CONSTANTS.setOrderListQueryBuilder(queryBuilder);
+
+                            // Get out of splash screen & proceed to book list
+                            Intent intent = new Intent(getApplicationContext(), com.example.gronthomongol.booklist.class);
+                            intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdLogin());
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Log.i("myOrders_retrieve", "handleFault: " + fault.getMessage());
+                        }
+                    });
+                }
+                // If user is an admin, don't load my offers
+                else {
+                    Intent intent = new Intent(getApplicationContext(), com.example.gronthomongol.booklist.class);
+                    intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdLogin());
+                    startActivity(intent);
+                    finish();
+                }
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
                 btnLogin.setText("Login");
+                if(fault.getCode().equals(3003)){
+                    tvInvalidLogin.setVisibility(View.VISIBLE);
+                }
+
+                else {
+                    Toast.makeText(getApplicationContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+
+                }
 
                 Log.i("deviceid", fault.getMessage());
             }
@@ -157,5 +191,6 @@ public class login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin_Login);
         tvForgetpassword = findViewById(R.id.tvLogin_ForgetPassword);
         cbStayLoggedIn = findViewById(R.id.cbLogin_StayLoggedIn);
+        tvInvalidLogin = findViewById(R.id.tvLogin_invalidLogin);
     }
 }

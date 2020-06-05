@@ -1,6 +1,8 @@
 package com.example.gronthomongol;
 
-public class Book {
+import java.io.Serializable;
+
+public class Book implements Serializable {
     private String objectId;
     private String name;
     private String writer;
@@ -11,6 +13,19 @@ public class Book {
 //    public Book(String language) {
 //        this.language = language;
 //    }
+
+
+    @Override
+    public boolean equals(Object book) {
+        if (!(book instanceof Book)) {
+            return false;
+        }
+
+        Book thatBook = (Book) book;
+
+        // Custom equality check here.
+        return this.objectId.equals(thatBook.objectId);
+    }
 
     public String getObjectId() {
         return objectId;
