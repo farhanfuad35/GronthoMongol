@@ -19,6 +19,7 @@ public class BackendlessAPIMethods {
             public void handleResponse(Void response) {
                 Toast.makeText(context, "You are successfully logged out!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 ((Activity)context).finish();
                 context.startActivity(intent);
                 dialog.dismiss();

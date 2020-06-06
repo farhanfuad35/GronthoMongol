@@ -278,12 +278,14 @@ public class Order implements Serializable {
                                                                 @Override
                                                                 public void onClick(DialogInterface arg0, int arg1) {
                                                                     //Toast.makeText(Splash_Screen.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                                                                    arg0.dismiss();
                                                                     ((Activity)context).finish();
                                                                 }
                                                             });
 
                                                     AlertDialog alertDialog = alertDialogBuilder.create();
                                                     alertDialog.show();
+
                                                 }
 
                                                 @Override

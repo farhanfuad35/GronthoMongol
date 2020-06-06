@@ -137,6 +137,11 @@ public class login extends AppCompatActivity {
             public void handleFault(BackendlessFault fault) {
                 btnLogin.setText("Login");
                 if(fault.getCode().equals("3003")){
+                    tvInvalidLogin.setText("Invalid email or password");
+                    tvInvalidLogin.setVisibility(View.VISIBLE);
+                }
+                else if(fault.getCode().equals("3087")){
+                    tvInvalidLogin.setText("Please check you mailbox to confirm your email address");
                     tvInvalidLogin.setVisibility(View.VISIBLE);
                 }
 

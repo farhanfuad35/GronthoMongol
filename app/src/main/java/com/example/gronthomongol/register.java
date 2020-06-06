@@ -75,7 +75,7 @@ public class register extends AppCompatActivity {
                     Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
                         @Override
                         public void handleResponse(BackendlessUser response) {
-                            Toast.makeText(getApplicationContext(), "SignUp Successfull!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "SignUp Successfull. Please check your mail for confirmation link", Toast.LENGTH_LONG).show();
                             register.this.finish();
 
                         }

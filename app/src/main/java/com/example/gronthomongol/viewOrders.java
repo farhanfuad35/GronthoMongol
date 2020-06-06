@@ -157,29 +157,47 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
     public void onOrderClick(final int position) {
         //Toast.makeText(getApplicationContext(), "You have clicked an order", Toast.LENGTH_SHORT).show();
 
-        LoadRelationsQueryBuilder<Book> loadRelationsQueryBuilder;
-        loadRelationsQueryBuilder = LoadRelationsQueryBuilder.of( Book.class );
-        loadRelationsQueryBuilder.setRelationName( "orderedBookList" );
-        String parentObjectId = CONSTANTS.myOrdersCached.get(position).getObjectId();
+        final Dialog dialog = new Dialog(viewOrders.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_please_wait);
+        dialog.show();
 
-        Backendless.Data.of("Order").loadRelations(parentObjectId, loadRelationsQueryBuilder, new AsyncCallback<List<Book>>() {
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void handleResponse(List<Book> response) {
-                // TODO: Do something with it
-                ArrayList<Book> orderedBooks = new ArrayList<>(response);
-                Log.i(TAG, "handleResponse: Loading orderedBooks successful. List size: " + orderedBooks.size());
-                Intent intent = new Intent(viewOrders.this, orderDetails.class);
-                intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdViewOrders());
-                intent.putExtra("orderedBooks", orderedBooks);
-                intent.putExtra("currentOrder", (Serializable) CONSTANTS.myOrdersCached.get(position));
-                startActivity(intent);
-            }
+            public void run() {
+                LoadRelationsQueryBuilder<Book> loadRelationsQueryBuilder;
+                loadRelationsQueryBuilder = LoadRelationsQueryBuilder.of( Book.class );
+                loadRelationsQueryBuilder.setRelationName( "orderedBookList" );
+                String parentObjectId = CONSTANTS.myOrdersCached.get(position).getObjectId();
 
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.i(TAG, "handleFault: loading ordered books failed" + fault.getMessage());
+                Backendless.Data.of("Order").loadRelations(parentObjectId, loadRelationsQueryBuilder, new AsyncCallback<List<Book>>() {
+                    @Override
+                    public void handleResponse(List<Book> response) {
+                        // TODO: Do something with it
+                        ArrayList<Book> orderedBooks = new ArrayList<>(response);
+                        Log.i(TAG, "handleResponse: Loading orderedBooks successful. List size: " + orderedBooks.size());
+                        Intent intent = new Intent(viewOrders.this, orderDetails.class);
+                        intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdViewOrders());
+                        intent.putExtra("orderedBooks", orderedBooks);
+                        intent.putExtra("currentOrder", (Serializable) CONSTANTS.myOrdersCached.get(position));
+                        dialog.dismiss();
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Error in communication. Please try again later", Toast.LENGTH_LONG).show();
+                        Log.i(TAG, "handleFault: loading ordered books failed" + fault.getMessage());
+                    }
+                });
             }
         });
+
+        thread.start();
+
+
     }
 
     @Override
