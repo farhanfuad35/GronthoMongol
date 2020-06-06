@@ -7,9 +7,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/pasheachi_logo"
+        android:icon="@drawable/pasheachi_log_removebg"
         android:label="Grontho Mongol"
-        android:roundIcon="@drawable/pasheachi_logo"
+        android:roundIcon="@drawable/pasheachi_log_removebg"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".forgotPassword"></activity>
