@@ -291,8 +291,9 @@ public class Order implements Serializable {
                                                 @Override
                                                 public void handleFault( BackendlessFault fault )
                                                 {
-                                                    Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                                    //Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                                                     dialog.dismiss();
+                                                    Toast.makeText((Activity)context, fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
                                                     Log.i("backendless_order", "handleFault: " + fault.getMessage());
                                                     // an error has occurred, the error code can be retrieved with fault.getCode()
                                                 }

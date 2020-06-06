@@ -64,6 +64,9 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
         initializeRecyclerView();   // Check this for endless scroll data retrieval
         pref = getSharedPreferences("preferences", 0); // 0 - for private mode
 
+        // TODO: Remove place order fault from Order.class
+        Toast.makeText(getApplicationContext(), "DEBUG MODE", Toast.LENGTH_SHORT).show();
+
         fromActivityID = getIntent().getIntExtra(getString(R.string.activityIDName), 0);
 
         // If has come here just to add more book to the checkout list
