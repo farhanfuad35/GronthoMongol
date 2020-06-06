@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".postRequest">
+
+    <include
+        android:id="@+id/toolbar_Request"
+        layout="@layout/toolbar" />
 
     <ScrollView
         android:id="@+id/svRequest_scrollview"
@@ -15,16 +20,17 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
-            <include
-                android:id="@+id/toolbar_Request"
-                layout="@layout/toolbar" />
+
 
             <TextView
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:textSize="20dp"
+                android:textSize="19sp"
                 android:text="@string/type_book_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -32,9 +38,11 @@
             <TextView
                 android:layout_marginBottom="10dp"
                 android:textAlignment="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:textColor="@color/black"
                 android:gravity="center"
-                android:textSize="12dp"
+                android:textSize="12sp"
                 android:text="@string/bforb_efore"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -54,6 +62,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
+                    android:textSize="15sp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -77,6 +86,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:layout_width="match_parent"
+                    android:textSize="15sp"
                     android:layout_height="wrap_content"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -93,7 +103,7 @@
                     android:id="@+id/tvRequest_Language"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="10dp"
-                    android:textSize="18dp"
+                    android:textSize="15sp"
                     android:text="@string/language"
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
@@ -123,6 +133,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
+                    android:textSize="15sp"
                     android:inputType="textLongMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -144,6 +155,7 @@
                 app:cornerRadius="90dp"
                 app:strokeColor="@color/colorPrimaryDark"
                 app:strokeWidth="4dp"
+                android:textSize="14sp"
                 app:backgroundTint="@color/colorPrimary"
                 android:text="Post"/>
 
@@ -152,4 +164,4 @@
     </ScrollView>
 
 
-</RelativeLayout>
+</LinearLayout>

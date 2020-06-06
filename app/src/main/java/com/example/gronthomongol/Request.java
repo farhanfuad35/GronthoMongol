@@ -63,8 +63,14 @@ public class Request {
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Toast.makeText((Activity)context, "Request Submission Failed!", Toast.LENGTH_SHORT).show();
+
                 dialog.dismiss();
+                if(fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless))){
+                    CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
+                }
+                else{
+                    Toast.makeText((Activity)context, "Request Submission Failed!", Toast.LENGTH_SHORT).show();
+                }
                 Log.i("save_request", "handleFault: " + fault.getMessage());
             }
         });

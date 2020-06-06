@@ -87,6 +87,9 @@ public class register extends AppCompatActivity {
                             if(fault.getCode().equals("3033")){
                                 Toast.makeText(getApplicationContext(), "SignUp Failed. Email already exists" , Toast.LENGTH_SHORT).show();
                             }
+                            else if(fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless))){
+                                CONSTANTS.showConnectionFailedDialogWithoutRestart(register.this);
+                            }
                             else{
                                 Toast.makeText(getApplicationContext(), "SignUp Failed. " + fault.getMessage() , Toast.LENGTH_SHORT).show();
                             }

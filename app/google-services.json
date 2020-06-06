@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "435773982718",
+    "firebase_url": "https://grontho-mongol.firebaseio.com",
+    "project_id": "grontho-mongol",
+    "storage_bucket": "grontho-mongol.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435773982718:android:736b06cc4142854a06a2af",
+        "android_client_info": {
+          "package_name": "com.example.gronthomongol"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "435773982718-ne7e3fg2ukem0s47eefut6bf0nsd8s3m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3K5TVRQxxCz42EMN9WkXObBCf_hQAImM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "435773982718-ne7e3fg2ukem0s47eefut6bf0nsd8s3m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

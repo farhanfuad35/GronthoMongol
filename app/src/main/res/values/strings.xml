@@ -8,6 +8,7 @@
     <string name="bangla">বাংলা</string>
     <string name="bforb_efore">(বাংলা বই হলে বাংলায়, ইংরেজি বই হলে ইংরেজিতে লিখতে অনুরোধ করা যাচ্ছে)</string>
     <string name="comment">মন্তব্য (ঐচ্ছিক)</string>
+    <string name="comment_neat">মন্তব্য</string>
     <string name="recipientsName">প্রাপকের নাম</string>
     <string name="address">ঠিকানা</string>
     <string name="phoneNumber">ফোন নাম্বার</string>

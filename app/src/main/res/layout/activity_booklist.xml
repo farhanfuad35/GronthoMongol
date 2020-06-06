@@ -34,6 +34,7 @@
                 android:layout_marginRight="10dp"
                 app:rippleColor="@color/black"
                 android:text="Request Book"
+                android:textSize="13sp"
                 app:backgroundTint="@android:color/transparent"
                 app:strokeColor="@color/colorPrimaryDark"
                 app:strokeWidth="2dp"
@@ -54,6 +55,7 @@
                 app:backgroundTint="@android:color/transparent"
                 app:strokeColor="@color/colorPrimaryDark"
                 app:strokeWidth="2dp"
+                android:textSize="13sp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_width="0dp" />
@@ -67,6 +69,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="10dp"
                 android:text="Orders"
+                android:textSize="13sp"
                 app:backgroundTint="@android:color/transparent"
                 app:strokeColor="@color/colorPrimaryDark"
                 app:strokeWidth="2dp"

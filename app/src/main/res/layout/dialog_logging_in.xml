@@ -6,7 +6,7 @@
     android:layout_height="wrap_content" >
 
         <ProgressBar
-            android:id="@+id/pbPlaceOrder_Loading"
+            android:id="@+id/pbLoggingIn"
             android:layout_width="wrap_content"
             android:indeterminate="true"
             android:layout_marginTop="20dp"
@@ -22,7 +22,7 @@
 
 
         <TextView
-            android:id="@+id/tvPlaceOrder_PostingOffer"
+            android:id="@+id/tvLoggingOut"
             android:layout_height="wrap_content"
             android:gravity="left|center"
             android:layout_marginRight="20dp"
@@ -31,10 +31,10 @@
             android:textSize="15sp"
             android:layout_marginLeft="60dp"
             android:layout_width="match_parent"
-            android:text="@string/please_wait"
+            android:text="Logging in..."
             android:background="@android:color/transparent"
             android:textColor="#222222"
-            android:layout_alignLeft="@+id/pbPlaceOrder_Loading"
+            android:layout_alignLeft="@+id/pbLoggingIn"
             android:layout_centerInParent="true" />
 
 </RelativeLayout>

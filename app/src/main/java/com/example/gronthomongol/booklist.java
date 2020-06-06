@@ -64,8 +64,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
         initializeRecyclerView();   // Check this for endless scroll data retrieval
         pref = getSharedPreferences("preferences", 0); // 0 - for private mode
 
-        // TODO: Remove place order fault from Order.class
-        Toast.makeText(getApplicationContext(), "DEBUG MODE", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "DEBUG MODE", Toast.LENGTH_SHORT).show();
 
         fromActivityID = getIntent().getIntExtra(getString(R.string.activityIDName), 0);
 
@@ -209,7 +208,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
                 @Override
                 public void run() {
                     BackendlessUser user = Backendless.UserService.CurrentUser();
-                    BackendlessAPIMethods.updateDeviceId(booklist.this, user, "");
+                    // BackendlessAPIMethods.updateDeviceId(booklist.this, user, "");
                     BackendlessAPIMethods.logOut(booklist.this, dialog);
                 }
             });

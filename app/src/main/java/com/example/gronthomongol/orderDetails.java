@@ -99,6 +99,7 @@ public class orderDetails extends AppCompatActivity {
         }
         else{
             etComment.setText(currentOrder.getComment());
+            etComment.setHint(getString(R.string.comment_neat));
         }
         if(!currentOrder.getbKashTxnId().equals(CONSTANTS.NULLMARKER)){
             etbkashTxnId.setText(currentOrder.getbKashTxnId());

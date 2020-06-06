@@ -199,8 +199,10 @@ public class SplashScreen extends AppCompatActivity {
                     @Override
                     public void handleFault( BackendlessFault fault )
                     {
-                        if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) ))
+                        if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
                             showConnectionFailedDialog();
+                            Log.i("errorCode", "handleFault: error Code: " + fault.getCode() + "\t Error Message = " + fault.getMessage());
+                        }
 
                         else{
                             Backendless.UserService.logout(new AsyncCallback<Void>() {
@@ -243,7 +245,7 @@ public class SplashScreen extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Toast.makeText(Splash_Screen.this,"You clicked yes button",Toast.LENGTH_LONG).show();
-
+                        arg0.dismiss();
                         Intent intent = getIntent();
                         finish();
                         startActivity(intent);

@@ -143,7 +143,12 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
                         @Override
                         public void handleFault(BackendlessFault fault) {
                             Log.i(TAG, "handleFault: " + fault.getMessage());
-                            Toast.makeText(getApplicationContext(), "Error retrieving data from the database", Toast.LENGTH_SHORT).show();
+                            if(fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless))){
+                                Toast.makeText(getApplicationContext(), "Please check your network connection", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "Error retrieving data from the database", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
                 }
@@ -188,7 +193,12 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
                     @Override
                     public void handleFault(BackendlessFault fault) {
                         dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Error in communication. Please try again later", Toast.LENGTH_LONG).show();
+                        if(fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless))){
+                            CONSTANTS.showConnectionFailedDialogWithoutRestart(viewOrders.this);
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "Error in communication. Please try again later", Toast.LENGTH_LONG).show();
+                        }
                         Log.i(TAG, "handleFault: loading ordered books failed" + fault.getMessage());
                     }
                 });

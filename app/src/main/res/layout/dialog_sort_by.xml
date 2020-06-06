@@ -14,7 +14,7 @@
         android:id="@+id/tvDialog_sortBy"
         android:text="Sort By"
         android:gravity="center"
-        android:textSize="20dp"
+        android:textSize="15sp"
         android:paddingBottom="15dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
@@ -23,7 +23,7 @@
     <TextView
         android:id="@+id/tvDialog_sortByBookName"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="15sp"
         android:layout_width="match_parent"
         android:text="@string/book_name"
         android:layout_gravity="center"
@@ -35,7 +35,7 @@
     <TextView
         android:id="@+id/tvDialog_sortByWriterName"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:textSize="15sp"
         android:layout_width="match_parent"
         android:text="@string/writer_name"
         android:layout_gravity="center"

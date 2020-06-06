@@ -17,6 +17,8 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.messaging.MessageStatus;
+import com.backendless.messaging.PublishOptions;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -239,6 +241,9 @@ public class Order implements Serializable {
                 Log.i("backendless_order", "handleResponse: Order has been saved successfully in database");
 
 
+                // Send Notification to the admins
+                sendNotificationToTheAdmins("New order by " + CONSTANTS.getCurrentUser().getProperty("name"));
+
                 // Relate the books with the Order
                 Backendless.Data.of(Order.class).addRelation(savedOrder,
                         "orderedBookList:Book:n", orderedBooks, new AsyncCallback<Integer>() {
@@ -291,9 +296,12 @@ public class Order implements Serializable {
                                                 @Override
                                                 public void handleFault( BackendlessFault fault )
                                                 {
-                                                    //Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
                                                     dialog.dismiss();
-                                                    Toast.makeText((Activity)context, "Remainig Book: " + fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
+                                                    if(fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless))){
+                                                        CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
+                                                    }
+                                                    //Toast.makeText((Activity)context, "Remainig Book: " + fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
                                                     Log.i("backendless_order", "handleFault: " + fault.getMessage());
                                                     // an error has occurred, the error code can be retrieved with fault.getCode()
                                                 }
@@ -311,9 +319,12 @@ public class Order implements Serializable {
 
                                     @Override
                                     public void handleFault(BackendlessFault fault) {
-                                        //Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                                        Toast.makeText((Activity)context, "Relating with the ordering user : " + fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText((Activity)context, "Relating with the ordering user : " + fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
                                         dialog.dismiss();
+                                        if(fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless))){
+                                            CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
+                                        }
 
                                         Log.i("backendless_order", "handleFault: " + fault.getMessage());
                                     }
@@ -324,9 +335,12 @@ public class Order implements Serializable {
 
                             @Override
                             public void handleFault(BackendlessFault fault) {
-                                //Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                                Toast.makeText((Activity)context, "Relating books with the order : " + fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
+                                Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText((Activity)context, "Relating books with the order : " + fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
                                 dialog.dismiss();
+                                if(fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless))){
+                                    CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
+                                }
                                 Log.i("backendless_order", "handleResponse: " + fault.getMessage());
                             }
                         });
@@ -334,10 +348,31 @@ public class Order implements Serializable {
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                //Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                Toast.makeText((Activity)context, "Saving order : " + fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText((Activity)context, "Saving order : " + fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
                 dialog.dismiss();
+                if(fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless))){
+                    CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
+                }
                 Log.i("backendless_order", "handleFault: " + fault.getMessage());
+            }
+        });
+    }
+
+    public static void sendNotificationToTheAdmins(String message) {
+        PublishOptions publishOptions = new PublishOptions();
+        publishOptions.putHeader( "android-ticker-text", "You just got a private push notification!" );
+        publishOptions.putHeader( "android-content-title", "New Order Received" );
+        publishOptions.putHeader( "android-content-text", "Push Notifications Text" );
+        Backendless.Messaging.publish("admin", message, publishOptions, new AsyncCallback<MessageStatus>() {
+            @Override
+            public void handleResponse(MessageStatus response) {
+                Log.i("notification", "handleResponse: Notification sent to the admins");
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.i("notification", "handleFault: Notification sending to the admins failed\t" + fault.getMessage());
             }
         });
     }
@@ -364,9 +399,15 @@ public class Order implements Serializable {
             @Override
             public void handleFault( BackendlessFault fault )
             {
-                Toast.makeText((Activity)context, "Error occured while saving the data", Toast.LENGTH_SHORT).show();
+
                 Log.e("update_order", "handleFault: " + fault.getMessage() + "\tCode: " + fault.getCode() );
                 dialog.dismiss();
+                if(fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless))){
+                    CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
+                }
+                else{
+                    Toast.makeText((Activity)context, "Error occured while saving the data", Toast.LENGTH_SHORT).show();
+                }
                 // an error has occurred, the error code can be retrieved with fault.getCode()
             }
         } );

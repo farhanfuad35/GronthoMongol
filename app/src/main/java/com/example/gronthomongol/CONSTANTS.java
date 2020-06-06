@@ -1,3 +1,11 @@
+/*  Orderlist Sort must be by last created. Because after creating a new order, that is instantly added to the cached order list at the top
+* Book list sort shouldn't matter because it is re retrieved if a new book is added. In case of update, it is added only if it is found
+* in the cache list of books and replaced at that particular index. In case of removing a book, it is deleted if it is found.
+* The page size must not be more than 10. Because orders are extracted with a limit of 10. Because relational object query in Backendless
+* implements paging and the max is 10. You need to reconfigure the query and everything if page size is more than 10. However, for retrieving
+* books, there shouldn't be any issue as the book objects are not related. But for consistency it is recommended that both be the same.
+* */
+
 package com.example.gronthomongol;
 
 import android.app.Activity;
@@ -192,11 +200,14 @@ public class CONSTANTS {
                     public void handleFault( BackendlessFault fault )
                     {
 
-                        Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+
                         dialog.dismiss();
 
                         if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) ))
-                            showConnectionFailedDialog(context);
+                            showConnectionFailedDialogWithoutRestart(context);
+                        else{
+                            Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                        }
 
                         Log.e("fault", fault.getMessage());
 
@@ -224,12 +235,14 @@ public class CONSTANTS {
 
             @Override
             public void handleFault(BackendlessFault fault) {
+                // TODO CONNECTION FAILED DIALOG NOT IMPLEMENTED
+
                 Log.i("myOrders_retrieve", "handleFault: " + fault.getMessage());
             }
         });
     }
 
-    private static void showConnectionFailedDialog(final Context context)
+    public static void showConnectionFailedDialog(final Context context)
     {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(((Activity)context));
@@ -240,10 +253,29 @@ public class CONSTANTS {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Toast.makeText(Splash_Screen.this,"You clicked yes button",Toast.LENGTH_LONG).show();
-
+                        arg0.dismiss();
                         Intent intent = ((Activity)context).getIntent();
                         ((Activity)context).finish();
                         ((Activity)context).startActivity(intent);
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    public static void showConnectionFailedDialogWithoutRestart(final Context context)
+    {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(((Activity)context));
+        alertDialogBuilder.setTitle("Connection Failed!");
+        alertDialogBuilder.setMessage("Please check your internet connection and try again");
+        alertDialogBuilder.setPositiveButton("Okay",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        //Toast.makeText(Splash_Screen.this,"You clicked yes button",Toast.LENGTH_LONG).show();
+                        arg0.dismiss();
                     }
                 });
 
