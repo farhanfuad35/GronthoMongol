@@ -41,21 +41,33 @@ public class Request {
 
         Backendless.Data.of(Request.class).save(this, new AsyncCallback<Request>() {
             @Override
-            public void handleResponse(Request savedRequest) {
+            public void handleResponse(final Request savedRequest) {
                 Log.i("save_request", "handleResponse: Request saved in database");
                 Backendless.Data.of(Request.class).setRelation(savedRequest, "requestingUser", requestingUser, new AsyncCallback<Integer>() {
                     @Override
                     public void handleResponse(Integer response) {
                         Log.i("save_request", "handleResponse: user relation set with the request successfully");
-                        Toast.makeText((Activity)context, "Request Submitted!", Toast.LENGTH_SHORT).show();
+
+
+                        // Send request notification to the admins
+                        String message = CONSTANTS.getCurrentUser().getProperty("name") + " has requested a new book: " + savedRequest.getBookName() + " by " + savedRequest.getWriterName();
+                        String messageTitle = "New book request!";
+                        CONSTANTS.sendNotificationToTheAdmins(message, messageTitle);
+
                         dialog.dismiss();
+                        Toast.makeText((Activity)context, "Request Submitted!", Toast.LENGTH_SHORT).show();
                         ((Activity)context).finish();
                     }
 
                     @Override
                     public void handleFault(BackendlessFault fault) {
-                        Toast.makeText((Activity)context, "Request Submission Failed!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                        if(fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless))){
+                            CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
+                        }
+                        else
+                            Toast.makeText((Activity)context, "Request Submission Failed!", Toast.LENGTH_SHORT).show();
+
                         Log.i("save_request", "handleFault: " + fault.getMessage());
                     }
                 });

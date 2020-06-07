@@ -24,6 +24,8 @@ import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
+import com.backendless.messaging.MessageStatus;
+import com.backendless.messaging.PublishOptions;
 import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 
@@ -241,6 +243,26 @@ public class CONSTANTS {
             }
         });
     }
+
+
+    public static void sendNotificationToTheAdmins(String message, String messageTitle) {
+        PublishOptions publishOptions = new PublishOptions();
+        publishOptions.putHeader( "android-ticker-text", "You just got a private push notification!" );
+        publishOptions.putHeader( "android-content-title", messageTitle );
+        publishOptions.putHeader( "android-content-text", "Push Notifications Text" );
+        Backendless.Messaging.publish("admin", message, publishOptions, new AsyncCallback<MessageStatus>() {
+            @Override
+            public void handleResponse(MessageStatus response) {
+                Log.i("notification", "handleResponse: Notification sent to the admins");
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.i("notification", "handleFault: Notification sending to the admins failed\t" + fault.getMessage());
+            }
+        });
+    }
+
 
     public static void showConnectionFailedDialog(final Context context)
     {

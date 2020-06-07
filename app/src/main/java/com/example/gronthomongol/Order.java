@@ -240,9 +240,10 @@ public class Order implements Serializable {
             public void handleResponse(final Order savedOrder) {
                 Log.i("backendless_order", "handleResponse: Order has been saved successfully in database");
 
-
+                String messageTitle = "New Order Received";
+                String message = "New order by " + CONSTANTS.getCurrentUser().getProperty("name");
                 // Send Notification to the admins
-                sendNotificationToTheAdmins("New order by " + CONSTANTS.getCurrentUser().getProperty("name"));
+                CONSTANTS.sendNotificationToTheAdmins(message, messageTitle);
 
                 // Relate the books with the Order
                 Backendless.Data.of(Order.class).addRelation(savedOrder,
@@ -355,24 +356,6 @@ public class Order implements Serializable {
                     CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
                 }
                 Log.i("backendless_order", "handleFault: " + fault.getMessage());
-            }
-        });
-    }
-
-    public static void sendNotificationToTheAdmins(String message) {
-        PublishOptions publishOptions = new PublishOptions();
-        publishOptions.putHeader( "android-ticker-text", "You just got a private push notification!" );
-        publishOptions.putHeader( "android-content-title", "New Order Received" );
-        publishOptions.putHeader( "android-content-text", "Push Notifications Text" );
-        Backendless.Messaging.publish("admin", message, publishOptions, new AsyncCallback<MessageStatus>() {
-            @Override
-            public void handleResponse(MessageStatus response) {
-                Log.i("notification", "handleResponse: Notification sent to the admins");
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.i("notification", "handleFault: Notification sending to the admins failed\t" + fault.getMessage());
             }
         });
     }
