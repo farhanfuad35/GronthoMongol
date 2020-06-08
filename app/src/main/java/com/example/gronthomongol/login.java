@@ -2,6 +2,7 @@ package com.example.gronthomongol;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -73,7 +74,6 @@ public class login extends AppCompatActivity {
                     }
 
                     else {
-                        btnLogin.setText("Logging in...");
                         final String email = etEmail.getText().toString().toLowerCase();
                         final String password = etPassword.getText().toString();
                         //final Boolean stayLoggedIn = cbStayLoggedIn.isChecked();
@@ -88,7 +88,7 @@ public class login extends AppCompatActivity {
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                Login(email, password, stayLoggedIn);
+                                Login(email, password, stayLoggedIn, waitDialog);
                             }
                         });
 
@@ -136,7 +136,7 @@ public class login extends AppCompatActivity {
     }
 
 
-    private void Login(final String email, final String password, Boolean stayLoggedIn)
+    private void Login(final String email, final String password, Boolean stayLoggedIn, final Dialog dialog)
     {
         Backendless.UserService.login(email, password, new AsyncCallback<BackendlessUser>() {
             @Override
@@ -150,60 +150,16 @@ public class login extends AppCompatActivity {
                     channel = "client";
 
                 registerDeviceForNotification(channel);
-
                 CONSTANTS.setCurrentUser(response);
                 CONSTANTS.setMYORDEROFFSET(0);
-
-                // If user is not an admin, load my offers
-                if(!(boolean)response.getProperty("admin")){
-                    final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-                    final String whereClause = "user.email = '" + CONSTANTS.getCurrentUser().getEmail().toString().trim() + "'";
-                    queryBuilder.setWhereClause(whereClause);
-                    queryBuilder.addAllProperties();
-                    queryBuilder.setSortBy("created DESC");
-                    queryBuilder.setPageSize( CONSTANTS.getMyOrderPageSize() ).setOffset( CONSTANTS.getMYORDEROFFSET() );
-                    Backendless.Data.of(Order.class).find(queryBuilder, new AsyncCallback<List<Order>>() {
-                        @Override
-                        public void handleResponse(List<Order> response) {
-                            //Log.i("myOrders_retrieve", "handleResponse: where Clause: " + whereClause);
-                            Log.i("myOrders_retrieve", "login/handleResponse: My orders retrieved. response size = " + response.size());
-                            CONSTANTS.setMyOrdersCached(response);
-                            CONSTANTS.setOrderListQueryBuilder(queryBuilder);
-                            CONSTANTS.setMYORDEROFFSET(CONSTANTS.getMYORDEROFFSET() + CONSTANTS.getMyOrderPageSize());
-
-                            // Get out of splash screen & proceed to book list
-                            waitDialog.dismiss();
-                            Intent intent = new Intent(getApplicationContext(), com.example.gronthomongol.booklist.class);
-                            intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdLogin());
-                            startActivity(intent);
-                            finish();
-                        }
-
-                        @Override
-                        public void handleFault(BackendlessFault fault) {
-                            waitDialog.dismiss();
-                            if(fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless))){
-                                CONSTANTS.showConnectionFailedDialogWithoutRestart(login.this);
-                            }
-                            else {
-                                Toast.makeText(getApplicationContext(), "Couldn't load user offers", Toast.LENGTH_SHORT).show();
-                            }
-                            Log.i("myOrders_retrieve", "handleFault: " + fault.getMessage());
-                        }
-                    });
-                }
-                // If user is an admin, don't load my offers
-                else {
-                    waitDialog.dismiss();
-                    Intent intent = new Intent(getApplicationContext(), com.example.gronthomongol.booklist.class);
-                    intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdLogin());
-                    startActivity(intent);
-                    finish();
-                }
+                CONSTANTS.RetrieveBookListFromDatabaseInitially(login.this, CONSTANTS.getIdLogin(), dialog);    // This is will retrieve the proper offers too
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
+
+                String title;
+                String message;
 
                 waitDialog.dismiss();
                 btnLogin.setText("Login");
@@ -215,9 +171,10 @@ public class login extends AppCompatActivity {
                     tvInvalidLogin.setText("Please check you mailbox to confirm your email address");
                     tvInvalidLogin.setVisibility(View.VISIBLE);
                 }
-
-                else if(fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless))){
-                    CONSTANTS.showConnectionFailedDialogWithoutRestart(login.this);
+                else if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
+                    title = "Connection Failed!";
+                    message = "Please Check Your Internet Connection";
+                    CONSTANTS.showErrorDialog(login.this, title, message, "Okay");
                 }
 
                 else {
@@ -249,8 +206,12 @@ public class login extends AppCompatActivity {
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                if(fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless))){
-                    CONSTANTS.showConnectionFailedDialogWithoutRestart(login.this);
+                String title;
+                String message;
+                if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
+                    title = "Connection Failed!";
+                    message = "Please Check Your Internet Connection";
+                    CONSTANTS.showErrorDialog(login.this, title, message, "Okay");
                 }
                 else{
                 Toast.makeText( login.this, "Error registering " + fault.getMessage(),
@@ -260,28 +221,6 @@ public class login extends AppCompatActivity {
                 Log.i("deviceid", fault.getMessage());
             }
         });
-
-        // The following Methods were used previously to retrieve the Device registration id and set it
-        // to the device_Id column, created manually. of the user table. So that once the user is logged out,
-        // it can be set to null. Which previously seemed to be a problem. But I think we can save this trouble
-        // if we cancel the device registration following the documentation of backendless
-        // Nevermind...
-        // Actually do mind. Don't need this.
-
-//        Backendless.Messaging.getDeviceRegistration(new AsyncCallback<DeviceRegistration>() {
-//            @Override
-//            public void handleResponse(DeviceRegistration response) {
-//
-//                BackendlessUser user = Backendless.UserService.CurrentUser();
-//                BackendlessAPIMethods.updateDeviceId(login.this, user, response.getDeviceId());
-//
-//            }
-//
-//            @Override
-//            public void handleFault(BackendlessFault fault) {
-//
-//            }
-//        });
 
     }
 

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".bookDetails">
+
+    <include
+        android:id="@+id/toolbar_BookDetails"
+        layout="@layout/toolbar" />
+
+    <ScrollView
+        android:id="@+id/svBookDetails_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusBottomEnd="40dp"
+                app:boxCornerRadiusBottomStart="40dp"
+                app:boxCornerRadiusTopEnd="40dp"
+                app:boxCornerRadiusTopStart="40dp"
+                app:boxStrokeWidth="0dp"
+                android:hint="@string/book_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBookDetails_BookName"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="20dp"
+                    android:textSize="15sp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusBottomEnd="40dp"
+                app:boxCornerRadiusBottomStart="40dp"
+                app:boxCornerRadiusTopEnd="40dp"
+                app:boxCornerRadiusTopStart="40dp"
+                app:boxStrokeWidth="0dp"
+                android:hint="@string/writer_name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBookDetails_WriterName"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:boxCornerRadiusBottomEnd="40dp"
+                app:boxCornerRadiusBottomStart="40dp"
+                app:boxCornerRadiusTopEnd="40dp"
+                app:boxCornerRadiusTopStart="40dp"
+                app:boxStrokeWidth="0dp"
+                android:hint="@string/price">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBookDetails_Price"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_width="match_parent"
+                    android:textSize="15sp"
+                    android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvBookDetails_Language"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="15sp"
+                    android:text="@string/language"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:id="@+id/spnRequest_language"
+                    android:layout_weight="3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvBookDetails_NumberOfBooks"
+                    android:layout_width="0dp"
+                    android:layout_weight="4"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="@string/number_of_books"
+                    android:layout_height="wrap_content" />
+
+                <NumberPicker
+                    android:id="@+id/npBookDetails_NumberOfBooks"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBookDetails_update"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:layout_height="wrap_content"
+                    app:rippleColor="@color/colorPrimaryDark"
+                    app:cornerRadius="90dp"
+                    app:strokeColor="@color/colorPrimaryDark"
+                    app:strokeWidth="4dp"
+                    android:textSize="14sp"
+                    app:backgroundTint="@color/colorPrimary"
+                    android:text="Update"/>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBookDetails_delete"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:layout_height="wrap_content"
+                    app:rippleColor="@color/colorPrimaryDark"
+                    app:cornerRadius="90dp"
+                    app:strokeColor="@color/colorPrimaryDark"
+                    app:strokeWidth="4dp"
+                    android:textSize="14sp"
+                    app:backgroundTint="@color/red"
+                    android:text="Delete"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

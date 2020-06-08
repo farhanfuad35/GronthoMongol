@@ -2,6 +2,7 @@ package com.example.gronthomongol;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -82,13 +83,17 @@ public class register extends AppCompatActivity {
 
                         @Override
                         public void handleFault(BackendlessFault fault) {
+                            String title;
+                            String message;
                             btnRegister.setText("Create Account");
                             Log.i("register", "handleFault: " + fault.getCode() + "\t" + fault.getMessage());
                             if(fault.getCode().equals("3033")){
                                 Toast.makeText(getApplicationContext(), "SignUp Failed. Email already exists" , Toast.LENGTH_SHORT).show();
                             }
-                            else if(fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless))){
-                                CONSTANTS.showConnectionFailedDialogWithoutRestart(register.this);
+                            else if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
+                                title = "Connection Failed!";
+                                message = "Please Check Your Internet Connection";
+                                CONSTANTS.showErrorDialog(register.this, title, message, "Okay");
                             }
                             else{
                                 Toast.makeText(getApplicationContext(), "SignUp Failed. " + fault.getMessage() , Toast.LENGTH_SHORT).show();

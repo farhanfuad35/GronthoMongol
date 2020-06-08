@@ -35,8 +35,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnBookClickListener {
-    private BooklistAdapterRV booklistAdapterRV;
+public class booklist_admin extends AppCompatActivity implements BooklistAdapterRV_admin.OnBookClickListener {
+    private BooklistAdapterRV_admin booklistAdapterRV_admin;
     private Button btnProfile;
     private Button btnRequest;
     private Button btnOrders;
@@ -47,18 +47,18 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
     private EventHandler<Book> bookEventHandler = Backendless.Data.of(Book.class).rt();
 
     private int fromActivityID;
-    private final String TAG = "booklist";
-    private final int PLACE_ORDER_RETURN_REQUEST_CODE = 97;
+    private final String TAG = "booklist_admin";
+    private final int PLACE_ORDER_RETURN_REQUEST_CODE = 93;
     private SharedPreferences pref;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_booklist);
+        setContentView(R.layout.activity_booklist_admin);
 
         setTitle("Book List");
-        androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar_BookList);
+        androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar_BookList_admin);
         setSupportActionBar(toolbar);
         initializeGUIElements();
         initializeRecyclerView();   // Check this for endless scroll data retrieval
@@ -68,31 +68,24 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
 
         fromActivityID = getIntent().getIntExtra(getString(R.string.activityIDName), 0);
 
-        // If has come here just to add more book to the checkout list
-        if (fromActivityID == CONSTANTS.getIdPlaceOrderAddMoreBook()) {
-            btnRequest.setVisibility(View.GONE);
-            btnOrders.setVisibility(View.GONE);
-        } else {
 
-            btnRequest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), postRequest.class);
-                    startActivity(intent);
-                }
-            });
-            
-            btnOrders.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.i(TAG, "onClick: starting viewOrders");
-                    Intent intent = new Intent(booklist.this, viewOrders.class);
-                    intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdBooklist());
-                    startActivity(intent);
+        btnRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), requestList.class);
+                startActivity(intent);
             }
-            });
+        });
 
-        }
+        btnOrders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "onClick: starting viewOrders");
+                Intent intent = new Intent(booklist_admin.this, viewOrders_admin.class);
+                intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdBooklistAdmin());
+                startActivity(intent);
+            }
+        });
 
         initiateRealTimeDatabaseListeners();
 
@@ -109,7 +102,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
                     if(CONSTANTS.bookListCached.get(i).equals(updatedBook)){
                         CONSTANTS.bookListCached.remove(i);
                         CONSTANTS.bookListCached.add(i, updatedBook);
-                            booklistAdapterRV.notifyDataSetChanged();
+                        booklistAdapterRV_admin.notifyDataSetChanged();
 
                     }
                 }
@@ -131,7 +124,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
                 Log.i(TAG, "an Order object has been deleted. Object ID - " + deletedBook.getObjectId());
                 if (CONSTANTS.bookListCached.contains(deletedBook)) {
                     CONSTANTS.bookListCached.remove(deletedBook);
-                    booklistAdapterRV.notifyDataSetChanged();
+                    booklistAdapterRV_admin.notifyDataSetChanged();
                 }
             }
 
@@ -154,7 +147,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
                 // Because just adding causes problem with the offset. Because you don't know if the newly added book is supposed to be on the
                 // cached booklist or not because of the sorting. So better do a fresh retrieve
 
-                final Dialog waitDialog = new Dialog(booklist.this);
+                final Dialog waitDialog = new Dialog(booklist_admin.this);
                 waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 waitDialog.setCancelable(false);
                 waitDialog.setContentView(R.layout.dialog_please_wait);
@@ -163,7 +156,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        CONSTANTS.freshRetrieveFromDatabase(booklist.this, booklistAdapterRV, pref.getString("sortBy", "name"), waitDialog, recyclerView, endlessScrollEventListener);
+                        CONSTANTS.freshRetrieveFromDatabase(booklist_admin.this, booklistAdapterRV_admin, pref.getString("sortBy", "name"), waitDialog, recyclerView, endlessScrollEventListener);
 
                     }
                 });
@@ -194,7 +187,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
         if (id == R.id.menuMain_Logout) {
 
             // Updating device ID while logging out to ensure no more notification is sent to that device
-            final Dialog dialog = new Dialog(booklist.this);
+            final Dialog dialog = new Dialog(booklist_admin.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
             dialog.setContentView(R.layout.dialog_logging_out);
@@ -203,9 +196,8 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    BackendlessUser user = Backendless.UserService.CurrentUser();
                     // BackendlessAPIMethods.updateDeviceId(booklist.this, user, "");
-                    BackendlessAPIMethods.logOut(booklist.this, dialog);
+                    BackendlessAPIMethods.logOut(booklist_admin.this, dialog);
                 }
             });
 
@@ -235,8 +227,8 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
         rvLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(rvLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
-        booklistAdapterRV = new BooklistAdapterRV(CONSTANTS.bookListCached, getApplicationContext(), this);
-        recyclerView.setAdapter(booklistAdapterRV);
+        booklistAdapterRV_admin = new BooklistAdapterRV_admin(CONSTANTS.bookListCached, getApplicationContext(), this);
+        recyclerView.setAdapter(booklistAdapterRV_admin);
 
         endlessScrollEventListener = new EndlessScrollEventListener((LinearLayoutManager) rvLayoutManager) {
             @Override
@@ -257,7 +249,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
 
                                 CONSTANTS.bookListCached.addAll(response);
                                 progressBar.setVisibility(View.GONE);
-                                booklistAdapterRV.notifyDataSetChanged();
+                                booklistAdapterRV_admin.notifyDataSetChanged();
 
                             }
 
@@ -279,74 +271,43 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
     @Override
     public void onBookClick(int position) {
 
-        // Came here just to add more book to the checkout items
-        if (fromActivityID == CONSTANTS.getIdPlaceOrderAddMoreBook()) {
-
-            Log.i(TAG, "onBookClick: Came here to add more books");
-
-            // ArrayList<Book> orderedBookList =  new ArrayList<>();
-            ArrayList<Book> orderedBookList;    // If this fails, use the line above
-            orderedBookList = (ArrayList<Book>) getIntent().getSerializableExtra(getString(R.string.orderedBookList));
-            boolean goodToGo = true;
-
-
-            if (!orderedBookList.isEmpty()) {
-
-//                Log.i(TAG, "onBookClick: orderedBookList size: " + orderedBookList.size() + "\tordered book list name: " + orderedBookList.get(0).getName());
-//                Log.i(TAG, "onBookClick: clicked Book position: " + position + "\tname: " + CONSTANTS.bookListCached.get(position).getName());
-
-                if (orderedBookList.contains(CONSTANTS.bookListCached.get(position))) {
-                    Toast.makeText(getApplicationContext(), "Book already selected", Toast.LENGTH_LONG).show();
-                    goodToGo = false;
-                }
-            }
-            if (goodToGo) {
-                Log.i(TAG, "onBookClick: About to return intent");
-
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra(getString(R.string.newlySelectedBook), CONSTANTS.bookListCached.get(position));
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-            }
-        } else {
-            Intent intent = new Intent(this, placeOrder.class);
-            intent.putExtra("selectedBook", CONSTANTS.bookListCached.get(position));
+        Intent intent = new Intent(this, bookDetails.class);
+        intent.putExtra("selectedBook", CONSTANTS.bookListCached.get(position));
 //            intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdBooklist());
 //            startActivityForResult(intent, PLACE_ORDER_RETURN_REQUEST_CODE);
-            startActivity(intent);
-        }
+        startActivity(intent);
     }
 
     private void showSortByDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(booklist.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(booklist_admin.this);
         builder.setTitle("Sort By")
 
-            .setItems(R.array.sortByArray, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                final String sortBy;
-                if (which == 0)
-                    sortBy = "name";
-                else
-                    sortBy = "writer";
-                Log.i("booklist_retrieve", "booklist: sortBy = " + sortBy);
+                .setItems(R.array.sortByArray, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String sortBy;
+                        if (which == 0)
+                            sortBy = "name";
+                        else
+                            sortBy = "writer";
+                        Log.i("booklist_retrieve", "booklist_admin: sortBy = " + sortBy);
 
-                final Dialog waitDialog = new Dialog(booklist.this);
-                waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                waitDialog.setCancelable(false);
-                waitDialog.setContentView(R.layout.dialog_please_wait);
-                waitDialog.show();
+                        final Dialog waitDialog = new Dialog(booklist_admin.this);
+                        waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        waitDialog.setCancelable(false);
+                        waitDialog.setContentView(R.layout.dialog_please_wait);
+                        waitDialog.show();
 
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                            CONSTANTS.freshRetrieveFromDatabase(booklist.this, booklistAdapterRV, sortBy, waitDialog, recyclerView, endlessScrollEventListener);
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                CONSTANTS.freshRetrieveFromDatabase(booklist_admin.this, booklistAdapterRV_admin, sortBy, waitDialog, recyclerView, endlessScrollEventListener);
 
+                            }
+                        });
+
+                        thread.start();
                     }
                 });
-
-                thread.start();
-                }
-            });
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

@@ -62,8 +62,12 @@ public class Request {
                     @Override
                     public void handleFault(BackendlessFault fault) {
                         dialog.dismiss();
-                        if(fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless))){
-                            CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
+                        String title;
+                        String message;
+                        if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
+                            title = "Connection Failed!";
+                            message = "Please Check Your Internet Connection";
+                            CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
                         }
                         else
                             Toast.makeText((Activity)context, "Request Submission Failed!", Toast.LENGTH_SHORT).show();
@@ -77,8 +81,12 @@ public class Request {
             public void handleFault(BackendlessFault fault) {
 
                 dialog.dismiss();
-                if(fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless))){
-                    CONSTANTS.showConnectionFailedDialogWithoutRestart((Activity)context);
+                String title;
+                String message;
+                if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
+                    title = "Connection Failed!";
+                    message = "Please Check Your Internet Connection";
+                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
                 }
                 else{
                     Toast.makeText((Activity)context, "Request Submission Failed!", Toast.LENGTH_SHORT).show();

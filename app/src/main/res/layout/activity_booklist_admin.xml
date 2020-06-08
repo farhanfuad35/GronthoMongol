@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".booklist_admin">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar_BookList_admin"
+            layout="@layout/toolbar" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBookList_admin_RequestBook"
+                app:cornerRadius="90dp"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:textColor="@color/black"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                app:rippleColor="@color/black"
+                android:text="Request Book"
+                android:textSize="13sp"
+                app:backgroundTint="@android:color/transparent"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:strokeWidth="2dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBookList_admin_Profile"
+                app:cornerRadius="90dp"
+                app:rippleColor="@color/black"
+                android:text="Profile"
+                android:visibility="gone"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:textColor="@color/black"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                app:backgroundTint="@android:color/transparent"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:strokeWidth="2dp"
+                android:textSize="13sp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnBookList_admin_Orders"
+                app:cornerRadius="90dp"
+                app:rippleColor="@color/black"
+                android:backgroundTint="@color/colorPrimaryLight"
+                android:textColor="@color/black"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
+                android:text="Orders"
+                android:textSize="13sp"
+                app:backgroundTint="@android:color/transparent"
+                app:strokeColor="@color/colorPrimaryDark"
+                app:strokeWidth="2dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBookList_admin_BookList"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_weight="10"
+                android:layout_height="0dp"/>
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:id="@+id/pbBooklist_progressBar"
+                android:layout_gravity="center"
+                android:indeterminateTint="@color/colorPrimary"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

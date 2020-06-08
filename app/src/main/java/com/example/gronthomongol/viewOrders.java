@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -193,8 +194,12 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
                     @Override
                     public void handleFault(BackendlessFault fault) {
                         dialog.dismiss();
-                        if(fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless))){
-                            CONSTANTS.showConnectionFailedDialogWithoutRestart(viewOrders.this);
+                        String title;
+                        String message;
+                        if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
+                            title = "Connection Failed!";
+                            message = "Please Check Your Internet Connection";
+                            CONSTANTS.showErrorDialog(viewOrders.this, title, message, "Okay");
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Error in communication. Please try again later", Toast.LENGTH_LONG).show();

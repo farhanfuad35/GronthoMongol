@@ -12,7 +12,11 @@
         android:roundIcon="@drawable/pasheachi_log_removebg"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".forgotPassword"></activity>
+        <activity android:name=".viewOrders_admin"></activity>
+        <activity android:name=".requestList" />
+        <activity android:name=".booklist_admin" />
+        <activity android:name=".bookDetails" />
+        <activity android:name=".forgotPassword" />
         <activity android:name=".viewOrders" />
         <activity android:name=".orderDetails" />
         <activity android:name=".SplashScreen" />
@@ -28,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name="com.backendless.push.BackendlessFCMService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
