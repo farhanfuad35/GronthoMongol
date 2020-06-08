@@ -65,7 +65,7 @@ public class BooklistAdapterRV_admin extends RecyclerView.Adapter<BooklistAdapte
         // - replace the contents of the view with that element
         holder.tvBookName.setText(books.get(position).getName() + " | " + books.get(position).getLanguage());
         holder.tvWriterName.setText(books.get(position).getWriter());
-        holder.tvPrice.setText(books.get(position).getPrice() + "/= | " + books.get(position).getQuantity());
+        holder.tvPrice.setText(books.get(position).getPrice() + "/=");
 
     }
 

@@ -93,7 +93,7 @@ public class register extends AppCompatActivity {
                             else if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
                                 title = "Connection Failed!";
                                 message = "Please Check Your Internet Connection";
-                                CONSTANTS.showErrorDialog(register.this, title, message, "Okay");
+                                CONSTANTS.showErrorDialog(register.this, title, message, "Okay", null, 0);
                             }
                             else{
                                 Toast.makeText(getApplicationContext(), "SignUp Failed. " + fault.getMessage() , Toast.LENGTH_SHORT).show();

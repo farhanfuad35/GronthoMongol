@@ -43,6 +43,8 @@ public class CONSTANTS {
     private static int ID_VIEW_ORDERS = 37;
     private static int ID_VIEW_ORDERS_ADMIN = 43;
     private static int ID_PLACE_ORDER_ADD_MORE_BOOK = 23;
+    private static int ID_BOOKLISTADMIN_BOOKDETAILS = 47;
+    private static int ID_DELETE_BOOK_FROM_BOOK_DETAILS = 53;
     private static BackendlessUser currentUser;
     public static List<Book> bookListCached;
     public static List<Order> myOrdersCached;
@@ -86,6 +88,10 @@ public class CONSTANTS {
         CONSTANTS.currentUser = currentUser;
     }
 
+    public static int getIdBooklistadminBookdetails() {
+        return ID_BOOKLISTADMIN_BOOKDETAILS;
+    }
+
     public static int getMYORDEROFFSET() {
         return MYORDEROFFSET;
     }
@@ -108,6 +114,10 @@ public class CONSTANTS {
 
     public static int getIdBooklistAdmin() {
         return ID_BOOKLIST_ADMIN;
+    }
+
+    public static int getIdDeleteBookFromBookDetails() {
+        return ID_DELETE_BOOK_FROM_BOOK_DETAILS;
     }
 
     public static int getIdViewOrdersAdmin() {
@@ -260,7 +270,7 @@ public class CONSTANTS {
                         showErrorDialog_splashScreen((Activity)context, title, message, "Retry", "Quit");
                     }
                     else{
-                        showErrorDialog((Activity)context, title, message, "Okay");
+                        showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                     }
 
                     Log.i("errorCode", "handleFault: error Code: " + fault.getCode() + "\t Error Message = " + fault.getMessage());
@@ -273,7 +283,7 @@ public class CONSTANTS {
                         showErrorDialog_splashScreen((Activity)context, title, message, "Retry", "Quit");
                     }
                     else{
-                        showErrorDialog((Activity)context, title, message, "Okay");
+                        showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                     }
                 }
                 Log.i("fault", fault.getMessage());
@@ -337,7 +347,7 @@ public class CONSTANTS {
                         showErrorDialog_splashScreen((Activity)context, title, message, "Retry", "Quit");
                     }
                     else{
-                        showErrorDialog((Activity)context, title, message, "Okay");
+                        showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                     }
 
                     Log.i("errorCode", "handleFault: error Code: " + fault.getCode() + "\t Error Message = " + fault.getMessage());
@@ -350,7 +360,7 @@ public class CONSTANTS {
                         showErrorDialog_splashScreen((Activity)context, title, message, "Retry", "Quit");
                     }
                     else{
-                        showErrorDialog((Activity)context, title, message, "Okay");
+                        showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                     }
                 }
                 Log.i("fault", fault.getMessage());
@@ -565,7 +575,7 @@ public class CONSTANTS {
         alertDialog.show();
     }
 
-    public static void showErrorDialog(final Context context, String title, String message, String positiveButton){
+    public static void showErrorDialog(final Context context, String title, String message, String positiveButton, String negativeButton, final int fromOperationId){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(((Activity)context));
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message);
@@ -577,6 +587,14 @@ public class CONSTANTS {
                         arg0.dismiss();
                     }
                 });
+        if(negativeButton != null){
+            alertDialogBuilder.setNegativeButton(negativeButton, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();

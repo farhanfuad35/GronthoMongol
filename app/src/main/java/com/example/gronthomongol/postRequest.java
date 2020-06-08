@@ -89,7 +89,7 @@ public class postRequest extends AppCompatActivity implements AdapterView.OnItem
 
     private boolean isEmpty(EditText editText){
         if(editText.getText().toString().isEmpty()){
-            editText.setError("Please enter a subject");
+            editText.setError("This field cannot be empty!");
             return true;
         }
         return false;
@@ -103,7 +103,6 @@ public class postRequest extends AppCompatActivity implements AdapterView.OnItem
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-
     }
 
     private void getValues(){

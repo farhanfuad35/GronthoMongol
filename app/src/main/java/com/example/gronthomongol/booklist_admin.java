@@ -1,6 +1,7 @@
 package com.example.gronthomongol;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -215,12 +216,12 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
     }
 
     private void initializeGUIElements() {
-        btnProfile = findViewById(R.id.btnBookList_Profile);
-        btnRequest = findViewById(R.id.btnBookList_RequestBook);
-        btnOrders = findViewById(R.id.btnBookList_Orders);
+        btnProfile = findViewById(R.id.btnBookList_admin_Profile);
+        btnRequest = findViewById(R.id.btnBookList_admin_RequestBook);
+        btnOrders = findViewById(R.id.btnBookList_admin_Orders);
 //      listView = findViewById(R.id.lvBookList_BookList);
-        recyclerView = findViewById(R.id.rvBookList_BookList);
-        progressBar = findViewById(R.id.pbBooklist_progressBar);
+        recyclerView = findViewById(R.id.rvBookList_admin_BookList);
+        progressBar = findViewById(R.id.pbBooklist_admin_progressBar);
     }
 
     private void initializeRecyclerView() {
@@ -275,7 +276,17 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
         intent.putExtra("selectedBook", CONSTANTS.bookListCached.get(position));
 //            intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdBooklist());
 //            startActivityForResult(intent, PLACE_ORDER_RETURN_REQUEST_CODE);
-        startActivity(intent);
+        startActivityForResult(intent, CONSTANTS.getIdBooklistadminBookdetails());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == CONSTANTS.getIdBooklistadminBookdetails()){
+            if(resultCode == RESULT_OK){
+                booklistAdapterRV_admin.notifyDataSetChanged();
+            }
+        }
     }
 
     private void showSortByDialog() {
