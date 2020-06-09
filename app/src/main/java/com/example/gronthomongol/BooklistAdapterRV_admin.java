@@ -23,6 +23,7 @@ public class BooklistAdapterRV_admin extends RecyclerView.Adapter<BooklistAdapte
         public TextView tvBookName;
         public TextView tvWriterName;
         public TextView tvPrice;
+        public TextView tvNumberOfBooks;
         OnBookClickListener onBookClickListener;
         public MyViewHolder(View v, OnBookClickListener onBookClickListener) {
             super(v);
@@ -30,6 +31,7 @@ public class BooklistAdapterRV_admin extends RecyclerView.Adapter<BooklistAdapte
             tvBookName = v.findViewById(R.id.tvRow_BookName);
             tvWriterName = v.findViewById(R.id.tvRow_Writer);
             tvPrice = v.findViewById(R.id.tvBookList_price);
+            tvNumberOfBooks = v.findViewById(R.id.tvBookList_admin_numberOfBooks);
             v.setOnClickListener(this);
         }
 
@@ -52,7 +54,7 @@ public class BooklistAdapterRV_admin extends RecyclerView.Adapter<BooklistAdapte
                                                                    int viewType) {
         // create a new view
         View view =  LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row_book_list_layout, parent, false);
+                .inflate(R.layout.row_book_list_admin_layout, parent, false);
         MyViewHolder vh = new MyViewHolder(view, monBookClickListener);
         return vh;
     }
@@ -66,6 +68,7 @@ public class BooklistAdapterRV_admin extends RecyclerView.Adapter<BooklistAdapte
         holder.tvBookName.setText(books.get(position).getName() + " | " + books.get(position).getLanguage());
         holder.tvWriterName.setText(books.get(position).getWriter());
         holder.tvPrice.setText(books.get(position).getPrice() + "/=");
+        holder.tvNumberOfBooks.setText(Integer.toString(books.get(position).getQuantity()));
 
     }
 

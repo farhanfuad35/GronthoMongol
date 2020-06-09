@@ -199,7 +199,7 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
                         if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
                             title = "Connection Failed!";
                             message = "Please Check Your Internet Connection";
-                            CONSTANTS.showErrorDialog(viewOrders.this, title, message, "Okay");
+                            CONSTANTS.showErrorDialog(viewOrders.this, title, message, "Okay", null, 0);
                         }
                         else {
                             Toast.makeText(getApplicationContext(), "Error in communication. Please try again later", Toast.LENGTH_LONG).show();

@@ -9,5 +9,6 @@
     <color name="green">#157015</color>
     <color name="yellow">#918200</color>
     <color name="red">#800A0A</color>
+    <color name="colorOnSecondary">#ffffff</color>
 
 </resources>

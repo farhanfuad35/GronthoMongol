@@ -38,6 +38,10 @@ public class Book implements Serializable {
         return this.objectId.equals(thatBook.objectId);
     }
 
+    public Book get(){
+        return this;
+    }
+
     public String getObjectId() {
         return objectId;
     }
@@ -82,14 +86,20 @@ public class Book implements Serializable {
         this.quantity = quantity;
     }
 
-    public void deleteBook(final Context context, final Dialog dialog){
+    public final void deleteBook(final Context context, final Dialog dialog){
+        final Book bookToBeDeleted = this;
         Backendless.Data.of(Book.class).remove(this, new AsyncCallback<Long>() {
             @Override
             public void handleResponse(Long response) {
                 // Delete it from the current list
+                Log.i("book_deletion", "handleResponse: list size before deletion: " + CONSTANTS.getBookListCached().size());
+                Log.i("book_deletion", "handleResponse: received book to be deleted oId: " + bookToBeDeleted.getObjectId());
                 for(int i=0; i < CONSTANTS.getBookListCached().size(); i++){
-                    if(CONSTANTS.getBookListCached().get(i).equals(this)){
+                    Log.i("book_deletion", "traversed book " + i + ": oId: "  + CONSTANTS.getBookListCached().get(i).getObjectId());
+                    if(CONSTANTS.getBookListCached().get(i).equals(bookToBeDeleted)){
+
                         CONSTANTS.getBookListCached().remove(i);
+                        Log.i("book_deletion", "handleResponse: found a matched book. current size: " + CONSTANTS.getBookListCached().size());
                         break;
                     }
                 }
@@ -119,22 +129,32 @@ public class Book implements Serializable {
         });
     }
 
-    public void saveBook(final Context context, final Dialog dialog){
+    public void saveBook(final Context context, final Dialog dialog, final boolean savingBook){
+        final Book bookToBeSaved = this;
         Backendless.Data.of(Book.class).save(this, new AsyncCallback<Book>() {
             @Override
             public void handleResponse(Book response) {
+                // Replace the book only if it is being UPDATED, not CREATED
+                // Created book is added through a fresh retrieve because of different active sort mode
                 for(int i=0; i < CONSTANTS.getBookListCached().size(); i++){
-                    if(CONSTANTS.getBookListCached().get(i).equals(this)){
+                    if(CONSTANTS.getBookListCached().get(i).equals(bookToBeSaved)){
                         CONSTANTS.getBookListCached().remove(i);
                         CONSTANTS.getBookListCached().add(i, response);
                         break;
                     }
-                    dialog.dismiss();
-                    Toast.makeText(((Activity)context), "Book updated successfully!", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+                if(!savingBook) {
+                    Toast.makeText(((Activity) context), "Book updated successfully!", Toast.LENGTH_SHORT).show();
                     Log.i("book_update", "handleResponse: Book has been successfully updated");
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("info", "book_updated");
-                    ((Activity)context).setResult(Activity.RESULT_OK, returnIntent);
+                    ((Activity) context).setResult(Activity.RESULT_OK, returnIntent);
+                    ((Activity) context).finish();
+                }
+                else{
+                    Toast.makeText(((Activity)context), "Book saved in the database successfully", Toast.LENGTH_SHORT).show();
+                    Log.i("book_save", "handleResponse: Book saved in the database");
                     ((Activity)context).finish();
                 }
             }

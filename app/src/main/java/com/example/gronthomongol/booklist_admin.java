@@ -30,6 +30,7 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.rt.data.EventHandler;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +42,7 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
     private Button btnProfile;
     private Button btnRequest;
     private Button btnOrders;
+    private FloatingActionButton fabAddNewBook;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager rvLayoutManager;
@@ -64,6 +66,7 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
         initializeGUIElements();
         initializeRecyclerView();   // Check this for endless scroll data retrieval
         pref = getSharedPreferences("preferences", 0); // 0 - for private mode
+        initiateRealTimeDatabaseListeners();
 
         //Toast.makeText(getApplicationContext(), "DEBUG MODE", Toast.LENGTH_SHORT).show();
 
@@ -88,53 +91,22 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
             }
         });
 
-        initiateRealTimeDatabaseListeners();
+        fabAddNewBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(booklist_admin.this, addBook.class);
+                startActivity(intent);
+            }
+        });
+
+
 
 
     }
 
 
     public void initiateRealTimeDatabaseListeners() {
-        // Update Listener
-        bookEventHandler.addUpdateListener(new AsyncCallback<Book>() {
-            @Override
-            public void handleResponse(Book updatedBook) {
-                for(int i=0; i<CONSTANTS.bookListCached.size(); i++){
-                    if(CONSTANTS.bookListCached.get(i).equals(updatedBook)){
-                        CONSTANTS.bookListCached.remove(i);
-                        CONSTANTS.bookListCached.add(i, updatedBook);
-                        booklistAdapterRV_admin.notifyDataSetChanged();
-
-                    }
-                }
-                Log.i(TAG, "an Order object has been updated. Object ID - " + updatedBook.getObjectId());
-
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.e(TAG, "Server reported an error while Updating book listener " + fault.getDetail());
-            }
-        });
-
-        // Delete Listener
-
-        bookEventHandler.addDeleteListener(new AsyncCallback<Book>() {
-            @Override
-            public void handleResponse(Book deletedBook) {
-                Log.i(TAG, "an Order object has been deleted. Object ID - " + deletedBook.getObjectId());
-                if (CONSTANTS.bookListCached.contains(deletedBook)) {
-                    CONSTANTS.bookListCached.remove(deletedBook);
-                    booklistAdapterRV_admin.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.e(TAG, "Server reported an error " + fault.getDetail());
-            }
-        });
-
+        // Create Listener
         bookEventHandler.addCreateListener(new AsyncCallback<Book>() {
             @Override
             public void handleResponse(Book createdBook) {
@@ -219,6 +191,7 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
         btnProfile = findViewById(R.id.btnBookList_admin_Profile);
         btnRequest = findViewById(R.id.btnBookList_admin_RequestBook);
         btnOrders = findViewById(R.id.btnBookList_admin_Orders);
+        fabAddNewBook = findViewById(R.id.fabBookList_admin_addNewBook);
 //      listView = findViewById(R.id.lvBookList_BookList);
         recyclerView = findViewById(R.id.rvBookList_admin_BookList);
         progressBar = findViewById(R.id.pbBooklist_admin_progressBar);
@@ -282,9 +255,12 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "onActivityResult: ");
         if(requestCode == CONSTANTS.getIdBooklistadminBookdetails()){
+            Log.i(TAG, "onActivityResult: request code matched");
             if(resultCode == RESULT_OK){
                 booklistAdapterRV_admin.notifyDataSetChanged();
+                Log.i(TAG, "onActivityResult: Data set changed notified");
             }
         }
     }

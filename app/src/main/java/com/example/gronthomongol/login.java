@@ -174,7 +174,7 @@ public class login extends AppCompatActivity {
                 else if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
                     title = "Connection Failed!";
                     message = "Please Check Your Internet Connection";
-                    CONSTANTS.showErrorDialog(login.this, title, message, "Okay");
+                    CONSTANTS.showErrorDialog(login.this, title, message, "Okay", null, 0);
                 }
 
                 else {
@@ -211,7 +211,7 @@ public class login extends AppCompatActivity {
                 if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
                     title = "Connection Failed!";
                     message = "Please Check Your Internet Connection";
-                    CONSTANTS.showErrorDialog(login.this, title, message, "Okay");
+                    CONSTANTS.showErrorDialog(login.this, title, message, "Okay", null, 0);
                 }
                 else{
                 Toast.makeText( login.this, "Error registering " + fault.getMessage(),

@@ -304,7 +304,7 @@ public class Order implements Serializable {
                                                     if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                                                         title = "Connection Failed!";
                                                         message = "Please Check Your Internet Connection";
-                                                        CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
+                                                        CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                                                     }
                                                     //Toast.makeText((Activity)context, "Remainig Book: " + fault.getCode() + " : " + fault.getMessage(), Toast.LENGTH_LONG).show();
                                                     Log.i("backendless_order", "handleFault: " + fault.getMessage());
@@ -332,7 +332,7 @@ public class Order implements Serializable {
                                         if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                                             title = "Connection Failed!";
                                             message = "Please Check Your Internet Connection";
-                                            CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
+                                            CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                                         }
 
                                         Log.i("backendless_order", "handleFault: " + fault.getMessage());
@@ -352,7 +352,7 @@ public class Order implements Serializable {
                                 if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                                     title = "Connection Failed!";
                                     message = "Please Check Your Internet Connection";
-                                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
+                                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                                 }
                                 Log.i("backendless_order", "handleResponse: " + fault.getMessage());
                             }
@@ -369,7 +369,7 @@ public class Order implements Serializable {
                 if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                     title = "Connection Failed!";
                     message = "Please Check Your Internet Connection";
-                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
+                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                 }
                 Log.i("backendless_order", "handleFault: " + fault.getMessage());
             }
@@ -406,7 +406,7 @@ public class Order implements Serializable {
                 if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                     title = "Connection Failed!";
                     message = "Please Check Your Internet Connection";
-                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
+                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                 }
                 else{
                     Toast.makeText((Activity)context, "Error occured while saving the data", Toast.LENGTH_SHORT).show();

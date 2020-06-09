@@ -12,7 +12,8 @@
         android:roundIcon="@drawable/pasheachi_log_removebg"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".viewOrders_admin"></activity>
+        <activity android:name=".addBook"></activity>
+        <activity android:name=".viewOrders_admin" />
         <activity android:name=".requestList" />
         <activity android:name=".booklist_admin" />
         <activity android:name=".bookDetails" />

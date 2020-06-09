@@ -67,7 +67,7 @@ public class Request {
                         if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                             title = "Connection Failed!";
                             message = "Please Check Your Internet Connection";
-                            CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
+                            CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                         }
                         else
                             Toast.makeText((Activity)context, "Request Submission Failed!", Toast.LENGTH_SHORT).show();
@@ -86,7 +86,7 @@ public class Request {
                 if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                     title = "Connection Failed!";
                     message = "Please Check Your Internet Connection";
-                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
+                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                 }
                 else{
                     Toast.makeText((Activity)context, "Request Submission Failed!", Toast.LENGTH_SHORT).show();

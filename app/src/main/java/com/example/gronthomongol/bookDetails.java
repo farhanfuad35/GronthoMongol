@@ -31,6 +31,7 @@ public class bookDetails extends AppCompatActivity implements AdapterView.OnItem
 
     private String name;
     private String writer;
+    private String priceStr;
     private int price;
     private int quantity;
     private String language;
@@ -44,24 +45,25 @@ public class bookDetails extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_book_details);
 
         setTitle("Book Details");
-        androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar_PlaceOrder);
+        androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar_BookDetails);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         selectedBook = (Book) getIntent().getSerializableExtra("selectedBook");
+        Log.i("book_deletion", "SelectedBook oId: " + selectedBook.getObjectId());
         unsavedBook = selectedBook;
         initializeGUIElements();
         initializeSpinner();
         setGUIElements();
         spLanguage.setOnItemSelectedListener(bookDetails.this);
-        npQuantity.setMaxValue(0);
+        npQuantity.setMinValue(0);
         npQuantity.setMaxValue(300);
         npQuantity.setValue(selectedBook.getQuantity());
         npQuantity.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                unsavedBook.setQuantity(picker.getValue());
+                quantity = picker.getValue();
             }
         });
 
@@ -116,11 +118,13 @@ public class bookDetails extends AppCompatActivity implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
                 getValues();
-                if(!isEmpty(etBookName) && !isEmpty(etPrice) && !isEmpty(etWriterName)){
+                if(!isEmpty(etBookName) && isPriceOkay(priceStr) && !isEmpty(etWriterName)){
                     // TODO UPDATE THE BOOK
                     unsavedBook.setName(name);
                     unsavedBook.setWriter(writer);
                     unsavedBook.setPrice(price);
+                    unsavedBook.setQuantity(quantity);
+                    unsavedBook.setLanguage(language);
 
                     final Dialog dialog = new Dialog(bookDetails.this);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -131,7 +135,7 @@ public class bookDetails extends AppCompatActivity implements AdapterView.OnItem
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            unsavedBook.saveBook(bookDetails.this, dialog);
+                            unsavedBook.saveBook(bookDetails.this, dialog, false);
                         }
                     });
 
@@ -148,12 +152,14 @@ public class bookDetails extends AppCompatActivity implements AdapterView.OnItem
         etPrice = findViewById(R.id.etBookDetails_Price);
         spLanguage = findViewById(R.id.spnRequest_language);
         npQuantity = findViewById(R.id.npBookDetails_NumberOfBooks);
+        btnUpdate = findViewById(R.id.btnBookDetails_update);
+        btnDelete = findViewById(R.id.btnBookDetails_delete);
     }
 
     private void getValues(){
         name = etBookName.getText().toString().trim();
         writer = etWriterName.getText().toString().trim();
-        price = Integer.getInteger( etPrice.getText().toString() );
+        priceStr = etPrice.getText().toString().trim();
     }
 
     private boolean isEmpty(EditText editText){
@@ -162,6 +168,20 @@ public class bookDetails extends AppCompatActivity implements AdapterView.OnItem
             return true;
         }
         return false;
+    }
+
+    private boolean isPriceOkay(String priceStr){
+        if(priceStr.isEmpty()){
+            etPrice.setError("Please enter the price of the book");
+            return false;
+        }
+        try {
+            price = Integer.parseInt(priceStr);
+            return true;
+        } catch (NumberFormatException nfe) {
+            etPrice.setError("Please enter a valid price");
+            return false;
+        }
     }
 
     private void initializeSpinner(){
@@ -190,7 +210,7 @@ public class bookDetails extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        unsavedBook.setLanguage(parent.getItemAtPosition(position).toString());
+        language = parent.getItemAtPosition(position).toString();
     }
 
     @Override

@@ -12,10 +12,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical" >
                 <TextView
+                    android:id="@+id/tvBookList_admin_numberOfBooks"
                     android:text="53"
                     android:textSize="30sp"
                     android:textColor="@color/black"
                     android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

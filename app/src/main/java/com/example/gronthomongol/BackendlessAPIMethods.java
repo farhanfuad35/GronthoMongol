@@ -50,7 +50,7 @@ public class BackendlessAPIMethods {
                         if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                             title = "Connection Failed!";
                             message = "Please Check Your Internet Connection";
-                            CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
+                            CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                         }
                         else {
                             Toast.makeText(context, "Sorry cannot logout right now", Toast.LENGTH_SHORT).show();
@@ -70,7 +70,7 @@ public class BackendlessAPIMethods {
                 if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                     title = "Connection Failed!";
                     message = "Please Check Your Internet Connection";
-                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay");
+                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                 }
                 else {
                     Toast.makeText(context, "Sorry couldn't logout right now. Please check your connection", Toast.LENGTH_SHORT).show();
