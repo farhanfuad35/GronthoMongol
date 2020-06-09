@@ -18,8 +18,16 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
@@ -29,11 +37,16 @@ import com.backendless.messaging.PublishOptions;
 import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CONSTANTS {
+    public static double CURRENT_APP_VERSION = 1.1;
+
     private static int MAX_NO_OF_BOOKS_PER_USER_PER_ORDER = 10;
     private static int MAX_NO_OF_ORDERS_PER_USER_PER_BOOK = 2;
     private static int MIN_NO_OF_ORDERS_PER_USER_PER_BOOK = 1;
@@ -47,6 +60,17 @@ public class CONSTANTS {
     private static int ID_PLACE_ORDER_ADD_MORE_BOOK = 23;
     private static int ID_BOOKLISTADMIN_BOOKDETAILS = 47;
     private static int ID_DELETE_BOOK_FROM_BOOK_DETAILS = 53;
+
+    public static boolean sendNotificationToAdmins;
+    public static boolean operational;
+    public static boolean canOrder;
+    public static String cannot_order_message;
+    public static String non_operational_message;
+    public static double min_version;
+    public static int maximum_order_per_day;
+
+    public static int CURRENT_NUMBER_OF_ORDERS = 0;
+
     private static boolean showingDefaultBooklist = true;      // Not the search query list
     private static BackendlessUser currentUser;
     public static List<Book> bookListCached;
@@ -202,6 +226,73 @@ public class CONSTANTS {
         CONSTANTS.OFFSET = OFFSET;
     }
 
+    public static void getConfigFile(final Context context, final int callingActivityId){
+        String url = String.format("https://backendlessappcontent.com/%s/%s/files/config.json", CREDENTIALS.getApplicationId(),
+                CREDENTIALS.getRestApiKey());
+
+        RequestQueue requestQueue = Volley.newRequestQueue((Activity)context);
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject config) {
+                        try {
+                            min_version = (double) config.get("min_version");
+                            sendNotificationToAdmins = (boolean) config.get("sendNotificationToAdmins");
+                            operational = (boolean) config.get("operational");
+                            non_operational_message = (String) config.get("non_operational_message");
+                            canOrder = (boolean) config.get("canOrder");
+                            cannot_order_message = (String) config.get("cannot_order_message");
+                            maximum_order_per_day = (int) config.get("maximum_order_per_day");
+
+                            Log.i("file", min_version + "\t" + sendNotificationToAdmins + "\t" + operational + "\t" +
+                                    non_operational_message + "\t" + canOrder + "\t" + cannot_order_message);
+
+                            if(CURRENT_APP_VERSION < min_version){
+                                showErrorDialog((Activity)context, "Update Required", "Your app is outdated. Please update to continue", "okay",
+                                        null, 19);
+                            }
+
+                            else if(!operational){
+                                showErrorDialog((Activity)context, "Notice", non_operational_message, "Okay", null, 19);
+                            }
+                            else{
+                                checkLoginStatus(context, callingActivityId);
+                            }
+
+
+
+                        } catch (JSONException e) {
+                            showErrorDialog((Activity)context, "Error Occured", "Couldn't Load App Config. App must quit", "Okay", null,
+                                    19);
+                            Log.i("file", "onErrorResponse: Exception occurred reading the file" + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+                        if(error.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageVolley))){
+                            String title = "Connection Failed!";
+                            String message = "Please Check Your Internet Connection";
+                            showErrorDialog_splashScreen((Activity)context, title, message, "Retry", "Quit");
+                            Log.i("errorCode", "handleFault: Error Message = " + error.getMessage());
+                        }
+                        else{
+                            showErrorDialog((Activity)context, "Error Occurred", "Something went wrong", "Quit", null, 19);
+                        }
+                        Log.i("file", "onErrorResponse: Error occurred getting the file " + error.getMessage());
+                    }
+                });
+
+            requestQueue.add(jsonObjectRequest);
+
+    }
+
     public static void checkLoginStatus(final Context context, final int callingActivityId){
         // #1
         // REQUIREMENT: ASSUMED COMING FROM THE SPLASH SCREEN ONLY
@@ -214,6 +305,25 @@ public class CONSTANTS {
         Backendless.UserService.findById(currentUserId, new AsyncCallback<BackendlessUser>() {
             @Override
             public void handleResponse(BackendlessUser response) {
+                // Get current number of orders from backendless
+                // TODO COUNTER READY TO DEPLOY
+                AsyncCallback<Integer> callback = new AsyncCallback<Integer>()
+                {
+                    @Override
+                    public void handleResponse( Integer value )
+                    {
+                        CONSTANTS.CURRENT_NUMBER_OF_ORDERS = value;
+                    }
+
+                    @Override
+                    public void handleFault( BackendlessFault backendlessFault )
+                    {
+                        CONSTANTS.CURRENT_NUMBER_OF_ORDERS = 0;
+                    }
+                };
+
+                Backendless.Counters.get( "current_number_of_orders", callback );
+
                 // Note: Both of the below functions can be used to retrieve the current logged in user
                 // But both of these functions might have been used somewhere in this project. So recommended that both be here.
                 Backendless.UserService.setCurrentUser( response );
@@ -648,21 +758,23 @@ public class CONSTANTS {
     }
 
     public static void sendNotificationToTheAdmins(String message, String messageTitle) {
-        PublishOptions publishOptions = new PublishOptions();
-        publishOptions.putHeader( "android-ticker-text", "You just got a private push notification!" );
-        publishOptions.putHeader( "android-content-title", messageTitle );
-        publishOptions.putHeader( "android-content-text", "Push Notifications Text" );
-        Backendless.Messaging.publish("admin", message, publishOptions, new AsyncCallback<MessageStatus>() {
-            @Override
-            public void handleResponse(MessageStatus response) {
-                Log.i("notification", "handleResponse: Notification sent to the admins");
-            }
+        if(CONSTANTS.sendNotificationToAdmins){
+            PublishOptions publishOptions = new PublishOptions();
+            publishOptions.putHeader("android-ticker-text", "You just got a private push notification!");
+            publishOptions.putHeader("android-content-title", messageTitle);
+            publishOptions.putHeader("android-content-text", "Push Notifications Text");
+            Backendless.Messaging.publish("admin", message, publishOptions, new AsyncCallback<MessageStatus>() {
+                @Override
+                public void handleResponse(MessageStatus response) {
+                    Log.i("notification", "handleResponse: Notification sent to the admins");
+                }
 
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.i("notification", "handleFault: Notification sending to the admins failed\t" + fault.getMessage());
-            }
-        });
+                @Override
+                public void handleFault(BackendlessFault fault) {
+                    Log.i("notification", "handleFault: Notification sending to the admins failed\t" + fault.getMessage());
+                }
+            });
+        }
     }
 
     public static void showErrorDialog_splashScreen(final Context context, String title, String message, String positiveButton, String negativeButton)
@@ -703,6 +815,9 @@ public class CONSTANTS {
                     public void onClick(DialogInterface arg0, int arg1) {
                         //Toast.makeText(Splash_Screen.this,"You clicked yes button",Toast.LENGTH_LONG).show();
                         arg0.dismiss();
+                        if(fromOperationId == 19) {   // Close current activity
+                            ((Activity)context).finish();
+                        }
                     }
                 });
         if(negativeButton != null){

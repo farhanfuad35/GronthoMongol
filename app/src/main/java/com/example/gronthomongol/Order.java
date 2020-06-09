@@ -259,6 +259,25 @@ public class Order implements Serializable {
                                     public void handleResponse(Integer response) {
                                         Log.i("backendless_order", "handleResponse: User Relation Set Successfully. All done nicely");
 
+                                        // Increment the daily_number_of_orders atomic counter
+                                        Backendless.Counters.incrementAndGet("current_number_of_orders", new AsyncCallback<Integer>() {
+                                            @Override
+                                            public void handleResponse( Integer value )
+                                            {
+                                                CONSTANTS.CURRENT_NUMBER_OF_ORDERS = value;
+                                                Log.i( "atomicCounter", "[ASYNC] previous counter value is - " + value );
+                                            }
+
+                                            @Override
+                                            public void handleFault( BackendlessFault backendlessFault )
+                                            {
+                                                Log.e( "MYAPP", "Error - " + backendlessFault.getMessage() );
+                                            }
+                                        });
+
+
+
+
                                         CONSTANTS.myOrdersCached.add(0,savedOrder);     // New Order always added at the beginning. STRICT last first sort must always be true
 
                                         // Update the remaining books number in the database

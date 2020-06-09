@@ -394,13 +394,21 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
-        } else {
+        } else if (CONSTANTS.canOrder && CONSTANTS.CURRENT_NUMBER_OF_ORDERS < CONSTANTS.maximum_order_per_day) {
             Intent intent = new Intent(this, placeOrder.class);
             intent.putExtra("selectedBook", CONSTANTS.bookListCached.get(position));
 //            intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdBooklist());
 //            startActivityForResult(intent, PLACE_ORDER_RETURN_REQUEST_CODE);
             Log.i(TAG, "onBookClick: Book: " + CONSTANTS.bookListCached.get(position));
             startActivityForResult(intent, PLACE_ORDER_RETURN_REQUEST_CODE);
+        }
+
+        else {
+            // Meaning can't order
+            if(!CONSTANTS.canOrder)
+                CONSTANTS.showErrorDialog(booklist.this, "Can't Place Order", CONSTANTS.cannot_order_message, "Okay", null, 0);
+            else
+                CONSTANTS.showErrorDialog(booklist.this, "Can't Place Order", "Daily order limit exceeded. Please try again tomorrow", "Okay", null, 0);
         }
     }
 

@@ -14,8 +14,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Backendless.setUrl(CREDENTIALS.SERVER_URL);
-        Backendless.initApp(getApplicationContext(), CREDENTIALS.APPLICATION_ID, CREDENTIALS.API_KEY);
+        Backendless.setUrl(CREDENTIALS.getServerUrl());
+        Backendless.initApp(getApplicationContext(), CREDENTIALS.getApplicationId(), CREDENTIALS.getApiKey());
 
         Intent intent = new Intent(this, SplashScreen.class);
         startActivity(intent);
