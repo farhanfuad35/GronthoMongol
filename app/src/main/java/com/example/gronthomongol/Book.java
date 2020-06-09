@@ -12,6 +12,7 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Book implements Serializable {
     private String objectId;
@@ -94,14 +95,11 @@ public class Book implements Serializable {
                 // Delete it from the current list
                 Log.i("book_deletion", "handleResponse: list size before deletion: " + CONSTANTS.getBookListCached().size());
                 Log.i("book_deletion", "handleResponse: received book to be deleted oId: " + bookToBeDeleted.getObjectId());
-                for(int i=0; i < CONSTANTS.getBookListCached().size(); i++){
-                    Log.i("book_deletion", "traversed book " + i + ": oId: "  + CONSTANTS.getBookListCached().get(i).getObjectId());
-                    if(CONSTANTS.getBookListCached().get(i).equals(bookToBeDeleted)){
-
-                        CONSTANTS.getBookListCached().remove(i);
-                        Log.i("book_deletion", "handleResponse: found a matched book. current size: " + CONSTANTS.getBookListCached().size());
-                        break;
-                    }
+                if(CONSTANTS.isShowingDefaultBooklist()) {
+                    deleteIfFound(CONSTANTS.bookListCached, bookToBeDeleted);
+                }
+                else{
+                    deleteIfFound(CONSTANTS.tempBookListCached, bookToBeDeleted);
                 }
                 dialog.dismiss();
                 Toast.makeText((Activity)context, "The book has been deleted successfully", Toast.LENGTH_SHORT).show();
@@ -134,17 +132,19 @@ public class Book implements Serializable {
         Backendless.Data.of(Book.class).save(this, new AsyncCallback<Book>() {
             @Override
             public void handleResponse(Book response) {
-                // Replace the book only if it is being UPDATED, not CREATED
-                // Created book is added through a fresh retrieve because of different active sort mode
-                for(int i=0; i < CONSTANTS.getBookListCached().size(); i++){
-                    if(CONSTANTS.getBookListCached().get(i).equals(bookToBeSaved)){
-                        CONSTANTS.getBookListCached().remove(i);
-                        CONSTANTS.getBookListCached().add(i, response);
-                        break;
-                    }
-                }
+
                 dialog.dismiss();
                 if(!savingBook) {
+                    // Replace the book only if it is being UPDATED, not CREATED
+                    // Created book is added through a fresh retrieve because of different active sort mode
+                    if(CONSTANTS.isShowingDefaultBooklist()) {
+                        updateBookIfFound(CONSTANTS.bookListCached, bookToBeSaved, response);
+                    }
+                    else{
+                        updateBookIfFound(CONSTANTS.tempBookListCached, bookToBeSaved, response);
+                    }
+
+
                     Toast.makeText(((Activity) context), "Book updated successfully!", Toast.LENGTH_SHORT).show();
                     Log.i("book_update", "handleResponse: Book has been successfully updated");
                     Intent returnIntent = new Intent();
@@ -175,5 +175,27 @@ public class Book implements Serializable {
                 Log.i("book_update", "handleFault: Book couldn't be updated\t" + fault.getMessage());
             }
         });
+    }
+
+    private void deleteIfFound(List<Book> currentBooks, Book bookToBeDeleted){
+        for (int i = 0; i < currentBooks.size(); i++) {
+            Log.i("book_deletion", "traversed book " + i + ": oId: " + CONSTANTS.getBookListCached().get(i).getObjectId());
+            if (CONSTANTS.getBookListCached().get(i).equals(bookToBeDeleted)) {
+
+                CONSTANTS.getBookListCached().remove(i);
+                Log.i("book_deletion", "handleResponse: found a matched book. current size: " + CONSTANTS.getBookListCached().size());
+                break;
+            }
+        }
+    }
+
+    private void updateBookIfFound(List<Book> currentBooks, Book oldBook, Book bookToBeSaved){
+        for (int i = 0; i < currentBooks.size(); i++) {
+            if (currentBooks.get(i).equals(oldBook)) {
+                currentBooks.remove(i);
+                currentBooks.add(i, bookToBeSaved);
+                break;
+            }
+        }
     }
 }

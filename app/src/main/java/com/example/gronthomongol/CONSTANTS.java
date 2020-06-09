@@ -29,6 +29,8 @@ import com.backendless.messaging.PublishOptions;
 import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.persistence.local.UserTokenStorageFactory;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CONSTANTS {
@@ -45,15 +47,19 @@ public class CONSTANTS {
     private static int ID_PLACE_ORDER_ADD_MORE_BOOK = 23;
     private static int ID_BOOKLISTADMIN_BOOKDETAILS = 47;
     private static int ID_DELETE_BOOK_FROM_BOOK_DETAILS = 53;
+    private static boolean showingDefaultBooklist = true;      // Not the search query list
     private static BackendlessUser currentUser;
     public static List<Book> bookListCached;
+    public static List<Book> tempBookListCached = new ArrayList<>();
     public static List<Order> myOrdersCached;
+    public static ArrayList<Book> orderedBooks;
     private static int OFFSET = 0;      // Explicitly for booklist
     private static int MYORDEROFFSET = 0;
     private static int PAGE_SIZE = 13;
     private static int MY_ORDER_PAGE_SIZE = 13;
     private  static DataQueryBuilder bookListQueryBuilder;
     private  static DataQueryBuilder orderListQueryBuilder;
+    private  static DataQueryBuilder SearchBookQueryBuilder;
     public static String NULLMARKER = "N/A_AUTO";
 
     public static int getOFFSET() {
@@ -74,6 +80,30 @@ public class CONSTANTS {
 
     public static int getMyOrderPageSize() {
         return MY_ORDER_PAGE_SIZE;
+    }
+
+    public static List<Book> getTempBookListCached() {
+        return tempBookListCached;
+    }
+
+    public static boolean isShowingDefaultBooklist() {
+        return showingDefaultBooklist;
+    }
+
+    public static void setShowingDefaultBooklist(boolean showingDefaultBooklist) {
+        CONSTANTS.showingDefaultBooklist = showingDefaultBooklist;
+    }
+
+    public static void setTempBookListCached(List<Book> tempBookListCached) {
+        CONSTANTS.tempBookListCached = tempBookListCached;
+    }
+
+    public static DataQueryBuilder getSearchBookQueryBuilder() {
+        return SearchBookQueryBuilder;
+    }
+
+    public static void setSearchBookQueryBuilder(DataQueryBuilder searchBookQueryBuilder) {
+        SearchBookQueryBuilder = searchBookQueryBuilder;
     }
 
     public static BackendlessUser getCurrentUser() {
@@ -217,6 +247,94 @@ public class CONSTANTS {
             }
         });
 
+    }
+
+    public static void backendlessBookQuery(final Context context, final Dialog dialog, String whereClause, final BooklistAdapterRV_admin booklistAdapterRV_admin){
+        final DataQueryBuilder searchBookQueryBuilder = DataQueryBuilder.create();
+        searchBookQueryBuilder.setWhereClause(whereClause);
+        Backendless.Data.of(Book.class).find(searchBookQueryBuilder, new AsyncCallback<List<Book>>() {
+            @Override
+            public void handleResponse(List<Book> response) {
+                Log.i("search", "handleResponse: response size: " + response.size());
+                CONSTANTS.setSearchBookQueryBuilder(searchBookQueryBuilder);
+                dialog.dismiss();
+                if(isShowingDefaultBooklist())
+                    tempBookListCached.addAll(bookListCached);
+                bookListCached.clear();
+                bookListCached.addAll(response);
+                setShowingDefaultBooklist(false);
+                if(response.isEmpty()){
+                    Toast.makeText(((Activity)context), "No result found!", Toast.LENGTH_LONG).show();
+                }
+                booklistAdapterRV_admin.notifyDataSetChanged();
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                String title;
+                String message;
+                dialog.dismiss();
+
+                if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
+                    title = "Connection Failed!";
+                    message = "Please Check Your Internet Connection";
+                    showErrorDialog_splashScreen((Activity)context, title, message, "Retry", "Quit");
+                    Log.i("errorCode", "handleFault: error Code: " + fault.getCode() + "\t Error Message = " + fault.getMessage());
+                }
+                else{
+                    Toast.makeText(((Activity)context), "Sorry couldn't complete search query", Toast.LENGTH_SHORT).show();
+                }
+
+                Log.i("search", "handleFault: " + fault.getMessage());
+
+            }
+        });
+    }
+
+    // TODO REMEMBER TO PASTE UPDATES HERE TOO FROM THE ABOVE
+
+    public static void backendlessBookQuery(final Context context, final Dialog dialog, String whereClause, final BooklistAdapterRV booklistAdapterRV){
+        final DataQueryBuilder searchBookQueryBuilder = DataQueryBuilder.create();
+        searchBookQueryBuilder.setWhereClause(whereClause);
+        Backendless.Data.of(Book.class).find(searchBookQueryBuilder, new AsyncCallback<List<Book>>() {
+            @Override
+            public void handleResponse(List<Book> response) {
+                Log.i("search", "handleResponse: response size: " + response.size());
+                CONSTANTS.setSearchBookQueryBuilder(searchBookQueryBuilder);
+                dialog.dismiss();
+                if(isShowingDefaultBooklist())
+                    tempBookListCached.addAll(bookListCached); // Now the query list will be shown as the book list cached
+                bookListCached.clear();
+                bookListCached.addAll(response);
+                setShowingDefaultBooklist(false);
+                if(response.isEmpty()){
+                    Toast.makeText(((Activity)context), "No result found!", Toast.LENGTH_LONG).show();
+                }
+                Log.i("search", String.format("booklistCached size now: %d\t tempBookListCached size: %d", bookListCached.size(), tempBookListCached.size()));
+
+                booklistAdapterRV.notifyDataSetChanged();
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                String title;
+                String message;
+                dialog.dismiss();
+
+                if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
+                    title = "Connection Failed!";
+                    message = "Please Check Your Internet Connection";
+                    showErrorDialog_splashScreen((Activity)context, title, message, "Retry", "Quit");
+                    Log.i("errorCode", "handleFault: error Code: " + fault.getCode() + "\t Error Message = " + fault.getMessage());
+                }
+                else{
+                    Toast.makeText(((Activity)context), "Sorry couldn't complete search query", Toast.LENGTH_SHORT).show();
+                }
+
+                Log.i("search", "handleFault: " + fault.getMessage());
+
+            }
+        });
     }
 
     public static void RetrieveBookListFromDatabaseInitially(final Context context, final int callingActivityId, final Dialog dialog){

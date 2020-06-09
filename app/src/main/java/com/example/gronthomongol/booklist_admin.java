@@ -3,6 +3,7 @@ package com.example.gronthomongol;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,9 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -21,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -63,6 +68,7 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
         setTitle("Book List");
         androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar_BookList_admin);
         setSupportActionBar(toolbar);
+        handleIntent(getIntent());
         initializeGUIElements();
         initializeRecyclerView();   // Check this for endless scroll data retrieval
         pref = getSharedPreferences("preferences", 0); // 0 - for private mode
@@ -99,9 +105,41 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
             }
         });
 
+    }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+        setIntent(intent);          // MIGHT CAUSE ISSUE
+        Log.i("search", "onNewIntent: ");
+    }
 
+    private void handleIntent(Intent intent) {
+        Log.i("search", "handleIntent: ");
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY).trim();
+            //use the query to search your data somehow
+            Log.i("search", "came to search. query: " + query);
 
+            final Dialog waitDialog = new Dialog(booklist_admin.this);
+            waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            waitDialog.setCancelable(false);
+            waitDialog.setContentView(R.layout.dialog_searching_books);
+            waitDialog.show();
+
+            final String whereClause = "name LIKE '" + query + "%' OR writer LIKE '" + query + "%'";
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CONSTANTS.backendlessBookQuery(booklist_admin.this, waitDialog, whereClause, booklistAdapterRV_admin);
+                }
+            });
+
+            thread.start();
+            recyclerView.requestFocus();    // So that keyboard doesn't pop open
+        }
     }
 
 
@@ -149,6 +187,33 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menuMain_searchBook).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        EditText txtSearch = ((EditText)searchView.findViewById(androidx.appcompat.R.id.search_src_text));
+        txtSearch.setHintTextColor(Color.LTGRAY);
+        txtSearch.setTextColor(Color.WHITE);
+
+        // Handling on search back pressed
+        MenuItem searchItem = menu.findItem(R.id.menuMain_searchBook);
+        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                if(!CONSTANTS.isShowingDefaultBooklist()){
+                    CONSTANTS.bookListCached.clear();
+                    CONSTANTS.bookListCached.addAll(CONSTANTS.tempBookListCached);
+                    booklistAdapterRV_admin.notifyDataSetChanged();
+                    CONSTANTS.setShowingDefaultBooklist(true);
+                }
+
+                return true;
+            }
+        });
 
         return true;
     }
@@ -184,6 +249,7 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
 
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -207,33 +273,34 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
         endlessScrollEventListener = new EndlessScrollEventListener((LinearLayoutManager) rvLayoutManager) {
             @Override
             public void onLoadMore(int pageNum, RecyclerView recyclerView) {
+                if (CONSTANTS.isShowingDefaultBooklist()) {
+                    progressBar.setVisibility(View.VISIBLE);
 
-                progressBar.setVisibility(View.VISIBLE);
+                    DataQueryBuilder queryBuilder = CONSTANTS.getBookListQueryBuilder();
+                    queryBuilder.prepareNextPage();
 
-                DataQueryBuilder queryBuilder = CONSTANTS.getBookListQueryBuilder();
-                queryBuilder.prepareNextPage();
+                    Log.i(TAG, "onLoadMore: Came to OnloadMore");
 
-                Log.i(TAG, "onLoadMore: Came to OnloadMore");
+                    Backendless.Data.of(Book.class).find(queryBuilder,
+                            new AsyncCallback<List<Book>>() {
+                                @Override
+                                public void handleResponse(List<Book> response) {
+                                    Log.i("booklist_paging", "new response received");
 
-                Backendless.Data.of(Book.class).find(queryBuilder,
-                        new AsyncCallback<List<Book>>() {
-                            @Override
-                            public void handleResponse(List<Book> response) {
-                                Log.i("booklist_paging", "new response received");
+                                    CONSTANTS.bookListCached.addAll(response);
+                                    progressBar.setVisibility(View.GONE);
+                                    booklistAdapterRV_admin.notifyDataSetChanged();
 
-                                CONSTANTS.bookListCached.addAll(response);
-                                progressBar.setVisibility(View.GONE);
-                                booklistAdapterRV_admin.notifyDataSetChanged();
+                                }
 
-                            }
-
-                            @Override
-                            public void handleFault(BackendlessFault fault) {
-                                Log.i("booklist_paging", "new response failed");
-                                // use the getCode(), getMessage() or getDetail() on the fault object
-                                // to see the details of the error
-                            }
-                        });
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+                                    Log.i("booklist_paging", "new response failed");
+                                    // use the getCode(), getMessage() or getDetail() on the fault object
+                                    // to see the details of the error
+                                }
+                            });
+                }
 
 
             }
@@ -261,6 +328,12 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
             if(resultCode == RESULT_OK){
                 booklistAdapterRV_admin.notifyDataSetChanged();
                 Log.i(TAG, "onActivityResult: Data set changed notified");
+            }
+            if(!CONSTANTS.isShowingDefaultBooklist()) {
+                CONSTANTS.bookListCached.clear();
+                CONSTANTS.bookListCached.addAll(CONSTANTS.tempBookListCached);
+                CONSTANTS.setShowingDefaultBooklist(true);
+                booklistAdapterRV_admin.notifyDataSetChanged();
             }
         }
     }

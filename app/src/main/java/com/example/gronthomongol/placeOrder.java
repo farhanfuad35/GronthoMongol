@@ -29,6 +29,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import static com.example.gronthomongol.CONSTANTS.orderedBooks;
+
 public class placeOrder extends AppCompatActivity {
 
 //    private NumberPicker numberPicker;
@@ -43,7 +45,6 @@ public class placeOrder extends AppCompatActivity {
     private EditText etComment;
     private Button btnAddress;
     private Button btnPlaceOrder;
-    private ArrayList<Book> orderedBooks = new ArrayList<Book>(CONSTANTS.getMaxNoOfBooksPerUserPerOrder());
     private int followedByProcessID;
     private Button btnAddMore;
     private String Recipient_Name;
@@ -71,13 +72,12 @@ public class placeOrder extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_order);
-
         setTitle("Order Book");
         androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar_PlaceOrder);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
+        orderedBooks = new ArrayList<Book>(CONSTANTS.getMaxNoOfBooksPerUserPerOrder());
         initializeGUIElements();
         initializeRecyclerView();
 
@@ -88,7 +88,9 @@ public class placeOrder extends AppCompatActivity {
 //        numberPicker.setMaxValue(CONSTANTS.getMAX_NO_OF_ORDERS_PER_USER_PER_BOOK());
 //        numberPicker.setOnValueChangedListener(onValueChangeListener);
 
+
         orderedBooks.add((Book) getIntent().getSerializableExtra("selectedBook"));
+
         Log.i("placeorder", "ordered book array size = " + orderedBooks.size());
 
         followedByProcessID = getIntent().getIntExtra("ID",0);
@@ -140,7 +142,6 @@ public class placeOrder extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), booklist.class);
                 intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdPlaceOrderAddMoreBook());
-                intent.putExtra(getString(R.string.orderedBookList), orderedBooks);
                 startActivityForResult(intent, CONSTANTS.getIdPlaceOrderAddMoreBook());
             }
         });
