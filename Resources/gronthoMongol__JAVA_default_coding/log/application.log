@@ -1,0 +1,169 @@
+2020-06-09 17:18:34,622 [INFO] JDK from "JAVA_HOME" - /usr/lib/jvm/java-11-oracle
+2020-06-09 17:18:34,641 [INFO] CodeRunner(tm) Backendless Debugging Utility
+2020-06-09 17:18:34,643 [INFO] Copyright(C) 2020 Backendless Corp. All rights reserved. 
+2020-06-09 17:18:34,644 [INFO] Build date: 2020-06-03T08:52:40Z
+Version: 5.7.3.10
+Build id: 193767
+VCS revision: e5144a98c408195080673755ec76320745e3074f
+2020-06-09 17:18:34,646 [INFO] CodeRunner session is running for 2 hours and will be terminated on 19:18:34.646186[UTC]
+2020-06-09 17:18:34,696 [INFO] Management port is absent, management server not started
+2020-06-09 17:18:34,697 [INFO] Registering runner on: 'https://api.backendless.com'
+2020-06-09 17:18:34,699 [INFO] Application ID:  '34CE62ED-6DA0-282A-FFF1-8BA87C6D2C00'
+2020-06-09 17:18:34,699 [INFO] Api key:         '14C2912F-EC20-45A4-9BA4-2726E8850192'
+2020-06-09 17:18:38,647 [INFO] Runner successfully registered
+2020-06-09 17:18:38,659 [INFO] Parsing event model...
+2020-06-09 17:18:39,351 [INFO] Build successfully: 0 event handlers and 0 timers and 0 services
+2020-06-09 17:18:39,366 [ERROR] Could not find any code to be deployed to Backendless at /mnt/NoChill/Coding/Android/Ubuntu/GronthoMongol/Resources/gronthoMongol__JAVA_default_coding/classes. Did you compile the project?
+2020-06-09 17:18:41,706 [INFO] Debugging Utility disconnected successfully
+2020-06-09 17:18:41,710 [INFO] Thank you for using Backendless
+2020-06-09 17:21:28,603 [INFO] JDK from "JAVA_HOME" - /usr/lib/jvm/java-11-oracle
+2020-06-09 17:21:28,620 [INFO] CodeRunner(tm) Backendless Debugging Utility
+2020-06-09 17:21:28,622 [INFO] Copyright(C) 2020 Backendless Corp. All rights reserved. 
+2020-06-09 17:21:28,623 [INFO] Build date: 2020-06-03T08:52:40Z
+Version: 5.7.3.10
+Build id: 193767
+VCS revision: e5144a98c408195080673755ec76320745e3074f
+2020-06-09 17:21:28,625 [INFO] CodeRunner session is running for 2 hours and will be terminated on 19:21:28.624986[UTC]
+2020-06-09 17:21:28,668 [INFO] Management port is absent, management server not started
+2020-06-09 17:21:28,669 [INFO] Registering runner on: 'https://api.backendless.com'
+2020-06-09 17:21:28,671 [INFO] Application ID:  '34CE62ED-6DA0-282A-FFF1-8BA87C6D2C00'
+2020-06-09 17:21:28,671 [INFO] Api key:         '14C2912F-EC20-45A4-9BA4-2726E8850192'
+2020-06-09 17:21:31,178 [INFO] Runner successfully registered
+2020-06-09 17:21:31,188 [INFO] Parsing event model...
+2020-06-09 17:21:31,852 [INFO] Build successfully: 0 event handlers and 0 timers and 0 services
+2020-06-09 17:21:31,861 [ERROR] Could not find any code to be deployed to Backendless at /mnt/NoChill/Coding/Android/Ubuntu/GronthoMongol/Resources/gronthoMongol__JAVA_default_coding/classes. Did you compile the project?
+2020-06-09 17:21:34,221 [INFO] Debugging Utility disconnected successfully
+2020-06-09 17:21:34,224 [INFO] Thank you for using Backendless
+2020-06-09 18:15:55,569 [INFO] JDK from "JAVA_HOME" - /usr/lib/jvm/java-11-oracle
+2020-06-09 18:15:55,669 [INFO] CodeRunner(tm) Backendless Debugging Utility
+2020-06-09 18:15:55,671 [INFO] Copyright(C) 2020 Backendless Corp. All rights reserved. 
+2020-06-09 18:15:55,672 [INFO] Build date: 2020-06-03T08:52:40Z
+Version: 5.7.3.10
+Build id: 193767
+VCS revision: e5144a98c408195080673755ec76320745e3074f
+2020-06-09 18:15:55,677 [INFO] CodeRunner session is running for 2 hours and will be terminated on 20:15:55.676471[UTC]
+2020-06-09 18:15:55,735 [INFO] Management port is absent, management server not started
+2020-06-09 18:15:55,735 [INFO] Registering runner on: 'https://api.backendless.com'
+2020-06-09 18:15:55,738 [INFO] Application ID:  '34CE62ED-6DA0-282A-FFF1-8BA87C6D2C00'
+2020-06-09 18:15:55,738 [INFO] Api key:         '14C2912F-EC20-45A4-9BA4-2726E8850192'
+2020-06-09 18:15:58,932 [INFO] Runner successfully registered
+2020-06-09 18:15:58,942 [INFO] Parsing event model...
+2020-06-09 18:15:58,980 [WARN] Timer's 'reset_number_of_orders_atomic_counter' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:15:58,981 [WARN] Timer's 'Test' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:15:59,809 [INFO] Build successfully: 0 event handlers and 2 timers and 0 services
+2020-06-09 18:15:59,822 [INFO] Deploying model to server, and starting debug...
+2020-06-09 18:16:00,338 [INFO] Model successfully deployed.
+2020-06-09 18:16:00,339 [INFO] Waiting for events...
+2020-06-09 18:18:09,291 [INFO] Debugging Utility disconnected successfully
+2020-06-09 18:18:09,294 [INFO] Thank you for using Backendless
+2020-06-09 18:18:21,424 [INFO] JDK from "JAVA_HOME" - /usr/lib/jvm/java-11-oracle
+2020-06-09 18:18:21,442 [INFO] CodeRunner(tm) Backendless Debugging Utility
+2020-06-09 18:18:21,443 [INFO] Copyright(C) 2020 Backendless Corp. All rights reserved. 
+2020-06-09 18:18:21,444 [INFO] Build date: 2020-06-03T08:52:40Z
+Version: 5.7.3.10
+Build id: 193767
+VCS revision: e5144a98c408195080673755ec76320745e3074f
+2020-06-09 18:18:21,447 [INFO] CodeRunner session is running for 2 hours and will be terminated on 20:18:21.446299[UTC]
+2020-06-09 18:18:21,488 [INFO] Management port is absent, management server not started
+2020-06-09 18:18:21,489 [INFO] Registering runner on: 'https://api.backendless.com'
+2020-06-09 18:18:21,490 [INFO] Application ID:  '34CE62ED-6DA0-282A-FFF1-8BA87C6D2C00'
+2020-06-09 18:18:21,491 [INFO] Api key:         '14C2912F-EC20-45A4-9BA4-2726E8850192'
+2020-06-09 18:18:24,107 [INFO] Runner successfully registered
+2020-06-09 18:18:24,117 [INFO] Parsing event model...
+2020-06-09 18:18:24,153 [WARN] Timer's 'Test' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:18:24,155 [WARN] Timer's 'reset_number_of_orders_atomic_counter' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:18:24,823 [INFO] Build successfully: 0 event handlers and 2 timers and 0 services
+2020-06-09 18:18:24,834 [INFO] Deploying model to server, and starting debug...
+2020-06-09 18:18:25,305 [INFO] Model successfully deployed.
+2020-06-09 18:18:25,306 [INFO] Waiting for events...
+2020-06-09 18:20:34,686 [INFO] Debugging Utility disconnected successfully
+2020-06-09 18:20:34,688 [INFO] Thank you for using Backendless
+2020-06-09 18:20:39,150 [INFO] JDK from "JAVA_HOME" - /usr/lib/jvm/java-11-oracle
+2020-06-09 18:20:39,166 [INFO] CodeRunner(tm) Backendless Debugging Utility
+2020-06-09 18:20:39,168 [INFO] Copyright(C) 2020 Backendless Corp. All rights reserved. 
+2020-06-09 18:20:39,168 [INFO] Build date: 2020-06-03T08:52:40Z
+Version: 5.7.3.10
+Build id: 193767
+VCS revision: e5144a98c408195080673755ec76320745e3074f
+2020-06-09 18:20:39,171 [INFO] CodeRunner session is running for 2 hours and will be terminated on 20:20:39.170628[UTC]
+2020-06-09 18:20:39,211 [INFO] Management port is absent, management server not started
+2020-06-09 18:20:39,212 [INFO] Registering runner on: 'https://api.backendless.com'
+2020-06-09 18:20:39,214 [INFO] Application ID:  '34CE62ED-6DA0-282A-FFF1-8BA87C6D2C00'
+2020-06-09 18:20:39,214 [INFO] Api key:         '14C2912F-EC20-45A4-9BA4-2726E8850192'
+2020-06-09 18:20:41,392 [INFO] Runner successfully registered
+2020-06-09 18:20:41,402 [INFO] Parsing event model...
+2020-06-09 18:20:41,438 [WARN] Timer's 'reset_number_of_orders_atomic_counter' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:20:41,439 [WARN] Timer's 'Test' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:20:42,139 [INFO] Build successfully: 0 event handlers and 2 timers and 0 services
+2020-06-09 18:20:42,153 [INFO] Deploying model to server, and starting debug...
+2020-06-09 18:20:44,009 [INFO] Model successfully deployed.
+2020-06-09 18:20:44,011 [INFO] Waiting for events...
+2020-06-09 18:28:45,694 [INFO] Debugging Utility disconnected successfully
+2020-06-09 18:28:45,696 [INFO] Thank you for using Backendless
+2020-06-09 18:29:00,703 [INFO] JDK from "JAVA_HOME" - /usr/lib/jvm/java-11-oracle
+2020-06-09 18:29:00,719 [INFO] CodeRunner(tm) Backendless Debugging Utility
+2020-06-09 18:29:00,720 [INFO] Copyright(C) 2020 Backendless Corp. All rights reserved. 
+2020-06-09 18:29:00,721 [INFO] Build date: 2020-06-03T08:52:40Z
+Version: 5.7.3.10
+Build id: 193767
+VCS revision: e5144a98c408195080673755ec76320745e3074f
+2020-06-09 18:29:00,724 [INFO] CodeRunner session is running for 2 hours and will be terminated on 20:29:00.723187[UTC]
+2020-06-09 18:29:00,759 [INFO] Management port is absent, management server not started
+2020-06-09 18:29:00,760 [INFO] Registering runner on: 'https://api.backendless.com'
+2020-06-09 18:29:00,762 [INFO] Application ID:  '34CE62ED-6DA0-282A-FFF1-8BA87C6D2C00'
+2020-06-09 18:29:00,762 [INFO] Api key:         '14C2912F-EC20-45A4-9BA4-2726E8850192'
+2020-06-09 18:29:04,874 [INFO] Runner successfully registered
+2020-06-09 18:29:04,884 [INFO] Parsing event model...
+2020-06-09 18:29:04,920 [WARN] Timer's 'Test' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:29:04,921 [WARN] Timer's 'reset_number_of_orders_atomic_counter' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:29:05,515 [INFO] Build successfully: 0 event handlers and 2 timers and 0 services
+2020-06-09 18:29:05,529 [INFO] Deploying model to server, and starting debug...
+2020-06-09 18:29:05,979 [INFO] Model successfully deployed.
+2020-06-09 18:29:05,980 [INFO] Waiting for events...
+2020-06-09 18:32:35,703 [INFO] Debugging Utility disconnected successfully
+2020-06-09 18:32:35,706 [INFO] Thank you for using Backendless
+2020-06-09 18:32:38,316 [INFO] JDK from "JAVA_HOME" - /usr/lib/jvm/java-11-oracle
+2020-06-09 18:32:38,332 [INFO] CodeRunner(tm) Backendless Debugging Utility
+2020-06-09 18:32:38,334 [INFO] Copyright(C) 2020 Backendless Corp. All rights reserved. 
+2020-06-09 18:32:38,334 [INFO] Build date: 2020-06-03T08:52:40Z
+Version: 5.7.3.10
+Build id: 193767
+VCS revision: e5144a98c408195080673755ec76320745e3074f
+2020-06-09 18:32:38,337 [INFO] CodeRunner session is running for 2 hours and will be terminated on 20:32:38.336681[UTC]
+2020-06-09 18:32:38,374 [INFO] Management port is absent, management server not started
+2020-06-09 18:32:38,375 [INFO] Registering runner on: 'https://api.backendless.com'
+2020-06-09 18:32:38,377 [INFO] Application ID:  '34CE62ED-6DA0-282A-FFF1-8BA87C6D2C00'
+2020-06-09 18:32:38,378 [INFO] Api key:         '14C2912F-EC20-45A4-9BA4-2726E8850192'
+2020-06-09 18:32:40,567 [INFO] Runner successfully registered
+2020-06-09 18:32:40,577 [INFO] Parsing event model...
+2020-06-09 18:32:40,614 [WARN] Timer's 'reset_number_of_orders_atomic_counter' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:32:40,615 [WARN] Timer's 'Test' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:32:41,301 [INFO] Build successfully: 0 event handlers and 2 timers and 0 services
+2020-06-09 18:32:41,316 [INFO] Deploying model to server, and starting debug...
+2020-06-09 18:32:41,804 [INFO] Model successfully deployed.
+2020-06-09 18:32:41,805 [INFO] Waiting for events...
+2020-06-09 18:33:44,371 [INFO] Debugging Utility disconnected successfully
+2020-06-09 18:33:44,373 [INFO] Thank you for using Backendless
+2020-06-09 18:35:10,316 [INFO] JDK from "JAVA_HOME" - /usr/lib/jvm/java-11-oracle
+2020-06-09 18:35:10,338 [INFO] CodeRunner(tm) Backendless Debugging Utility
+2020-06-09 18:35:10,340 [INFO] Copyright(C) 2020 Backendless Corp. All rights reserved. 
+2020-06-09 18:35:10,341 [INFO] Build date: 2020-06-03T08:52:40Z
+Version: 5.7.3.10
+Build id: 193767
+VCS revision: e5144a98c408195080673755ec76320745e3074f
+2020-06-09 18:35:10,344 [INFO] CodeRunner session is running for 2 hours and will be terminated on 20:35:10.343177[UTC]
+2020-06-09 18:35:10,370 [INFO] Management port is absent, management server not started
+2020-06-09 18:35:10,548 [INFO] Parsing event model...
+2020-06-09 18:35:10,599 [WARN] Timer's 'reset_number_of_orders_atomic_counter' start time is in the past. The timer will run accordingly to the schedule.
+2020-06-09 18:35:11,239 [INFO] Build successfully: 0 event handlers and 1 timer and 0 services
+2020-06-09 18:35:11,249 [WARN] IMPORTANT! The business logic code will be deployed to model "default".
+Any business logic which is already deployed on the server in that model
+will be removed and replaced with the code from your current project.
+If this is an undesired behavior, stop now and set a different deployment model
+either by using the -model argument or changing the model name in runner.properties.
+2020-06-09 18:35:22,388 [INFO] Publishing 0 event handlers and 1 timer and 0 services to the server… 
+2020-06-09 18:35:34,074 [INFO] Successfully published all event handlers and timers. 
+2020-06-09 18:35:34,074 [INFO] If you connected to coderunner for debug - please stop debugging
+2020-06-09 18:35:34,075 [INFO] CodeRunner will shutdown now
+2020-06-09 18:35:34,077 [INFO] Debugging Utility disconnected successfully
+2020-06-09 18:35:34,078 [INFO] Thank you for using Backendless

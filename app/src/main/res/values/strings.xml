@@ -19,6 +19,7 @@
     <string name="total_price">মোট মূল্য</string>
     <string name="add_more_book">আরও যোগ করুন</string>
     <string name="connectionErrorMessageBackendless">Unable to resolve host \"api.backendless.com\": No address associated with hostname</string>
+    <string name="connectionErrorMessageVolley">java.net.UnknownHostException: Unable to resolve host \"backendlessappcontent.com\": No address associated with hostname</string>
     <string name="activityIDName">activityID</string>
     <string name="orderedBookList">orderedBookList</string>
     <string name="newlySelectedBook">newlySelectedBook</string>

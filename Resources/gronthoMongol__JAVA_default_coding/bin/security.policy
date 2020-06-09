@@ -1,0 +1,108 @@
+grant {
+    // only for test!
+    //permission java.security.AllPermission;
+
+    permission java.util.logging.LoggingPermission "control";
+    permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+
+    permission java.util.PropertyPermission "*", "read";
+
+    //permission java.io.FilePermission "${user.home}${/}-", "read";
+    permission java.io.FilePermission "${user.dir}", "read";
+    permission java.io.FilePermission "${user.dir}${/}-", "read";
+    permission java.io.FilePermission "${java.home}", "read";
+    permission java.io.FilePermission "${java.home}${/}-", "read";
+    permission java.io.FilePermission "${system.repo.path}", "read";
+    permission java.io.FilePermission "${system.repo.path}${/}-", "read";
+    permission java.io.FilePermission "${location.jar}", "read";
+    permission java.io.FilePermission "${location.jar}${/}-", "read";
+    permission java.io.FilePermission "${location.classes}", "read";
+    permission java.io.FilePermission "${location.classes}${/}-", "read";
+
+
+    //permission java.lang.RuntimePermission "exitVM.*";
+    permission java.lang.RuntimePermission "getenv.*";
+    permission java.lang.RuntimePermission "accessDeclaredMembers";
+    permission java.lang.RuntimePermission "loggerFinder";
+
+    permission java.lang.RuntimePermission "accessClassInPackage.sun.*";
+    permission java.lang.RuntimePermission "accessClassInPackage.com.sun.*";
+    permission java.lang.RuntimePermission "accessClassInPackage.org.jcp.xml.dsig.internal.dom";
+    permission java.lang.RuntimePermission "accessClassInPackage.apple.security";
+    permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.misc";
+    permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.reflect";
+
+    permission java.lang.RuntimePermission "loadLibrary.osx";
+    permission java.lang.RuntimePermission "loadLibrary.net";
+    permission java.lang.RuntimePermission "loadLibrary.sunec";
+    permission java.lang.RuntimePermission "loadLibrary.sunmscapi";
+    permission java.lang.RuntimePermission "loadLibrary.awt";
+    permission java.lang.RuntimePermission "loadLibrary.jpeg";
+    permission java.lang.RuntimePermission "loadLibrary.lcms";
+    permission java.lang.RuntimePermission "loadLibrary.fontmanager";
+
+    permission java.lang.RuntimePermission "setFactory";
+    permission java.lang.RuntimePermission "selectorProvider";
+    permission java.lang.RuntimePermission "setContextClassLoader";
+    permission java.lang.RuntimePermission "enableContextClassLoaderOverride";
+    permission java.lang.RuntimePermission "createClassLoader";
+    permission java.lang.RuntimePermission "getClassLoader";
+    permission java.lang.RuntimePermission "readFileDescriptor";
+    permission java.lang.RuntimePermission "writeFileDescriptor";
+
+    permission java.lang.RuntimePermission "getProtectionDomain";
+    permission java.lang.RuntimePermission "createSecurityManager";
+
+    permission java.lang.RuntimePermission "preferences";
+    permission java.lang.RuntimePermission "shutdownHooks";
+    permission java.lang.RuntimePermission "modifyThread";
+
+
+    permission java.net.NetPermission "getCookieHandler";
+    permission java.net.NetPermission "getProxySelector";
+    permission java.net.NetPermission "getResponseCache";
+    permission java.net.SocketPermission "*", "connect,resolve";
+    permission java.net.URLPermission "http:*", "*:*";
+    permission java.net.URLPermission "https:*", "*:*";
+
+
+    permission java.security.SecurityPermission "getPolicy";
+    permission java.security.SecurityPermission "putProviderProperty.Apple";
+    permission java.security.SecurityPermission "putProviderProperty.SUN";
+    permission java.security.SecurityPermission "putProviderProperty.SunJGSS";
+    permission java.security.SecurityPermission "putProviderProperty.SunJSSE";
+    permission java.security.SecurityPermission "putProviderProperty.SunJCE";
+    permission java.security.SecurityPermission "putProviderProperty.SunEC";
+    permission java.security.SecurityPermission "putProviderProperty.SunEC-Internal";
+    permission java.security.SecurityPermission "putProviderProperty.SunPCSC";
+    permission java.security.SecurityPermission "putProviderProperty.SunRsaSign";
+    permission java.security.SecurityPermission "putProviderProperty.SunSASL";
+    permission java.security.SecurityPermission "putProviderProperty.XMLDSig";
+
+    permission java.security.SecurityPermission "getProperty.jdk.tls.disabledAlgorithms";
+    permission java.security.SecurityPermission "getProperty.jdk.certpath.disabledAlgorithms";
+    permission java.security.SecurityPermission "getProperty.ssl.KeyManagerFactory.algorithm";
+    permission java.security.SecurityPermission "getProperty.ssl.SocketFactory.provider";
+    permission java.security.SecurityPermission "getProperty.ssl.TrustManagerFactory.algorithm";
+    permission java.security.SecurityPermission "getProperty.keystore.type";
+    permission java.security.SecurityPermission "getProperty.keystore.type.compat";
+    permission java.security.SecurityPermission "getProperty.crypto.policy";
+    permission java.security.SecurityPermission "getProperty.jdk.tls.keyLimits";
+
+
+    //for WebORB
+    permission java.util.PropertyPermission "com.google.appengine.runtime.environment", "read";
+    permission java.util.PropertyPermission "WEBORB_LICENSE_FILE", "read";
+    permission java.util.PropertyPermission "WEBORB_DEVMODE", "read";
+    permission java.io.FilePermission "weborblicense.key.config", "read";
+    //end WebORB
+
+    //for codegen
+    permission java.lang.RuntimePermission "charsetProvider";
+    permission java.util.PropertyPermission "com.sun.org.apache.xalan.internal.xsltc.dom.XSLTCDTMManager", "read";
+};
+
+grant codeBase "file:${user.dir}${/}CodeRunner.jar"
+{
+    permission java.security.AllPermission;
+};

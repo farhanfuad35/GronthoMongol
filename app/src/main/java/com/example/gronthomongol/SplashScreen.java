@@ -83,7 +83,9 @@ public class SplashScreen extends AppCompatActivity {
             public void run() {
 
                 //RetrieveBookListFromDatabase();
-                CONSTANTS.checkLoginStatus(SplashScreen.this, CONSTANTS.getIdSpalshScreen());
+                // TODO
+                CONSTANTS.getConfigFile(SplashScreen.this, CONSTANTS.getIdSpalshScreen());
+                //CONSTANTS.checkLoginStatus(SplashScreen.this, CONSTANTS.getIdSpalshScreen());
             }
         });
 
