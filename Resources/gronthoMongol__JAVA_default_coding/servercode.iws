@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7fe61c92-e6ef-4574-b0dd-d6145dc84a28" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.classpath" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.project" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/CodeRunner.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/CodeRunner.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/CodeRunner.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Deploy.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Deploy.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/logback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/runner.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/security.policy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/weborb.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/backendless.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/readme.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/servlet-api-2.5.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/application.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/timers-coderunner.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/workers-coderunner.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/servercode.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/servercode.ipr" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/servercode.iws" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/gronthomongol/Bootstrap.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/com/gronthomongol/timers/Reset_number_of_orders_atomic_counterTimer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.idea/modules/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../../.idea/modules/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/CONSTANTS.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/CONSTANTS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/SplashScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/SplashScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/booklist.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../app/src/main/java/com/example/gronthomongol/booklist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../app/src/main/res/values/strings.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1d5meY85JErgPPaebLQecl06bZS" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7fe61c92-e6ef-4574-b0dd-d6145dc84a28" name="Default Changelist" comment="" />
+      <created>1591723423777</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1591723423777</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="589" y="215" width="800" height="675" key="#Project_Structure" timestamp="1591723765187">
+      <screen x="69" y="27" width="1851" height="1053" />
+    </state>
+    <state x="589" y="215" width="800" height="675" key="#Project_Structure/69.27.1851.1053@69.27.1851.1053" timestamp="1591723765187" />
+    <state x="452" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591724472879">
+      <screen x="69" y="27" width="1851" height="1053" />
+    </state>
+    <state x="452" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog/69.27.1851.1053@69.27.1851.1053" timestamp="1591724472879" />
+    <state x="835" y="445" width="308" height="214" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1591723490856">
+      <screen x="69" y="27" width="1851" height="1053" />
+    </state>
+    <state x="835" y="445" width="308" height="214" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/69.27.1851.1053@69.27.1851.1053" timestamp="1591723490856" />
+    <state x="739" y="427" width="489" height="246" key="DetectedRootsChooserDialog" timestamp="1591726177820">
+      <screen x="69" y="27" width="1851" height="1053" />
+    </state>
+    <state x="739" y="427" width="489" height="246" key="DetectedRootsChooserDialog/69.27.1851.1053@69.27.1851.1053" timestamp="1591726177820" />
+    <state x="1051" y="275" width="735" height="482" key="FileChooserDialogImpl" timestamp="1591726476777">
+      <screen x="69" y="27" width="1851" height="1053" />
+    </state>
+    <state x="1051" y="275" width="735" height="482" key="FileChooserDialogImpl/69.27.1851.1053@69.27.1851.1053" timestamp="1591726476777" />
+    <state x="477" y="130" width="1024" height="843" key="SettingsEditor" timestamp="1591726490630">
+      <screen x="69" y="27" width="1851" height="1053" />
+    </state>
+    <state x="477" y="130" width="1024" height="843" key="SettingsEditor/69.27.1851.1053@69.27.1851.1053" timestamp="1591726490630" />
+  </component>
+</project>
