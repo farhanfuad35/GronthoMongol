@@ -175,7 +175,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
                 waitDialog.setContentView(R.layout.dialog_searching_books);
                 waitDialog.show();
 
-                final String whereClause = "name LIKE '" + query + "%' OR writer LIKE '" + query + "%'";
+                final String whereClause = "name LIKE '" + query + "%' OR writer LIKE '" + query + "%' AND quantity > 0";
 
                 Thread thread = new Thread(new Runnable() {
                     @Override

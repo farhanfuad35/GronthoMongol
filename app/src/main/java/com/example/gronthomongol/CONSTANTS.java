@@ -31,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.backendless.Backendless;
 import com.backendless.BackendlessUser;
+import com.backendless.IAtomic;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.messaging.MessageStatus;
@@ -275,7 +276,7 @@ public class CONSTANTS {
                             maximum_order_per_day = (int) config.get("maximum_order_per_day");
 
                             Log.i("file", min_version + "\t" + sendNotificationToAdmins + "\t" + operational + "\t" +
-                                    non_operational_message + "\t" + canOrder + "\t" + cannot_order_message);
+                                    non_operational_message + "\t" + canOrder + "\t" + cannot_order_message + "\t" + maximum_order_per_day);
 
                             if(CURRENT_APP_VERSION < min_version){
                                 showErrorDialog((Activity)context, "Update Required", "Your app is outdated. Please update to continue", "okay",
@@ -339,16 +340,22 @@ public class CONSTANTS {
                     public void handleResponse( Integer value )
                     {
                         CONSTANTS.CURRENT_NUMBER_OF_ORDERS = value;
+                        Log.i("counter", "handleResponse: Current number of orders: " + value);
                     }
 
                     @Override
                     public void handleFault( BackendlessFault backendlessFault )
                     {
+                        Log.i("counter", "handleFault: " + backendlessFault.getMessage() + "\tcode: " + backendlessFault.getCode());
                         CONSTANTS.CURRENT_NUMBER_OF_ORDERS = 0;
                     }
                 };
 
                 Backendless.Counters.get( "current_number_of_orders", callback );
+
+//                IAtomic<Integer> myCounter = Backendless.Counters.of( "current_number_of_orders", Integer.class );
+//                CURRENT_NUMBER_OF_ORDERS = myCounter.get();
+//                Log.i("counter", "handleResponse: Current number of orders: " + myCounter.get());
 
                 // Note: Both of the below functions can be used to retrieve the current logged in user
                 // But both of these functions might have been used somewhere in this project. So recommended that both be here.

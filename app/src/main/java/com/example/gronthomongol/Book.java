@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -138,10 +139,12 @@ public class Book implements Serializable {
                     // Replace the book only if it is being UPDATED, not CREATED
                     // Created book is added through a fresh retrieve because of different active sort mode
                     if(CONSTANTS.isShowingDefaultBooklist()) {
-                        updateBookIfFound(CONSTANTS.bookListCached, bookToBeSaved, response);
+                        if(updateBookIfFound(CONSTANTS.bookListCached, bookToBeSaved, response))
+                            sortBookList(context, CONSTANTS.bookListCached);
                     }
                     else{
-                        updateBookIfFound(CONSTANTS.tempBookListCached, bookToBeSaved, response);
+                        if(updateBookIfFound(CONSTANTS.tempBookListCached, bookToBeSaved, response))
+                            sortBookList(context, CONSTANTS.tempBookListCached);
                     }
 
 
@@ -177,25 +180,41 @@ public class Book implements Serializable {
         });
     }
 
-    private void deleteIfFound(List<Book> currentBooks, Book bookToBeDeleted){
+    private boolean deleteIfFound(List<Book> currentBooks, Book bookToBeDeleted){
         for (int i = 0; i < currentBooks.size(); i++) {
             Log.i("book_deletion", "traversed book " + i + ": oId: " + CONSTANTS.getBookListCached().get(i).getObjectId());
             if (CONSTANTS.getBookListCached().get(i).equals(bookToBeDeleted)) {
-
                 CONSTANTS.getBookListCached().remove(i);
                 Log.i("book_deletion", "handleResponse: found a matched book. current size: " + CONSTANTS.getBookListCached().size());
-                break;
+                return true;
             }
         }
+        return false;
     }
 
-    private void updateBookIfFound(List<Book> currentBooks, Book oldBook, Book bookToBeSaved){
+    private boolean updateBookIfFound(List<Book> currentBooks, Book oldBook, Book bookToBeSaved){
         for (int i = 0; i < currentBooks.size(); i++) {
             if (currentBooks.get(i).equals(oldBook)) {
                 currentBooks.remove(i);
                 currentBooks.add(i, bookToBeSaved);
-                break;
+                return true;
             }
+        }
+        return false;
+    }
+
+    private void sortBookList(Context context, List<Book> bookListToBeSorted){
+        SharedPreferences pref = ((Activity)context).getSharedPreferences("preferences", 0); // 0 - for private mode
+        String sortBy = pref.getString("sortBy", "name");
+
+        if(sortBy.equals("name")){
+            asfasf
+        }
+        else if(sortBy.equals("writer")){
+
+        }
+        else if(sortBy.equals("quantity")){
+
         }
     }
 }

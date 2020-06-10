@@ -395,13 +395,18 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
     private void showSortByDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(booklist_admin.this);
         builder.setTitle("Sort By")
-                .setItems(R.array.sortByArray, new DialogInterface.OnClickListener() {
+                .setItems(R.array.sortByArray_admin, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         final String sortBy;
                         if (which == 0)
                             sortBy = "name";
-                        else
+                        else if(which == 1)
                             sortBy = "writer";
+                        else
+                            sortBy = "quantity";
+
+                        // Search query book number not handled
+
                         Log.i("booklist_retrieve", "booklist_admin: sortBy = " + sortBy);
 
                         final Dialog waitDialog = new Dialog(booklist_admin.this);
