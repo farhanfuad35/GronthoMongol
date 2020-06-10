@@ -44,6 +44,7 @@ import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CONSTANTS {
@@ -253,6 +254,27 @@ public class CONSTANTS {
     public static void setOFFSET(int OFFSET) {
         CONSTANTS.OFFSET = OFFSET;
     }
+
+    public static Comparator<Book> compareByName = new Comparator<Book>() {
+        @Override
+        public int compare(Book o1, Book o2) {
+            return o1.getName().compareTo(o2.getName());
+        }
+    };
+
+    public static Comparator<Book> compareByWriter = new Comparator<Book>() {
+        @Override
+        public int compare(Book o1, Book o2) {
+            return o1.getWriter().compareTo(o2.getWriter());
+        }
+    };
+
+    public static Comparator<Book> compareByQuantity = new Comparator<Book>() {
+        @Override
+        public int compare(Book o1, Book o2) {
+            return o1.getQuantity() - o2.getQuantity();
+        }
+    };
 
     public static void getConfigFile(final Context context, final int callingActivityId){
         String url = String.format("https://backendlessappcontent.com/%s/%s/files/config.json", CREDENTIALS.getApplicationId(),
@@ -662,8 +684,9 @@ public class CONSTANTS {
         editor.putString("sortBy", sortBy);
         editor.commit();
 
+        Log.i("shared_preference", "freshRetrieveFromDatabase: sortBy = " + sortBy);
+        Log.i("shared_preference", "freshRetrieveFromDatabase: value from sharedPreference: " + pref.getString("sortBy", "default"));
 
-        Log.i("booklist_retrieve", "freshRetrieveFromDatabase: sortBy = " + sortBy);
 
         // Database Stuff
         final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
@@ -742,10 +765,11 @@ public class CONSTANTS {
         SharedPreferences pref = context.getSharedPreferences("preferences", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("sortBy", sortBy);
-        editor.commit();
+        editor.apply();
 
 
-        Log.i("booklist_retrieve", "freshRetrieveFromDatabase: sortBy = " + sortBy);
+        Log.i("shared_preference", "freshRetrieveFromDatabase: sortBy = " + sortBy);
+        Log.i("shared_preference", "freshRetrieveFromDatabase: value from sharedPreference: " + pref.getString("sortBy", "default"));
 
         // Database Stuff
         final DataQueryBuilder queryBuilder = DataQueryBuilder.create();

@@ -13,7 +13,11 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import javax.security.auth.login.LoginException;
 
 public class Book implements Serializable {
     private String objectId;
@@ -87,6 +91,7 @@ public class Book implements Serializable {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
 
     public final void deleteBook(final Context context, final Dialog dialog){
         final Book bookToBeDeleted = this;
@@ -207,14 +212,19 @@ public class Book implements Serializable {
         SharedPreferences pref = ((Activity)context).getSharedPreferences("preferences", 0); // 0 - for private mode
         String sortBy = pref.getString("sortBy", "name");
 
+        Log.i("sort", pref.getString("sortBy", "default"));
+
         if(sortBy.equals("name")){
-            asfasf
+            Log.i("sort", "sortBookList: name");
+            Collections.sort(bookListToBeSorted, CONSTANTS.compareByName);
         }
         else if(sortBy.equals("writer")){
-
+            Log.i("sort", "sortBookList: writer");
+            Collections.sort(bookListToBeSorted, CONSTANTS.compareByWriter);
         }
         else if(sortBy.equals("quantity")){
-
+            Log.i("sort", "sortBookList: quantity");
+            Collections.sort(bookListToBeSorted, CONSTANTS.compareByQuantity);
         }
     }
 }
