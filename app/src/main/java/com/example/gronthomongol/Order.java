@@ -414,6 +414,8 @@ public class Order implements Serializable {
                     etBkash.setClickable(false);
                     etBkash.setFocusable(false);
 
+                    updateIfFound(updatedOrder);
+
                     Toast.makeText((Activity)context, "TxnId Submitted", Toast.LENGTH_SHORT).show();
                 }
                 else if(updateCode.equals("delivered")){
