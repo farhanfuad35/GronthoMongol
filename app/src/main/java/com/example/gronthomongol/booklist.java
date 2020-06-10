@@ -198,9 +198,11 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
                 for(int i=0; i<CONSTANTS.bookListCached.size(); i++){
                     if(CONSTANTS.bookListCached.get(i).equals(updatedBook)){
                         CONSTANTS.bookListCached.remove(i);
-                        CONSTANTS.bookListCached.add(i, updatedBook);
+                        if(updatedBook.getQuantity()>0) {
+                            CONSTANTS.bookListCached.add(i, updatedBook);
                             booklistAdapterRV.notifyDataSetChanged();
-
+                        }
+                        break;
                     }
                 }
                 Log.i(TAG, "an Order object has been updated. Object ID - " + updatedBook.getObjectId());
