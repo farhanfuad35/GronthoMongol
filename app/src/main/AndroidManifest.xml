@@ -12,19 +12,23 @@
         android:roundIcon="@drawable/pasheachi_log_removebg"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="android.app.searchable"
-            android:resource="@xml/searchable" />
-        <activity android:name=".addBook"></activity>
-        <activity android:name=".viewOrders_admin" />
-        <activity android:name=".requestList" />
-        <activity android:name=".booklist_admin"
-            android:launchMode="singleTop"
-            >
+        <activity android:name=".orderDetails_admin"></activity>
 
+        <meta-data
+            android:name="android.app.searchable"
+            android:resource="@xml/searchable" />
+
+        <activity android:name=".addBook" />
+        <activity android:name=".requestList" />
+        <activity
+            android:name=".booklist_admin"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
+
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".bookDetails" />
@@ -34,14 +38,15 @@
         <activity android:name=".SplashScreen" />
         <activity android:name=".placeOrder" />
         <activity android:name=".postRequest" />
-        <activity android:name=".booklist"
-            android:launchMode="singleTop"
-            >
-
+        <activity
+            android:name=".booklist"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
+
+            <meta-data
+                android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".register" />

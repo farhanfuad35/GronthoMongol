@@ -53,6 +53,7 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
     private RecyclerView.LayoutManager rvLayoutManager;
     private EndlessScrollEventListener endlessScrollEventListener;
     private EventHandler<Book> bookEventHandler = Backendless.Data.of(Book.class).rt();
+    private EventHandler<Order> orderEventHandler = Backendless.Data.of(Order.class).rt();
 
     private int fromActivityID;
     private final String TAG = "booklist_admin";
@@ -71,6 +72,11 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
         handleIntent(getIntent());
         initializeGUIElements();
         initializeRecyclerView();   // Check this for endless scroll data retrieval
+
+
+        // For orders
+        initiateRealTimeDatabaseListenersOrder_admin();
+
         pref = getSharedPreferences("preferences", 0); // 0 - for private mode
         initiateRealTimeDatabaseListeners();
 
@@ -91,7 +97,7 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "onClick: starting viewOrders");
-                Intent intent = new Intent(booklist_admin.this, viewOrders_admin.class);
+                Intent intent = new Intent(booklist_admin.this, viewOrders.class);
                 intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdBooklistAdmin());
                 startActivity(intent);
             }
@@ -105,6 +111,50 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
             }
         });
 
+    }
+
+    private void initiateRealTimeDatabaseListenersOrder_admin() {
+        Log.i(TAG, "initiateRealTimeDatabaseListeners: update Listener initiated");
+        // update listener
+        orderEventHandler.addUpdateListener( new AsyncCallback<Order>() {
+            @Override
+            public void handleResponse(Order updatedOrder) {
+                Log.i(TAG, "handleResponse: update listener triggered");
+                for(int i=0; i<CONSTANTS.myOrdersCached.size(); i++){
+                    if(CONSTANTS.myOrdersCached.get(i).equals(updatedOrder)){
+                        CONSTANTS.myOrdersCached.remove(i);
+                        CONSTANTS.myOrdersCached.add(i, updatedOrder);
+
+                        if(CONSTANTS.orderlistAdapterRV!=null){
+                            CONSTANTS.orderlistAdapterRV.notifyDataSetChanged();
+                        }
+                    }
+                }
+                Log.i(TAG, "an Order object has been updated. Object ID - " + updatedOrder.getObjectId());
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.e(TAG, "Server reported an error while Updating order listener " + fault.getDetail());
+            }
+        });
+
+        // save listener
+        orderEventHandler.addCreateListener(new AsyncCallback<Order>() {
+            @Override
+            public void handleResponse(Order response) {
+                CONSTANTS.myOrdersCached.add(0, response);
+                if(CONSTANTS.orderlistAdapterRV!=null){
+                    CONSTANTS.orderlistAdapterRV.notifyDataSetChanged();
+                }
+                Log.i(TAG, "handleResponse: New order received");
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.e(TAG, "Server reported an error in create order listener " + fault.getDetail());
+            }
+        });
     }
 
     @Override
@@ -121,24 +171,28 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
             String query = intent.getStringExtra(SearchManager.QUERY).trim();
             //use the query to search your data somehow
             Log.i("search", "came to search. query: " + query);
+            if(query.length() < 2){
+                Toast.makeText(booklist_admin.this, "Search query is too small", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                final Dialog waitDialog = new Dialog(booklist_admin.this);
+                waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                waitDialog.setCancelable(false);
+                waitDialog.setContentView(R.layout.dialog_searching_books);
+                waitDialog.show();
 
-            final Dialog waitDialog = new Dialog(booklist_admin.this);
-            waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            waitDialog.setCancelable(false);
-            waitDialog.setContentView(R.layout.dialog_searching_books);
-            waitDialog.show();
+                final String whereClause = "name LIKE '" + query + "%' OR writer LIKE '" + query + "%'";
 
-            final String whereClause = "name LIKE '" + query + "%' OR writer LIKE '" + query + "%'";
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CONSTANTS.backendlessBookQuery(booklist_admin.this, waitDialog, whereClause, booklistAdapterRV_admin);
+                    }
+                });
 
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    CONSTANTS.backendlessBookQuery(booklist_admin.this, waitDialog, whereClause, booklistAdapterRV_admin);
-                }
-            });
-
-            thread.start();
-            recyclerView.requestFocus();    // So that keyboard doesn't pop open
+                thread.start();
+                recyclerView.requestFocus();    // So that keyboard doesn't pop open
+            }
         }
     }
 
@@ -341,7 +395,6 @@ public class booklist_admin extends AppCompatActivity implements BooklistAdapter
     private void showSortByDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(booklist_admin.this);
         builder.setTitle("Sort By")
-
                 .setItems(R.array.sortByArray, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         final String sortBy;

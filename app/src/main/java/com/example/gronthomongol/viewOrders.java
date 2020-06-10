@@ -1,23 +1,36 @@
 package com.example.gronthomongol;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
@@ -35,9 +48,9 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
     private TextView tvNoOrder;
     private RecyclerView.LayoutManager rvLayoutManager;
     private EndlessScrollEventListener endlessScrollEventListener;
-    private EventHandler<Order> orderEventHandler = Backendless.Data.of(Order.class).rt();
 
     private int fromActivityID;
+    private int ID_ORDER_DETAILS_ADMIN = 91;
     private final String TAG = "viewOrders";
 
     @Override
@@ -50,60 +63,77 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         initializeGUIElements();
+
         if(CONSTANTS.myOrdersCached.isEmpty()){
             recyclerView.setVisibility(View.GONE);
             tvNoOrder.setVisibility(View.VISIBLE);
         }
         else {
             initializeRecyclerView();
-            initiateRealTimeDatabaseListeners();
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if((boolean) CONSTANTS.getCurrentUser().getProperty("admin")) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.options_menu_orders, menu);
+            return true;
+        }
 
-    public void initiateRealTimeDatabaseListeners() {
-        // Update Listener
-        Log.i(TAG, "initiateRealTimeDatabaseListeners: update Listener initiated");
-        String whereClause = "Recipient_Email = '" + CONSTANTS.getCurrentUser().getEmail() + "'";
-        orderEventHandler.addUpdateListener( whereClause, new AsyncCallback<Order>() {
-            @Override
-            public void handleResponse(Order updatedOrder) {
-                Log.i(TAG, "handleResponse: update listener triggered");
-                for(int i=0; i<CONSTANTS.myOrdersCached.size(); i++){
-                    if(CONSTANTS.myOrdersCached.get(i).equals(updatedOrder)){
-                        CONSTANTS.myOrdersCached.remove(i);
-                        CONSTANTS.myOrdersCached.add(i, updatedOrder);
-                        orderlistAdapterRV.notifyDataSetChanged();
+        return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.menuMain_orders_filter){
+            showFilterByDialog();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showFilterByDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(viewOrders.this);
+        builder.setTitle("Filter By").setItems(R.array.filterByArray, new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        dialog.dismiss();
+                        if (which != CONSTANTS.currentOrderFilter) {
+                            String whereClause = CONSTANTS.NULLMARKER;
+                            if (which == 0)
+                                whereClause = CONSTANTS.NULLMARKER;     // sensitive
+                            else if (which == 1)
+                                whereClause = "delivered = FALSE";
+                            else if (which == 2)
+                                whereClause = "delivered = FALSE AND paid = TRUE";
+                            else if (which == 3)
+                                whereClause = "delivered = FALSE AND paid = FALSE";
+                            else if (which == 4)
+                                whereClause = "delivered = TRUE";
+                            Log.i("orderlist_retrieve", "orderlist: filterBy = " + whereClause);
+
+                            final Dialog waitDialog = new Dialog(viewOrders.this);
+                            waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            waitDialog.setCancelable(false);
+                            waitDialog.setContentView(R.layout.dialog_please_wait);
+                            waitDialog.show();
+
+                            final String finalWhereClause = whereClause;
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    CONSTANTS.freshOrderRetrieveFromDatabase(viewOrders.this, orderlistAdapterRV, finalWhereClause, waitDialog, endlessScrollEventListener, which);
+                                }
+                            });
+
+                            thread.start();
+                        }
                     }
-                }
-                Log.i(TAG, "an Order object has been updated. Object ID - " + updatedOrder.getObjectId());
+                });
 
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-                Log.e(TAG, "Server reported an error while Updating book listener " + fault.getDetail());
-            }
-        });
-
-        // Delete Listener
-//
-//        orderEventHandler.addDeleteListener(new AsyncCallback<Order>() {
-//            @Override
-//            public void handleResponse(Book deletedBook) {
-//                Log.i(TAG, "an Order object has been deleted. Object ID - " + deletedBook.getObjectId());
-//                if (CONSTANTS.bookListCached.contains(deletedBook)) {
-//                    CONSTANTS.bookListCached.remove(deletedBook);
-//                    booklistAdapterRV.notifyDataSetChanged();
-//                }
-//            }
-//
-//            @Override
-//            public void handleFault(BackendlessFault fault) {
-//                Log.e(TAG, "Server reported an error " + fault.getDetail());
-//            }
-//        });
-
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void initializeGUIElements(){
@@ -119,11 +149,17 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
         orderlistAdapterRV = new OrderlistAdapterRV(CONSTANTS.myOrdersCached, getApplicationContext(), this);
         recyclerView.setAdapter(orderlistAdapterRV);
 
+        // Store this adapter in CONSTANT so that it can be used to update order list on real time from booklist
+        CONSTANTS.orderlistAdapterRV = orderlistAdapterRV;
+
         endlessScrollEventListener = new EndlessScrollEventListener((LinearLayoutManager) rvLayoutManager) {
             @Override
             public void onLoadMore(int pageNum, RecyclerView recyclerView) {
+                Log.i(TAG, "onLoadMore: ");
+                
+                if(CONSTANTS.myOrdersCached.size() > CONSTANTS.getMyOrderPageSize() - 1) {
 
-                if(CONSTANTS.myOrdersCached.size() > CONSTANTS.getPageSize() - 1) {
+                    Log.i(TAG, "onLoadMore: Requesting more orders");
 
                     progressBar.setVisibility(View.VISIBLE);
 
@@ -181,14 +217,22 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
                     @Override
                     public void handleResponse(List<Book> response) {
                         // TODO: Do something with it
+                        Log.i(TAG, "handleResponse: Loading orderedBooks successful. List size: " + response.size());
                         ArrayList<Book> orderedBooks = new ArrayList<>(response);
-                        Log.i(TAG, "handleResponse: Loading orderedBooks successful. List size: " + orderedBooks.size());
-                        Intent intent = new Intent(viewOrders.this, orderDetails.class);
-                        intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdViewOrders());
-                        intent.putExtra("orderedBooks", orderedBooks);
-                        intent.putExtra("currentOrder", (Serializable) CONSTANTS.myOrdersCached.get(position));
                         dialog.dismiss();
-                        startActivity(intent);
+                        if((boolean) CONSTANTS.getCurrentUser().getProperty("admin")) {
+                            Intent intent = new Intent(viewOrders.this, orderDetails_admin.class);
+                            intent.putExtra("orderedBooks", orderedBooks);
+                            intent.putExtra("currentOrder", (Serializable) CONSTANTS.myOrdersCached.get(position));
+                            startActivityForResult(intent, ID_ORDER_DETAILS_ADMIN);
+                        }
+                        else {
+                            Intent intent = new Intent(viewOrders.this, orderDetails.class);
+                            intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdViewOrders());
+                            intent.putExtra("orderedBooks", orderedBooks);
+                            intent.putExtra("currentOrder", (Serializable) CONSTANTS.myOrdersCached.get(position));
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
@@ -213,6 +257,16 @@ public class viewOrders extends AppCompatActivity implements OrderlistAdapterRV.
         thread.start();
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ID_ORDER_DETAILS_ADMIN){
+            if(resultCode == RESULT_OK){
+                orderlistAdapterRV.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override

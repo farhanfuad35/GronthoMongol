@@ -53,6 +53,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
     private RecyclerView.LayoutManager rvLayoutManager;
     private EndlessScrollEventListener endlessScrollEventListener;
     private EventHandler<Book> bookEventHandler = Backendless.Data.of(Book.class).rt();
+    private EventHandler<Order> orderEventHandler = Backendless.Data.of(Order.class).rt();
 
     private int fromActivityID;
     private final String TAG = "booklist";
@@ -71,6 +72,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
         handleIntent(getIntent());
         initializeGUIElements();
         initializeRecyclerView();   // Check this for endless scroll data retrieval
+
         pref = getSharedPreferences("preferences", 0); // 0 - for private mode
 
         //Toast.makeText(getApplicationContext(), "DEBUG MODE", Toast.LENGTH_SHORT).show();
@@ -117,6 +119,7 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
         }
 
         initiateRealTimeDatabaseListeners();
+        initiateRealTimeDatabaseListenersOrders();
 
     }
 
@@ -128,34 +131,64 @@ public class booklist extends AppCompatActivity implements BooklistAdapterRV.OnB
         Log.i("search", "onNewIntent: ");
     }
 
+    public void initiateRealTimeDatabaseListenersOrders() {
+        // Update Listener
+        Log.i(TAG, "initiateRealTimeDatabaseListeners: update Listener initiated");
+        String whereClause = "Recipient_Email = '" + CONSTANTS.getCurrentUser().getEmail() + "'";
+        orderEventHandler.addUpdateListener(whereClause, new AsyncCallback<Order>() {
+            @Override
+            public void handleResponse(Order updatedOrder) {
+                Log.i(TAG, "handleResponse: update listener triggered");
+                for (int i = 0; i < CONSTANTS.myOrdersCached.size(); i++) {
+                    if (CONSTANTS.myOrdersCached.get(i).equals(updatedOrder)) {
+                        CONSTANTS.myOrdersCached.remove(i);
+                        CONSTANTS.myOrdersCached.add(i, updatedOrder);
+                        if(CONSTANTS.orderlistAdapterRV!=null){
+                            CONSTANTS.orderlistAdapterRV.notifyDataSetChanged();
+                        }
+                    }
+                }
+                Log.i(TAG, "an Order object has been updated. Object ID - " + updatedOrder.getObjectId());
+
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.e(TAG, "Server reported an error while Updating book listener " + fault.getDetail());
+            }
+        });
+    }
+
     private void handleIntent(Intent intent) {
         Log.i("search", "handleIntent: ");
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY).trim();
             //use the query to search your data somehow
             Log.i("search", "came to search. query: " + query);
+            if(query.length() < 2){
+                Toast.makeText(booklist.this, "Search query is too small", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                final Dialog waitDialog = new Dialog(booklist.this);
+                waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                waitDialog.setCancelable(false);
+                waitDialog.setContentView(R.layout.dialog_searching_books);
+                waitDialog.show();
 
-            final Dialog waitDialog = new Dialog(booklist.this);
-            waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            waitDialog.setCancelable(false);
-            waitDialog.setContentView(R.layout.dialog_searching_books);
-            waitDialog.show();
+                final String whereClause = "name LIKE '" + query + "%' OR writer LIKE '" + query + "%'";
 
-            final String whereClause = "name LIKE '" + query + "%' OR writer LIKE '" + query + "%'";
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CONSTANTS.backendlessBookQuery(booklist.this, waitDialog, whereClause, booklistAdapterRV);
+                    }
+                });
 
-            Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    CONSTANTS.backendlessBookQuery(booklist.this, waitDialog, whereClause, booklistAdapterRV);
-                }
-            });
-
-            thread.start();
-            recyclerView.requestFocus();
+                thread.start();
+                recyclerView.requestFocus();
+            }
         }
     }
-
-
 
     public void initiateRealTimeDatabaseListeners() {
         // Update Listener

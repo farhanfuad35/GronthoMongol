@@ -24,6 +24,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.security.auth.login.LoginException;
 
 public class Order implements Serializable {
     private String objectId;
@@ -258,6 +261,7 @@ public class Order implements Serializable {
                                     @Override
                                     public void handleResponse(Integer response) {
                                         Log.i("backendless_order", "handleResponse: User Relation Set Successfully. All done nicely");
+                                        CONSTANTS.CURRENT_NUMBER_OF_ORDERS = CONSTANTS.CURRENT_NUMBER_OF_ORDERS + 1;
 
                                         // Increment the daily_number_of_orders atomic counter
                                         Backendless.Counters.incrementAndGet("current_number_of_orders", new AsyncCallback<Integer>() {
@@ -409,9 +413,17 @@ public class Order implements Serializable {
                     etBkash.setFocusableInTouchMode(false);
                     etBkash.setClickable(false);
                     etBkash.setFocusable(false);
+
+                    Toast.makeText((Activity)context, "TxnId Submitted", Toast.LENGTH_SHORT).show();
                 }
+                else if(updateCode.equals("delivered")){
+                    Button button = ((Activity)context).findViewById(R.id.btnOrderDetails_admin_MarkAsDelivered);
+                    button.setVisibility(View.GONE);
+
+                    updateIfFound(updatedOrder);
+                }
+                ((Activity)context).setResult(Activity.RESULT_OK);
                 dialog.dismiss();
-                Toast.makeText((Activity)context, "TxnId Submitted", Toast.LENGTH_SHORT).show();
 
             }
             @Override
@@ -433,5 +445,55 @@ public class Order implements Serializable {
                 // an error has occurred, the error code can be retrieved with fault.getCode()
             }
         } );
+    }
+
+    public void deleteOrderOnDatabase(final Context context, final Dialog dialog){
+        final Order orederToBeDeleted = this;
+        Backendless.Data.of(Order.class).remove(this, new AsyncCallback<Long>() {
+            @Override
+            public void handleResponse(Long response) {
+                Log.i("order_deletion", "handleResponse: ");
+                deleteIfFound(orederToBeDeleted);
+                dialog.dismiss();
+                ((Activity)context).setResult(Activity.RESULT_OK);
+                ((Activity)context).finish();
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                dialog.dismiss();
+                String title;
+                String message;
+                if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
+                    title = "Connection Failed!";
+                    message = "Please Check Your Internet Connection";
+                    CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
+                }
+                else {
+                    Toast.makeText((Activity)context, "Error occurred. Order couldn't be deleted!", Toast.LENGTH_SHORT).show();
+                    Log.i("order_deletion", "handleFault: " + fault.getMessage());
+                }
+            }
+        });
+    }
+
+
+    private void deleteIfFound(Order orderToBeDeleted){
+        for (int i = 0; i < CONSTANTS.myOrdersCached.size(); i++) {
+            if (CONSTANTS.myOrdersCached.get(i).equals(orderToBeDeleted)) {
+                CONSTANTS.myOrdersCached.remove(i);
+                break;
+            }
+        }
+    }
+
+    private void updateIfFound(Order orderToBeUpdated){
+        for (int i = 0; i < CONSTANTS.myOrdersCached.size(); i++) {
+            if (CONSTANTS.myOrdersCached.get(i).equals(orderToBeUpdated)) {
+                CONSTANTS.myOrdersCached.remove(i);
+                CONSTANTS.myOrdersCached.add(i, orderToBeUpdated);
+                break;
+            }
+        }
     }
 }

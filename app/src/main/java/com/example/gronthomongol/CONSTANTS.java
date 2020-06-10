@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -68,6 +69,8 @@ public class CONSTANTS {
     public static String non_operational_message;
     public static double min_version;
     public static int maximum_order_per_day;
+    public static int currentOrderFilter = 0;       // none. index according to values/array_filter_by.xml
+    public static OrderlistAdapterRV orderlistAdapterRV;
 
     public static int CURRENT_NUMBER_OF_ORDERS = 0;
 
@@ -76,12 +79,16 @@ public class CONSTANTS {
     public static List<Book> bookListCached;
     public static List<Book> tempBookListCached = new ArrayList<>();
     public static List<Order> myOrdersCached;
+    public static List<com.example.gronthomongol.Request> userRequestsCached;
     public static ArrayList<Book> orderedBooks;
     private static int OFFSET = 0;      // Explicitly for booklist
     private static int MYORDEROFFSET = 0;
     private static int PAGE_SIZE = 13;
-    private static int MY_ORDER_PAGE_SIZE = 13;
+    private static int MY_ORDER_PAGE_SIZE = 13;     // MIGHT CAUSE TROUBLE. SET IT TO 10
+    private static int REQUESTS_PAGE_SIZE = 13;
+    private static int REQUESTS_OFFSET = 0;
     private  static DataQueryBuilder bookListQueryBuilder;
+    private  static DataQueryBuilder userRequestsQueryBuilder;
     private  static DataQueryBuilder orderListQueryBuilder;
     private  static DataQueryBuilder SearchBookQueryBuilder;
     public static String NULLMARKER = "N/A_AUTO";
@@ -96,6 +103,14 @@ public class CONSTANTS {
 
     public static int getIdSpalshScreen() {
         return ID_SPALSH_SCREEN;
+    }
+
+    public static DataQueryBuilder getUserRequestsQueryBuilder() {
+        return userRequestsQueryBuilder;
+    }
+
+    public static void setUserRequestsQueryBuilder(DataQueryBuilder userRequestsQueryBuilder) {
+        CONSTANTS.userRequestsQueryBuilder = userRequestsQueryBuilder;
     }
 
     public static int getIdLogin() {
@@ -120,6 +135,18 @@ public class CONSTANTS {
 
     public static void setTempBookListCached(List<Book> tempBookListCached) {
         CONSTANTS.tempBookListCached = tempBookListCached;
+    }
+
+    public static int getRequestsPageSize() {
+        return REQUESTS_PAGE_SIZE;
+    }
+
+    public static int getRequestsOffset() {
+        return REQUESTS_OFFSET;
+    }
+
+    public static void setRequestsOffset(int requestsOffset) {
+        REQUESTS_OFFSET = requestsOffset;
     }
 
     public static DataQueryBuilder getSearchBookQueryBuilder() {
@@ -306,7 +333,6 @@ public class CONSTANTS {
             @Override
             public void handleResponse(BackendlessUser response) {
                 // Get current number of orders from backendless
-                // TODO COUNTER READY TO DEPLOY
                 AsyncCallback<Integer> callback = new AsyncCallback<Integer>()
                 {
                     @Override
@@ -349,9 +375,24 @@ public class CONSTANTS {
                 }
                 else {
                     // Couldn't get user from database. Take the user to the login page after a logout attempt
-                    Intent intent = new Intent((Activity)context, login.class);
-                    ((Activity)context).finish();
-                    ((Activity)context).startActivity(intent);
+
+                    Backendless.Messaging.unregisterDevice(new AsyncCallback<Integer>() {
+                        @Override
+                        public void handleResponse(Integer response) {
+                            // Couldn't get user from database. Take the user to the login page after a logout attempt
+                            Intent intent = new Intent((Activity)context, login.class);
+                            ((Activity)context).finish();
+                            ((Activity)context).startActivity(intent);
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            // Couldn't get user from database. Take the user to the login page after a logout attempt
+                            Intent intent = new Intent((Activity)context, login.class);
+                            ((Activity)context).finish();
+                            ((Activity)context).startActivity(intent);
+                        }
+                    });
                 }
 
             }
@@ -607,6 +648,7 @@ public class CONSTANTS {
         // Internal Changes
         Log.i("booklist_retrieve", "freshRetrieveFromDatabase: before sortBy = " + sortBy);
 
+        final int oldOffset = CONSTANTS.getOFFSET();
         CONSTANTS.setOFFSET(0);
         SharedPreferences pref = context.getSharedPreferences("preferences", 0); // 0 - for private mode
         SharedPreferences.Editor editor = pref.edit();
@@ -655,6 +697,7 @@ public class CONSTANTS {
                     public void handleFault( BackendlessFault fault )
                     {
                         dialog.dismiss();
+                        CONSTANTS.setOFFSET(oldOffset);
                         String title;
                         String message;
 
@@ -686,6 +729,7 @@ public class CONSTANTS {
 
         // Internal Changes
         Log.i("booklist_retrieve", "freshRetrieveFromDatabase: before sortBy = " + sortBy);
+        final int oldOffset = CONSTANTS.getOFFSET();
 
         CONSTANTS.setOFFSET(0);
         SharedPreferences pref = context.getSharedPreferences("preferences", 0); // 0 - for private mode
@@ -706,8 +750,7 @@ public class CONSTANTS {
         queryBuilder.addAllProperties();
         queryBuilder.setSortBy(sortBy);
         queryBuilder.setPageSize( CONSTANTS.getPageSize() ).setOffset( CONSTANTS.getOFFSET() );
-        Backendless.Data.of( Book.class ).find( queryBuilder,
-                new AsyncCallback<List<Book>>()
+        Backendless.Data.of( Book.class ).find( queryBuilder, new AsyncCallback<List<Book>>()
                 {
                     @Override
                     public void handleResponse( List<Book> response )
@@ -738,6 +781,8 @@ public class CONSTANTS {
                         String title;
                         String message;
 
+                        CONSTANTS.setOFFSET(oldOffset);
+
                         if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
                             title = "Connection Failed!";
                             message = "Please Check Your Internet Connection";
@@ -755,6 +800,60 @@ public class CONSTANTS {
 
                 });
 
+    }
+
+    public static void freshOrderRetrieveFromDatabase(final Context context, final OrderlistAdapterRV orderlistAdapterRV, String whereClause, final Dialog dialog,
+                                                      final EndlessScrollEventListener endlessScrollEventListener, final int which){
+        final int oldOffset = CONSTANTS.getMYORDEROFFSET();
+        CONSTANTS.setMYORDEROFFSET(0);
+
+        final DataQueryBuilder dataQueryBuilder = DataQueryBuilder.create();
+        dataQueryBuilder.setPageSize(CONSTANTS.getMyOrderPageSize()).setOffset(CONSTANTS.getMYORDEROFFSET());
+        if(!whereClause.equals(NULLMARKER))
+            dataQueryBuilder.setWhereClause(whereClause);
+        dataQueryBuilder.addAllProperties();
+        dataQueryBuilder.setSortBy("created DESC");
+
+        Backendless.Data.of(Order.class).find(dataQueryBuilder, new AsyncCallback<List<Order>>() {
+            @Override
+            public void handleResponse(List<Order> response) {
+                CONSTANTS.myOrdersCached.clear();
+                CONSTANTS.myOrdersCached.addAll(response);
+
+                Log.i("orderlist_retrieve", "received list[0] = " + response.get(0).getRecipient_Name());
+
+                endlessScrollEventListener.reset();
+                orderlistAdapterRV.notifyDataSetChanged();
+                CONSTANTS.setOrderListQueryBuilder(dataQueryBuilder);    // To make this exact querybuilder accessible from all over the app
+                Log.i("orderlist_retrieve", "Booklist retrieved. Size = " + response.size());
+                CONSTANTS.setMYORDEROFFSET(CONSTANTS.getMYORDEROFFSET()+CONSTANTS.getMyOrderPageSize());
+
+                CONSTANTS.currentOrderFilter = which;
+                dialog.dismiss();
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+
+                dialog.dismiss();
+                String title;
+                String message;
+
+                CONSTANTS.setMYORDEROFFSET(oldOffset);
+
+                if( fault.getMessage().equals(((Activity)context).getString(R.string.connectionErrorMessageBackendless) )) {
+                    title = "Connection Failed!";
+                    message = "Please Check Your Internet Connection";
+                    showErrorDialog_splashScreen((Activity)context, title, message, "Retry", "Quit");
+                    Log.i("errorCode", "handleFault: error Code: " + fault.getCode() + "\t Error Message = " + fault.getMessage());
+                }
+                else{
+                    Toast.makeText((Activity)context, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                }
+
+                Log.e("fault", fault.getMessage());
+            }
+        });
     }
 
     public static void sendNotificationToTheAdmins(String message, String messageTitle) {

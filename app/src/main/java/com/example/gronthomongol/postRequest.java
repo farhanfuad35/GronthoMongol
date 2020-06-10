@@ -19,7 +19,6 @@ public class postRequest extends AppCompatActivity implements AdapterView.OnItem
 
     EditText etName;
     EditText etWriter;
-    EditText etComment;
     Spinner spinner;
     Button btnRequestBook;
     ArrayAdapter<CharSequence> adapter;
@@ -55,7 +54,7 @@ public class postRequest extends AppCompatActivity implements AdapterView.OnItem
                 // TODO
                 if(!isEmpty(etName) && !isEmpty(etWriter)) {
                     getValues();
-                    final Request request = new Request(bookName, writerName, requestingUser, language, comment, resolved);
+                    final Request request = new Request(bookName, writerName, requestingUser, language, resolved);
                     final Dialog dialog = new Dialog(postRequest.this);
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setCancelable(false);
@@ -80,7 +79,6 @@ public class postRequest extends AppCompatActivity implements AdapterView.OnItem
     }
 
     private void initializeGUIElements(){
-        etComment = findViewById(R.id.etRequest_Comment);
         etName = findViewById(R.id.etRequest_BookName);
         etWriter = findViewById(R.id.etRequest_WriterName);
         spinner = findViewById(R.id.spnRequest_language);
@@ -108,7 +106,6 @@ public class postRequest extends AppCompatActivity implements AdapterView.OnItem
     private void getValues(){
         bookName = etName.getText().toString().trim();
         writerName = etWriter.getText().toString().trim();
-        comment = etComment.getText().toString();
         requestingUser = CONSTANTS.getCurrentUser();
         resolved = false;
     }

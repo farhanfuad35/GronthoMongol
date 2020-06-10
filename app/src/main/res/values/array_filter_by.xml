@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filterByArray">
+        <item>"None"</item>
+        <item>"All Pending Delivery"</item>
+        <item>"Payment Complete"</item>
+        <item>"Payment Incomplete"</item>
+        <item>"Delivered"</item>
+    </string-array>
+</resources>

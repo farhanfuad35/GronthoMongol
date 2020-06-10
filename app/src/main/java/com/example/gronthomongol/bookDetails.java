@@ -82,6 +82,7 @@ public class bookDetails extends AppCompatActivity implements AdapterView.OnItem
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
+                                arg0.dismiss();
                                 //Toast.makeText(Splash_Screen.this,"You clicked yes button",Toast.LENGTH_LONG).show();
                                 final Dialog dialog = new Dialog(bookDetails.this);
                                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

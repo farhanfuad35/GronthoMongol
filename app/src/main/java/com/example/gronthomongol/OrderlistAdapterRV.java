@@ -72,7 +72,7 @@ public class OrderlistAdapterRV extends RecyclerView.Adapter<OrderlistAdapterRV.
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        DateFormat dateFormat = new SimpleDateFormat("d MMM, yyyy, EEE");
+        DateFormat dateFormat = new SimpleDateFormat("d MMM, yyyy, EEE | hh:mm a");
         Order order = orders.get(position);
 
         holder.tvOrderId.setText("Order ID # " + order.getOrderId());
