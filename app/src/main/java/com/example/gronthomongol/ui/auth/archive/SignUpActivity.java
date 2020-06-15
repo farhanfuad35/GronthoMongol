@@ -1,14 +1,11 @@
-package com.example.gronthomongol.ui.auth.test;
+package com.example.gronthomongol.ui.auth.archive;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,10 +16,8 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.CONSTANTS;
-import com.example.gronthomongol.ui.auth.SignInActivity;
-import com.example.gronthomongol.ui.auth.SignUpActivity;
 
-public class SignUpFragment extends Fragment implements View.OnClickListener{
+public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
 
     private EditText nameEditText;
     private EditText emailEditText;
@@ -32,29 +27,23 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
     private Button signUpButton;
     private Button signInInsteadButton;
 
-    public SignUpFragment() {
-        // Required empty public constructor
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_up);
 
-        findXmlElements(view);
+        findXmlElements();
         setUpListeners();
-
-        return view;
     }
 
-    private void findXmlElements(View view){
-        nameEditText = view.findViewById(R.id.nameEditTextSignUp);
-        emailEditText = view.findViewById(R.id.emailEditTextSignUp);
-        mobileNumberEditText = view.findViewById(R.id.mobileNumberEditTextSignUp);
-        passwordEditText = view.findViewById(R.id.passwordEditTextSignUp);
-        confirmPasswordEditText = view.findViewById(R.id.confirmPasswordEditTextSignUp);
-        signUpButton = view.findViewById(R.id.signUpButtonSignUp);
-        signInInsteadButton = view.findViewById(R.id.signInButtonSignUp);
+    private void findXmlElements(){
+        nameEditText = findViewById(R.id.nameEditTextSignUp);
+        emailEditText = findViewById(R.id.emailEditTextSignUp);
+        mobileNumberEditText = findViewById(R.id.mobileNumberEditTextSignUp);
+        passwordEditText = findViewById(R.id.passwordEditTextSignUp);
+        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditTextSignUp);
+        signUpButton = findViewById(R.id.signUpButtonSignUp);
+        signInInsteadButton = findViewById(R.id.signInButtonSignUp);
     }
 
     private void setUpListeners(){
@@ -105,8 +94,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
             Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
                 @Override
                 public void handleResponse(BackendlessUser response) {
-                    Toast.makeText(getContext(), "সাইন আপ সম্পন্ন হয়েছে!\nকনফার্ম করতে আপনার মেইল পাঠানো ভেরিফিকেশন লিংকটি ভিজিট করুন।", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
+                    Toast.makeText(getApplicationContext(), "সাইন আপ সম্পন্ন হয়েছে!\nকনফার্ম করতে আপনার মেইল পাঠানো ভেরিফিকেশন লিংকটি ভিজিট করুন।", Toast.LENGTH_LONG).show();
+                    SignUpActivity.this.finish();
                 }
 
                 @Override
@@ -116,15 +105,15 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
                     signUpButton.setText("সাইন আপ");
                     Log.i("register", "handleFault: " + fault.getCode() + "\t" + fault.getMessage());
                     if(fault.getCode().equals("3033")){
-                        Toast.makeText(getContext(), "দুঃখিত, প্রদত্ত ইমেইলটি অন্য কোনো একাউন্টের সাথে সংযুক্ত।" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "দুঃখিত, প্রদত্ত ইমেইলটি অন্য কোনো একাউন্টের সাথে সংযুক্ত।" , Toast.LENGTH_SHORT).show();
                     }
                     else if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
                         title = "Connection Failed!";
                         message = "Please Check Your Internet Connection";
-                        CONSTANTS.showErrorDialog(getContext(), title, message, "Okay", null, 0);
+                        CONSTANTS.showErrorDialog(SignUpActivity.this, title, message, "Okay", null, 0);
                     }
                     else{
-                        Toast.makeText(getContext(), "দুঃখিত, সাইন আপ সম্পন্ন করা যায় নি।\n" + fault.getMessage() , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "দুঃখিত, সাইন আপ সম্পন্ন করা যায় নি।\n" + fault.getMessage() , Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -135,7 +124,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener{
     private boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-
 
     @Override
     public void onClick(View view) {

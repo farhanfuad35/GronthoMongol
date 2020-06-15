@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.auth.test;
+package com.example.gronthomongol.ui.auth;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -77,7 +77,7 @@ public class AuthActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-        ForgotPasswordFragment forgotPasswordFragment = (ForgotPasswordFragment) getSupportFragmentManager().findFragmentByTag("forgotPass");
+        ForgotPasswordFragment forgotPasswordFragment = (ForgotPasswordFragment) getSupportFragmentManager().findFragmentByTag("forgotPassword");
         if (forgotPasswordFragment != null && forgotPasswordFragment.isVisible()) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             // Right Swipe Animation

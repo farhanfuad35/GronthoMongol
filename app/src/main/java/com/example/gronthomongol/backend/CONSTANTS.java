@@ -35,13 +35,14 @@ import com.backendless.messaging.PublishOptions;
 import com.backendless.persistence.DataQueryBuilder;
 import com.example.gronthomongol.backend.models.Book;
 import com.example.gronthomongol.backend.models.Order;
+import com.example.gronthomongol.ui.auth.AuthActivity;
 import com.example.gronthomongol.ui.util.adapters.BooklistAdapterRV;
 import com.example.gronthomongol.ui.util.adapters.BooklistAdapterRV_admin;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 import com.example.gronthomongol.ui.util.adapters.OrderlistAdapterRV;
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.ui.welcome.WelcomeScreenActivity;
-import com.example.gronthomongol.ui.auth.SignInActivity;
+import com.example.gronthomongol.ui.auth.archive.SignInActivity;
 import com.example.gronthomongol.ui.main.user.BooklistActivity;
 import com.example.gronthomongol.ui.main.admin.BooklistAdminActivity;
 
@@ -414,7 +415,7 @@ public class CONSTANTS {
                         @Override
                         public void handleResponse(Integer response) {
                             // Couldn't get user from database. Take the user to the login page after a logout attempt
-                            Intent intent = new Intent((Activity)context, SignInActivity.class);
+                            Intent intent = new Intent((Activity)context, AuthActivity.class);
                             ((Activity)context).finish();
                             ((Activity)context).startActivity(intent);
                         }
@@ -422,7 +423,7 @@ public class CONSTANTS {
                         @Override
                         public void handleFault(BackendlessFault fault) {
                             // Couldn't get user from database. Take the user to the login page after a logout attempt
-                            Intent intent = new Intent((Activity)context, SignInActivity.class);
+                            Intent intent = new Intent((Activity)context, AuthActivity.class);
                             ((Activity)context).finish();
                             ((Activity)context).startActivity(intent);
                         }

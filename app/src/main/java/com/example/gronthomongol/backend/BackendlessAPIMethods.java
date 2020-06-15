@@ -11,7 +11,7 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.example.gronthomongol.R;
-import com.example.gronthomongol.ui.auth.SignInActivity;
+import com.example.gronthomongol.ui.auth.archive.SignInActivity;
 
 import java.util.ArrayList;
 import java.util.List;

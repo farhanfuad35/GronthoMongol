@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="@drawable/login_bg"
     android:orientation="vertical"
-    tools:context=".ui.auth.SignInActivity">
+    tools:context=".ui.auth.archive.SignInActivity">
 
     <ScrollView
-        android:background="@android:color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,13 +20,13 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
-                android:text="Grontho Mongol"
-                android:textStyle="bold"
-                android:textAlignment="center"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
                 android:layout_marginBottom="50dp"
+                android:text="Grontho Mongol"
+                android:textAlignment="center"
                 android:textSize="30sp"
-                android:layout_height="wrap_content" />
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -54,53 +54,53 @@
                     android:id="@+id/etLogin_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginBottom="5dp"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:textSize="15sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:visibility="gone"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_height="wrap_content" >
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatCheckBox
                     android:id="@+id/cbLogin_StayLoggedIn"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:textSize="15sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/tvLogin_StayLoggedIn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:gravity="center_vertical"
-                    android:text="@string/stay_logged_in"
-                    android:id="@+id/tvLogin_StayLoggedIn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent" />
+                    android:text="@string/stay_logged_in" />
 
             </LinearLayout>
 
             <com.google.android.material.textview.MaterialTextView
-                android:text="Invalid email or password"
                 android:id="@+id/tvLogin_invalidLogin"
-                android:layout_marginLeft="40dp"
-                android:textColor="#dd0000"
-                android:textStyle="italic"
-                android:textSize="10sp"
-                android:visibility="invisible"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent" />
+                android:layout_marginLeft="40dp"
+                android:text="Invalid email or password"
+                android:textColor="#dd0000"
+                android:textSize="10sp"
+                android:textStyle="italic"
+                android:visibility="invisible" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogin_Login"
@@ -131,8 +131,8 @@
                 android:layout_marginRight="10dp"
                 android:clickable="true"
                 android:text="Forgot Password?"
-                android:textSize="12sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"  />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textSize="12sp" />
 
 
             <LinearLayout
@@ -147,8 +147,8 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_weight="1"
-                    android:textSize="12sp"
-                    android:text="Don't have an account?" />
+                    android:text="Don't have an account?"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tvLogin_createaccount"
@@ -169,16 +169,16 @@
     </ScrollView>
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:gravity="bottom"
         android:text="A project by Pashe Achi Initiative"
+        android:textAlignment="center"
         android:textColor="#ffffff"
         android:textSize="12sp"
         android:textStyle="italic"
-        android:layout_marginBottom="20dp"
-        android:textAlignment="center"
-        android:layout_width="match_parent"
-        android:layout_gravity="bottom"
-        android:gravity="bottom"
-        android:layout_height="match_parent"
         tools:ignore="RtlCompat" />
 
 </LinearLayout>

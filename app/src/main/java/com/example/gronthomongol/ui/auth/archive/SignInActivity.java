@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.auth;
+package com.example.gronthomongol.ui.auth.archive;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,7 +22,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.backendless.push.DeviceRegistrationResult;
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.CONSTANTS;
-import com.example.gronthomongol.ui.auth.test.AuthActivity;
+import com.example.gronthomongol.ui.auth.AuthActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +49,8 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
         // TEST
-        Intent intent = new Intent(SignInActivity.this, AuthActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(SignInActivity.this, AuthActivity.class);
+//        startActivity(intent);
         // TEST
 
         initializeGUIElements();    // Get Element IDs
@@ -87,7 +87,7 @@ public class SignInActivity extends AppCompatActivity {
                         waitDialog = new Dialog(SignInActivity.this);
                         waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         waitDialog.setCancelable(false);
-                        waitDialog.setContentView(R.layout.dialog_logging_in);
+                        waitDialog.setContentView(R.layout.dialog_signing_in);
                         waitDialog.show();
 
                         Thread thread = new Thread(new Runnable() {
@@ -141,8 +141,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    private void Login(final String email, final String password, Boolean stayLoggedIn, final Dialog dialog)
-    {
+    private void Login(final String email, final String password, Boolean stayLoggedIn, final Dialog dialog) {
         Backendless.UserService.login(email, password, new AsyncCallback<BackendlessUser>() {
             @Override
             public void handleResponse(BackendlessUser response) {
@@ -230,8 +229,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    private void initializeGUIElements()
-    {
+    private void initializeGUIElements() {
         tvSignup = findViewById(R.id.tvLogin_createaccount);
         etEmail = findViewById(R.id.etLogin_email);
         etPassword = findViewById(R.id.etLogin_password);

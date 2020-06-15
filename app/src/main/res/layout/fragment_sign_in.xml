@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.test.SignInFragment">
+    tools:context=".ui.auth.SignInFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -85,7 +85,7 @@
 
                 </LinearLayout>
 
-                <Button
+                <TextView
                     android:id="@+id/forgotPasswordButtonSignIn"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="wrap_content"
@@ -97,6 +97,9 @@
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/vag_rounded_bold"
                     android:minWidth="0dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textAppearance="@style/Widget.AppCompat.Spinner.Underlined"
                     android:minHeight="0dp"
                     android:text="পাসওয়ার্ড ভুলে গেছেন?"
                     android:textColor="@color/secondary_text"
@@ -119,6 +122,17 @@
         android:orientation="vertical"
         android:paddingHorizontal="32dp"
         android:paddingVertical="20dp">
+
+        <TextView
+            android:id="@+id/errorTextViewSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ইমেইল অথবা পাসওয়ার্ড সঠিক নয়"
+            android:textColor="#dd0000"
+            android:textSize="11sp"
+            android:textAlignment="center"
+            android:padding="20px"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/signInButtonSignIn"

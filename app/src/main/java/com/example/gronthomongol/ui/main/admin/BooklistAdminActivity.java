@@ -285,7 +285,7 @@ public class BooklistAdminActivity extends AppCompatActivity implements Booklist
             final Dialog dialog = new Dialog(BooklistAdminActivity.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
-            dialog.setContentView(R.layout.dialog_logging_out);
+            dialog.setContentView(R.layout.dialog_signing_out);
             dialog.show();
 
             Thread thread = new Thread(new Runnable() {

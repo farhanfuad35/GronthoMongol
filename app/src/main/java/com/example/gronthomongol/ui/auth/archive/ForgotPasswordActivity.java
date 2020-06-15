@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.auth;
+package com.example.gronthomongol.ui.auth.archive;
 
 import androidx.appcompat.app.AppCompatActivity;
 

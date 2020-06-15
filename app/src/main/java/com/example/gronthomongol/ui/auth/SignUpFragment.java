@@ -1,11 +1,14 @@
 package com.example.gronthomongol.ui.auth;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,7 +20,7 @@ import com.backendless.exceptions.BackendlessFault;
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.CONSTANTS;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener{
+public class SignUpFragment extends Fragment implements View.OnClickListener{
 
     private EditText nameEditText;
     private EditText emailEditText;
@@ -27,23 +30,29 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Button signUpButton;
     private Button signInInsteadButton;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
-
-        findXmlElements();
-        setUpListeners();
+    public SignUpFragment() {
+        // Required empty public constructor
     }
 
-    private void findXmlElements(){
-        nameEditText = findViewById(R.id.nameEditTextSignUp);
-        emailEditText = findViewById(R.id.emailEditTextSignUp);
-        mobileNumberEditText = findViewById(R.id.mobileNumberEditTextSignUp);
-        passwordEditText = findViewById(R.id.passwordEditTextSignUp);
-        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditTextSignUp);
-        signUpButton = findViewById(R.id.signUpButtonSignUp);
-        signInInsteadButton = findViewById(R.id.signInButtonSignUp);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_sign_up, container, false);
+
+        findXmlElements(view);
+        setUpListeners();
+
+        return view;
+    }
+
+    private void findXmlElements(View view){
+        nameEditText = view.findViewById(R.id.nameEditTextSignUp);
+        emailEditText = view.findViewById(R.id.emailEditTextSignUp);
+        mobileNumberEditText = view.findViewById(R.id.mobileNumberEditTextSignUp);
+        passwordEditText = view.findViewById(R.id.passwordEditTextSignUp);
+        confirmPasswordEditText = view.findViewById(R.id.confirmPasswordEditTextSignUp);
+        signUpButton = view.findViewById(R.id.signUpButtonSignUp);
+        signInInsteadButton = view.findViewById(R.id.signInButtonSignUp);
     }
 
     private void setUpListeners(){
@@ -94,8 +103,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
                 @Override
                 public void handleResponse(BackendlessUser response) {
-                    Toast.makeText(getApplicationContext(), "সাইন আপ সম্পন্ন হয়েছে!\nকনফার্ম করতে আপনার মেইল পাঠানো ভেরিফিকেশন লিংকটি ভিজিট করুন।", Toast.LENGTH_LONG).show();
-                    SignUpActivity.this.finish();
+                    Toast.makeText(getContext(), "সাইন আপ সম্পন্ন হয়েছে!\nকনফার্ম করতে আপনার মেইল পাঠানো ভেরিফিকেশন লিংকটি ভিজিট করুন।", Toast.LENGTH_LONG).show();
+                    goToSignIn();
                 }
 
                 @Override
@@ -105,15 +114,15 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     signUpButton.setText("সাইন আপ");
                     Log.i("register", "handleFault: " + fault.getCode() + "\t" + fault.getMessage());
                     if(fault.getCode().equals("3033")){
-                        Toast.makeText(getApplicationContext(), "দুঃখিত, প্রদত্ত ইমেইলটি অন্য কোনো একাউন্টের সাথে সংযুক্ত।" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "দুঃখিত, প্রদত্ত ইমেইলটি অন্য কোনো একাউন্টের সাথে সংযুক্ত।" , Toast.LENGTH_SHORT).show();
                     }
                     else if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
                         title = "Connection Failed!";
                         message = "Please Check Your Internet Connection";
-                        CONSTANTS.showErrorDialog(SignUpActivity.this, title, message, "Okay", null, 0);
+                        CONSTANTS.showErrorDialog(getContext(), title, message, "ঠিক আছে", null, 0);
                     }
                     else{
-                        Toast.makeText(getApplicationContext(), "দুঃখিত, সাইন আপ সম্পন্ন করা যায় নি।\n" + fault.getMessage() , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "দুঃখিত, সাইন আপ সম্পন্ন করা যায় নি।\n" + fault.getMessage() , Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -121,17 +130,24 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    private void goToSignIn(){
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right);
+        fragmentTransaction.replace(R.id.fragmentContainerAuth, new SignInFragment());
+        fragmentTransaction.commit();
+    }
+
     private boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
 
     @Override
     public void onClick(View view) {
         if(view == signUpButton){
             handleSignUp();
         } else if(view == signInInsteadButton){
-            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-            startActivity(intent);
+            goToSignIn();
         }
     }
 }

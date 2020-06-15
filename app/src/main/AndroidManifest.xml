@@ -12,7 +12,7 @@
         android:roundIcon="@drawable/pasheachi_logo_modified"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.auth.test.AuthActivity"></activity>
+        <activity android:name=".ui.auth.AuthActivity"></activity>
         <activity android:name=".ui.main.admin.OrderDetailsAdminActivity" />
 
         <meta-data
@@ -33,7 +33,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".ui.main.admin.BookDetailsActivity" />
-        <activity android:name=".ui.auth.ForgotPasswordActivity" />
+        <activity android:name=".ui.auth.archive.ForgotPasswordActivity" />
         <activity android:name=".ui.main.user.ViewOrdersActivity" />
         <activity android:name=".ui.main.user.OrderDetailsActivity" />
         <activity android:name=".ui.main.user.PlaceOrderActivity" />
@@ -49,8 +49,8 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".ui.auth.SignUpActivity" />
-        <activity android:name=".ui.auth.SignInActivity" />
+        <activity android:name=".ui.auth.archive.SignUpActivity" />
+        <activity android:name=".ui.auth.archive.SignInActivity" />
         <activity android:name=".ui.welcome.WelcomeScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
