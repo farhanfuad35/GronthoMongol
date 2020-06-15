@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".booklist">
+    tools:context=".ui.main.user.BooklistActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
