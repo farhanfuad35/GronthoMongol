@@ -11,7 +11,7 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.example.gronthomongol.R;
-import com.example.gronthomongol.ui.auth.archive.SignInActivity;
+import com.example.gronthomongol.ui.auth.AuthActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class BackendlessAPIMethods {
                         Toast.makeText(context, "You are successfully logged out!", Toast.LENGTH_SHORT).show();
                         Log.i("logout", "handleResponse: Device registration canceled");
                         dialog.dismiss();
-                        Intent intent = new Intent(context, SignInActivity.class);
+                        Intent intent = new Intent(context, AuthActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         ((Activity)context).finish();
                         context.startActivity(intent);
