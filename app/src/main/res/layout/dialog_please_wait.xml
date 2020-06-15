@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:text="@string/please_wait"
             android:background="@android:color/transparent"
-            android:textColor="#222222"
+            android:textColor="@color/secondary_text"
             android:layout_alignLeft="@+id/pbPlaceOrder_Loading"
             android:layout_centerInParent="true" />
 

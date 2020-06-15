@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.main.user;
+package com.example.gronthomongol.ui.main.user.archive;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;

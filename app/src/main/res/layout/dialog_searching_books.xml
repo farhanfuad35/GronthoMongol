@@ -31,9 +31,9 @@
             android:textSize="15sp"
             android:layout_marginLeft="60dp"
             android:layout_width="match_parent"
-            android:text="Searching Books..."
+            android:text="বই খোঁজা হচ্ছে..."
             android:background="@android:color/transparent"
-            android:textColor="#222222"
+            android:textColor="@color/secondary_text"
             android:layout_alignLeft="@+id/pbSearching_Searching"
             android:layout_centerInParent="true" />
 

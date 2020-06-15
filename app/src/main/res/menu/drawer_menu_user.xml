@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/top_drawer">
+        <item
+            android:id="@+id/donateDrawerMenuUser"
+            android:icon="@drawable/ic_donate"
+            android:title="ডোনেট"/>
+    </group>
+
+    <group android:id="@+id/middle_drawer">
+
+        <item
+            android:id="@+id/ordersDrawerMenuUser"
+            android:icon="@drawable/ic_orders"
+            android:title="অর্ডার"/>
+
+        <item
+            android:id="@+id/requestsDrawerMenuUser"
+            android:icon="@drawable/ic_requests"
+            android:title="রিকোয়েস্ট"/>
+
+    </group>
+
+    <group android:id="@+id/bottom_drawer">
+        <item
+            android:id="@+id/feedbackDrawerMenuUser"
+            android:icon="@drawable/ic_feedback"
+            android:title="মতামত"/>
+
+        <item
+            android:id="@+id/aboutUsDrawerMenuUser"
+            android:icon="@drawable/ic_about_us"
+            android:title="আমাদের সম্পর্কে"/>
+
+        <item
+            android:id="@+id/signOutDrawerMenuUser"
+            android:icon="@drawable/ic_sign_out"
+            android:title="সাইন আউট"/>
+    </group>
+
+</menu>

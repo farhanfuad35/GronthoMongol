@@ -36,14 +36,14 @@ import com.backendless.persistence.DataQueryBuilder;
 import com.example.gronthomongol.backend.models.Book;
 import com.example.gronthomongol.backend.models.Order;
 import com.example.gronthomongol.ui.auth.AuthActivity;
+import com.example.gronthomongol.ui.main.admin.AdminMainActivity;
+import com.example.gronthomongol.ui.main.user.UserMainActivity;
 import com.example.gronthomongol.ui.util.adapters.BooklistAdapterRV;
 import com.example.gronthomongol.ui.util.adapters.BooklistAdapterRV_admin;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 import com.example.gronthomongol.ui.util.adapters.OrderlistAdapterRV;
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.ui.welcome.WelcomeScreenActivity;
-import com.example.gronthomongol.ui.main.user.BooklistActivity;
-import com.example.gronthomongol.ui.main.admin.BooklistAdminActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -622,13 +622,13 @@ public class CONSTANTS {
                         dialog.dismiss();
                     }
                     if(!(boolean) CONSTANTS.getCurrentUser().getProperty("admin")) {
-                        Intent intent = new Intent((Activity) context, BooklistActivity.class);
+                        Intent intent = new Intent((Activity) context, UserMainActivity.class);
                         intent.putExtra(((Activity) context).getString(R.string.activityIDName), CONSTANTS.getIdSpalshScreen());
                         ((Activity) context).startActivity(intent);
                         ((Activity) context).finish();
                     }
                     else{
-                        Intent intent = new Intent((Activity) context, BooklistAdminActivity.class);
+                        Intent intent = new Intent((Activity) context, AdminMainActivity.class);
                         intent.putExtra(((Activity) context).getString(R.string.activityIDName), CONSTANTS.getIdSpalshScreen());
                         ((Activity) context).startActivity(intent);
                         ((Activity) context).finish();

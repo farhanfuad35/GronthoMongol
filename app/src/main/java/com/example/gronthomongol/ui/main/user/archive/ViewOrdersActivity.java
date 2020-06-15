@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.main.user;
+package com.example.gronthomongol.ui.main.user.archive;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,7 +33,7 @@ import com.example.gronthomongol.backend.CONSTANTS;
 import com.example.gronthomongol.backend.models.Order;
 import com.example.gronthomongol.ui.util.adapters.OrderlistAdapterRV;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
-import com.example.gronthomongol.ui.main.admin.OrderDetailsAdminActivity;
+import com.example.gronthomongol.ui.main.admin.archive.OrderDetailsAdminActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;

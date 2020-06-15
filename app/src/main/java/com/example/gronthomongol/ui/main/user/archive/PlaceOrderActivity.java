@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.main.user;
+package com.example.gronthomongol.ui.main.user.archive;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -109,7 +109,7 @@ public class PlaceOrderActivity extends AppCompatActivity {
                         final Dialog dialog = new Dialog(PlaceOrderActivity.this);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setCancelable(false);
-                        dialog.setContentView(R.layout.loadingdialog);
+                        dialog.setContentView(R.layout.dialog_loading);
                         dialog.show();
 
                         getValues();

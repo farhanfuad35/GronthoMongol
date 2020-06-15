@@ -34,7 +34,7 @@ public class BackendlessAPIMethods {
                 Backendless.Messaging.unregisterDevice(channelList, new AsyncCallback<Integer>() {
                     @Override
                     public void handleResponse(Integer response) {
-                        Toast.makeText(context, "You are successfully logged out!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "সাইন আউট সফল হয়েছে!", Toast.LENGTH_SHORT).show();
                         Log.i("logout", "handleResponse: Device registration canceled");
                         dialog.dismiss();
                         Intent intent = new Intent(context, AuthActivity.class);
@@ -74,7 +74,7 @@ public class BackendlessAPIMethods {
                     CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                 }
                 else {
-                    Toast.makeText(context, "Sorry couldn't logout right now. Please check your connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "দুঃখিত, ইন্টারনেট সংযোগ নেই", Toast.LENGTH_SHORT).show();
                 }
                 Log.e("logout", "handleFault: " + fault.getCode() + "\t" + fault.getMessage());
             }

@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.main.admin;
+package com.example.gronthomongol.ui.main.admin.archive;
 
 import androidx.appcompat.app.AppCompatActivity;
 
