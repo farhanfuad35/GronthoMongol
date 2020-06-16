@@ -99,7 +99,7 @@ public class AdminOrderDetailsActivity extends AppCompatActivity implements View
     private void setUpRecyclerView() {
         recyclerViewLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 0));
         cartAdapter = new CartAdapter(orderedBooks, getApplicationContext());
         recyclerView.setAdapter(cartAdapter);
     }
