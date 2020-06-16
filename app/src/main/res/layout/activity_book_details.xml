@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".ui.main.admin.activity.BookDetailsActivity">
 
@@ -157,26 +158,22 @@
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="@string/language"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center"
-                        android:fontFamily="@font/vag_rounded_bold"
-                        android:text="@string/language"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="14sp" />
-
-                    <Spinner
-                        android:id="@+id/languageSpinnerBookDetails"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right|center" />
-
-                </FrameLayout>
+                <Spinner
+                    android:id="@+id/languageSpinnerBookDetails"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center" />
 
             </LinearLayout>
 
@@ -186,30 +183,34 @@
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal">
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="@string/number_of_books"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left|center"
-                        android:fontFamily="@font/vag_rounded_bold"
-                        android:text="@string/number_of_books"
-                        android:textColor="@color/secondary_text"
-                        android:textSize="14sp" />
-
-                    <NumberPicker
-                        android:id="@+id/countNumberPickerBookDetails"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40sp"
-                        android:layout_gravity="right|center"
-                        android:fontFamily="@font/vag_rounded_bold"
-                        android:scrollbars="none"
-                        android:scrollbarAlwaysDrawHorizontalTrack="true"
-                        android:textColor="@color/secondary_text" />
-
-                </FrameLayout>
+                <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
+                    android:id="@+id/countNumberPickerBookDetails"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40sp"
+                    android:layout_gravity="right|center"
+                    android:textColor="@color/secondary_text"
+                    app:snp_orientation="horizontal"
+                    app:snp_buttonTouchScaleFactor="0.8"
+                    app:snp_value_text_color="@color/secondary_text"
+                    app:snp_value_text_size="14sp"
+                    app:snp_buttonPaddingBottom="0dp"
+                    app:snp_buttonPaddingLeft="15dp"
+                    app:snp_buttonPaddingRight="15dp"
+                    app:snp_buttonPaddingTop="0dp"
+                    app:snp_buttonIconLeft="@drawable/ic_arrow_left"
+                    app:snp_buttonIconRight="@drawable/ic_arrow_right"
+                    />
 
             </LinearLayout>
 

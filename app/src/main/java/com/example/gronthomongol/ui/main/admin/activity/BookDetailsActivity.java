@@ -24,6 +24,8 @@ import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.CONSTANTS;
 import com.example.gronthomongol.backend.models.Book;
 import com.example.gronthomongol.ui.main.admin.AdminMainActivity;
+import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker;
+import com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPickerListener;
 
 public class BookDetailsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
@@ -34,7 +36,7 @@ public class BookDetailsActivity extends AppCompatActivity implements AdapterVie
     private EditText authorEditText;
     private EditText priceEditText;
     private Spinner languageSpinner;
-    private NumberPicker countNumberPicker;
+    private ScrollableNumberPicker countNumberPicker;
 
     private TextView errorTextView;
 
@@ -110,11 +112,17 @@ public class BookDetailsActivity extends AppCompatActivity implements AdapterVie
         countNumberPicker.setMinValue(0);
         countNumberPicker.setMaxValue(300);
         countNumberPicker.setValue(selectedBook.getQuantity());
-        countNumberPicker.setWrapSelectorWheel(true);
-        countNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//        countNumberPicker.setWrapSelectorWheel(true);
+//        countNumberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//            @Override
+//            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//                quantity = picker.getValue();
+//            }
+//        });
+        countNumberPicker.setListener(new ScrollableNumberPickerListener() {
             @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                quantity = picker.getValue();
+            public void onNumberPicked(int value) {
+                quantity = value;
             }
         });
     }
@@ -249,5 +257,6 @@ public class BookDetailsActivity extends AppCompatActivity implements AdapterVie
     private void handleBack(){
         Intent intent = new Intent(BookDetailsActivity.this, AdminMainActivity.class);
         startActivity(intent);
+        finish();
     }
 }
