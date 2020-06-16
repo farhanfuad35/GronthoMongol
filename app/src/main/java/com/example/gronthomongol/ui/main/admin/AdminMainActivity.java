@@ -85,7 +85,7 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
     public void initializeUI(){
 //        navigationView.getMenu().findItem(R.id.home_option).setCheckable(true);
 //        navigationView.getMenu().findItem(R.id.home_option).setChecked(true);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerAdminMain, new BengaliBooksFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerAdminMain, new BooksFragment()).commit();
     }
 
 

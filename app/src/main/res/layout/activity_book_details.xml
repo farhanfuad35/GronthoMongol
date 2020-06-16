@@ -168,12 +168,19 @@
                     android:textColor="@color/secondary_text"
                     android:textSize="14sp" />
 
-                <Spinner
-                    android:id="@+id/languageSpinnerBookDetails"
+                <FrameLayout
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right|center" />
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/languageSpinnerBookDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40sp"
+                        android:entries="@array/language_array"
+                        android:layout_gravity="right|center" />
+
+                </FrameLayout>
 
             </LinearLayout>
 

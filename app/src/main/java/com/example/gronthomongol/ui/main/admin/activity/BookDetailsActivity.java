@@ -87,9 +87,9 @@ public class BookDetailsActivity extends AppCompatActivity implements AdapterVie
     private void setUpSpinner(){
         // Create an ArrayAdapter using the string array and a default spinner layout
         adapter = ArrayAdapter.createFromResource(this,
-                R.array.language_array, android.R.layout.simple_spinner_item);
+                R.array.language_array, R.layout.language_spinner_color_layout);
         // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.language_spinner_dropdown_layout);
         // Apply the adapter to the spinner
         languageSpinner.setAdapter(adapter);
         int position = adapter.getPosition(selectedBook.getLanguage());
