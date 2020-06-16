@@ -92,7 +92,6 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerAdminMain, new BooksFragment()).commit();
     }
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

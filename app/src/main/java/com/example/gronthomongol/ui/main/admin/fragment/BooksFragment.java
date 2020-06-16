@@ -37,6 +37,7 @@ import com.example.gronthomongol.ui.util.adapters.AdminBooksAdapter;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 
 import java.util.List;
+import java.util.Objects;
 
 public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookClickListener{
 
@@ -229,20 +230,20 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
                 // Because just adding causes problem with the offset. Because you don't know if the newly added book is supposed to be on the
                 // cached booklist or not because of the sorting. So better do a fresh retrieve
 
-                final Dialog waitDialog = new Dialog(getContext());
-                waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                waitDialog.setCancelable(false);
-                waitDialog.setContentView(R.layout.dialog_please_wait);
-                waitDialog.show();
-
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        CONSTANTS.freshRetrieveFromDatabase(getContext(), adminBooksAdapter, pref.getString("sortBy", "name"), waitDialog, recyclerView, endlessScrollEventListener);
-                    }
-                });
-
-                thread.start();
+//                final Dialog waitDialog = new Dialog(Objects.requireNonNull(getContext()));
+//                waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                waitDialog.setCancelable(false);
+//                waitDialog.setContentView(R.layout.dialog_please_wait);
+//                waitDialog.show();
+//
+//                Thread thread = new Thread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        CONSTANTS.freshRetrieveFromDatabase(getContext(), adminBooksAdapter, pref.getString("sortBy", "name"), waitDialog, recyclerView, endlessScrollEventListener);
+//                    }
+//                });
+//
+//                thread.start();
             }
 
             @Override

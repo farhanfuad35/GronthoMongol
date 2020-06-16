@@ -161,6 +161,7 @@ public class Book implements Serializable {
                     Toast.makeText(((Activity)context), "বই এ্যাড সফল হয়েছে", Toast.LENGTH_SHORT).show();
                     Log.i("book_save", "handleResponse: Book saved in the database");
                     ((Activity)context).finish();
+                    ((Activity)context).startActivity(((Activity)context).getIntent());
                 }
             }
 
@@ -175,7 +176,7 @@ public class Book implements Serializable {
                     CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                 }
                 else {
-                    Toast.makeText((Activity)context, "The book couldn't be updated at this moment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText((Activity)context, "দুঃখিত, বই আপডেট সফল হয় নি", Toast.LENGTH_SHORT).show();
                 }
                 Log.i("book_update", "handleFault: Book couldn't be updated\t" + fault.getMessage());
             }

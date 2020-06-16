@@ -254,8 +254,6 @@ public class ViewOrdersActivity extends AppCompatActivity implements OrdersAdapt
         });
 
         thread.start();
-
-
     }
 
     @Override
