@@ -16,7 +16,7 @@ import com.backendless.messaging.PublishOptions;
 import com.backendless.persistence.DataQueryBuilder;
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.CONSTANTS;
-import com.example.gronthomongol.ui.util.adapters.RequestlistAdapterRV;
+import com.example.gronthomongol.ui.util.adapters.RequestsAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -161,7 +161,7 @@ public class Request {
         this.language = language;
     }
 
-    public void markAsResolvedAndNotify(final Context context, final Dialog dialog, final RequestlistAdapterRV requestlistAdapterRV){
+    public void markAsResolvedAndNotify(final Context context, final Dialog dialog, final RequestsAdapter requestlistAdapterRV){
         final Request resolvingRequest = this;
         resolvingRequest.setResolved(true);
         Backendless.Data.of(Request.class).save(resolvingRequest, new AsyncCallback<Request>() {
@@ -269,7 +269,7 @@ public class Request {
         });
     }
 
-    public void removeRequest(final Context context, final Dialog dialog, final RequestlistAdapterRV requestlistAdapterRV){
+    public void removeRequest(final Context context, final Dialog dialog, final RequestsAdapter requestlistAdapterRV){
         final Request deletingRequest = this;
         Backendless.Data.of(Request.class).remove(this, new AsyncCallback<Long>() {
             @Override

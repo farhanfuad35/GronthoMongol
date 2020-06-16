@@ -10,4 +10,14 @@
         android:icon="@drawable/ic_books"
         android:title="ইংরেজি"/>
 
+    <item
+        android:id="@+id/bagTab"
+        android:icon="@drawable/ic_bag"
+        android:title="ব্যাগ"/>
+
+    <item
+        android:id="@+id/ordersTab"
+        android:icon="@drawable/ic_orders"
+        android:title="অর্ডার"/>
+
 </menu>

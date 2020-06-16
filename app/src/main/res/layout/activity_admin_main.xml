@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/drawerLayoutAdminMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.main.admin.AdminMainActivity">
@@ -42,9 +42,9 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/white"
                     app:menu="@menu/bottom_navigation_menu_admin"
-                    app:itemTextColor="@color/secondary_text"
+                    app:itemTextColor="@drawable/selector"
                     app:itemBackground="@color/white"
-                    app:itemIconTint="@color/secondary_text"
+                    app:itemIconTint="@drawable/selector"
                     android:layout_alignParentBottom="true"
                     app:labelVisibilityMode="labeled">
 
@@ -64,6 +64,9 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu_admin"
+        app:itemTextColor="@drawable/selector"
+        app:itemBackground="@color/white"
+        app:itemIconTint="@drawable/selector"
         android:theme="@style/drawerStyle">
 
     </com.google.android.material.navigation.NavigationView>

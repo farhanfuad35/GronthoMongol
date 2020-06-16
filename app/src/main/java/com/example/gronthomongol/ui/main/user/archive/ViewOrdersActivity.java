@@ -31,16 +31,17 @@ import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.models.Book;
 import com.example.gronthomongol.backend.CONSTANTS;
 import com.example.gronthomongol.backend.models.Order;
-import com.example.gronthomongol.ui.util.adapters.OrderlistAdapterRV;
+import com.example.gronthomongol.ui.main.user.UserOrderDetailsActivity;
+import com.example.gronthomongol.ui.util.adapters.OrdersAdapter;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
-import com.example.gronthomongol.ui.main.admin.archive.OrderDetailsAdminActivity;
+import com.example.gronthomongol.ui.main.admin.AdminOrderDetailsActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViewOrdersActivity extends AppCompatActivity implements OrderlistAdapterRV.OnOrderClickListener {
-    private OrderlistAdapterRV orderlistAdapterRV;
+public class ViewOrdersActivity extends AppCompatActivity implements OrdersAdapter.OnOrderClickListener {
+    private OrdersAdapter orderlistAdapterRV;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private TextView tvNoOrder;
@@ -144,7 +145,7 @@ public class ViewOrdersActivity extends AppCompatActivity implements OrderlistAd
         rvLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(rvLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
-        orderlistAdapterRV = new OrderlistAdapterRV(CONSTANTS.myOrdersCached, getApplicationContext(), this);
+        orderlistAdapterRV = new OrdersAdapter(CONSTANTS.myOrdersCached, getApplicationContext(), this);
         recyclerView.setAdapter(orderlistAdapterRV);
 
         // Store this adapter in CONSTANT so that it can be used to update order list on real time from booklist
@@ -219,13 +220,13 @@ public class ViewOrdersActivity extends AppCompatActivity implements OrderlistAd
                         ArrayList<Book> orderedBooks = new ArrayList<>(response);
                         dialog.dismiss();
                         if((boolean) CONSTANTS.getCurrentUser().getProperty("admin")) {
-                            Intent intent = new Intent(ViewOrdersActivity.this, OrderDetailsAdminActivity.class);
+                            Intent intent = new Intent(ViewOrdersActivity.this, AdminOrderDetailsActivity.class);
                             intent.putExtra("orderedBooks", orderedBooks);
                             intent.putExtra("currentOrder", (Serializable) CONSTANTS.myOrdersCached.get(position));
                             startActivityForResult(intent, ID_ORDER_DETAILS_ADMIN);
                         }
                         else {
-                            Intent intent = new Intent(ViewOrdersActivity.this, OrderDetailsActivity.class);
+                            Intent intent = new Intent(ViewOrdersActivity.this, UserOrderDetailsActivity.class);
                             intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdViewOrders());
                             intent.putExtra("orderedBooks", orderedBooks);
                             intent.putExtra("currentOrder", (Serializable) CONSTANTS.myOrdersCached.get(position));

@@ -35,7 +35,8 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.rt.data.EventHandler;
-import com.example.gronthomongol.ui.util.adapters.BooklistAdapterRV;
+import com.example.gronthomongol.ui.main.user.PlaceOrderActivity;
+import com.example.gronthomongol.ui.util.adapters.UserBooksAdapter;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 import com.example.gronthomongol.backend.models.Order;
 import com.example.gronthomongol.R;
@@ -45,8 +46,8 @@ import com.example.gronthomongol.backend.CONSTANTS;
 
 import java.util.List;
 
-public class BooklistActivity extends AppCompatActivity implements BooklistAdapterRV.OnBookClickListener {
-    private BooklistAdapterRV booklistAdapterRV;
+public class BooklistActivity extends AppCompatActivity implements UserBooksAdapter.OnBookClickListener {
+    private UserBooksAdapter booklistAdapterRV;
     private Button btnProfile;
     private Button btnRequest;
     private Button btnOrders;
@@ -356,7 +357,7 @@ public class BooklistActivity extends AppCompatActivity implements BooklistAdapt
         rvLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(rvLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
-        booklistAdapterRV = new BooklistAdapterRV(CONSTANTS.bookListCached, getApplicationContext(), this);
+        booklistAdapterRV = new UserBooksAdapter(CONSTANTS.bookListCached, getApplicationContext(), this);
         recyclerView.setAdapter(booklistAdapterRV);
 
         endlessScrollEventListener = new EndlessScrollEventListener((LinearLayoutManager) rvLayoutManager) {

@@ -13,6 +13,7 @@
     <item
         android:id="@+id/requestsTab"
         android:icon="@drawable/ic_requests"
+        android:iconTint="@color/secondary_text"
         android:title="রিকোয়েস্ট"/>
 
     <item

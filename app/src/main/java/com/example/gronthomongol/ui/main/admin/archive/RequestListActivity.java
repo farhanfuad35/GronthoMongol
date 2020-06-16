@@ -24,13 +24,13 @@ import com.backendless.persistence.DataQueryBuilder;
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.CONSTANTS;
 import com.example.gronthomongol.backend.models.Request;
-import com.example.gronthomongol.ui.util.adapters.RequestlistAdapterRV;
+import com.example.gronthomongol.ui.util.adapters.RequestsAdapter;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 
 import java.util.List;
 
-public class RequestListActivity extends AppCompatActivity implements RequestlistAdapterRV.OnRequestClickListener {
-    private RequestlistAdapterRV requestlistAdapterRV;
+public class RequestListActivity extends AppCompatActivity implements RequestsAdapter.OnRequestClickListener {
+    private RequestsAdapter requestlistAdapterRV;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager rvLayoutManager;
@@ -107,7 +107,7 @@ public class RequestListActivity extends AppCompatActivity implements Requestlis
         rvLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(rvLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
-        requestlistAdapterRV = new RequestlistAdapterRV(CONSTANTS.userRequestsCached, getApplicationContext(), this);
+        requestlistAdapterRV = new RequestsAdapter(CONSTANTS.userRequestsCached, getApplicationContext(), this);
         recyclerView.setAdapter(requestlistAdapterRV);
 
         endlessScrollEventListener = new EndlessScrollEventListener((LinearLayoutManager) rvLayoutManager) {

@@ -4,14 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
@@ -23,7 +20,6 @@ import android.widget.Toast;
 
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.ui.main.user.archive.RequestBookActivity;
-import com.example.gronthomongol.ui.main.user.archive.ViewOrdersActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -32,7 +28,6 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private Button menuButton;
-    private Button ordersButton;
     private NavigationView navigationView;
 
     private TextView profileNameTextView;
@@ -62,7 +57,6 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
         // Toolbar
         toolbar = (Toolbar) findViewById(R.id.toolbarUserMain);
         menuButton = (Button) findViewById(R.id.menuButtonToolbarUserMain);
-        ordersButton = (Button) findViewById(R.id.ordersButtonToolbarUserMain);
 
         // Navigation Drawer
         navigationView = (NavigationView) findViewById(R.id.navigationViewUserMain);
@@ -76,7 +70,6 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
     public void setUpListeners(){
         drawerLayout.setDrawerListener(drawerToggle);
         menuButton.setOnClickListener(this);
-        ordersButton.setOnClickListener(this);
         navigationView.setNavigationItemSelectedListener(this);
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavigationListener);
     }
@@ -84,7 +77,7 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
     public void initializeUI(){
 //        navigationView.getMenu().findItem(R.id.home_option).setCheckable(true);
 //        navigationView.getMenu().findItem(R.id.home_option).setChecked(true);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerUserMain, new BengaliBooklistFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerUserMain, new BengaliBooksFragment()).commit();
     }
 
 
@@ -95,10 +88,16 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
 
             switch(menuItem.getItemId()){
                 case R.id.bengaliTab:
-                    selectedFragment = new BengaliBooklistFragment();
+                    selectedFragment = new BengaliBooksFragment();
                     break;
                 case R.id.englishTab:
-                    selectedFragment = new EnglishBooklistFragment();
+                    selectedFragment = new EnglishBooksFragment();
+                    break;
+                case R.id.bagTab:
+                    selectedFragment = new BagFragment();
+                    break;
+                case R.id.ordersTab:
+                    selectedFragment = new UserOrdersFragment();
                     break;
             }
 
@@ -135,47 +134,20 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
                     }
                 }
             }.start();
-        } else if(view == ordersButton){
-            new CountDownTimer(100, 20){
-                int i;
-                @Override
-                public void onTick(long l) {
-                    if(i%2==0) {
-                        ordersButton.setVisibility(View.INVISIBLE);
-                    }
-                    else{
-                        ordersButton.setVisibility(View.VISIBLE);
-                    }
-                    i++;
-                }
-
-                @Override
-                public void onFinish() {
-                    ordersButton.setVisibility(View.VISIBLE);
-                    Intent intent = new Intent(getApplicationContext(), ViewOrdersActivity.class);
-                    startActivity(intent);
-                }
-            }.start();
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
-        if (id == R.id.donateDrawerMenuUser) {
-            Intent intent = new Intent(getApplicationContext(), DonateActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.ordersDrawerMenuUser) {
-            Intent intent = new Intent(getApplicationContext(), ViewOrdersActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.requestsDrawerMenuUser) {
+        if (id == R.id.requestsDrawerMenuUser) {
             Intent intent = new Intent(getApplicationContext(), RequestBookActivity.class);
             startActivity(intent);
         } else if (id == R.id.feedbackDrawerMenuUser) {
-            Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
+            Intent intent = new Intent(getApplicationContext(), UserFeedbackActivity.class);
             startActivity(intent);
         } else if (id == R.id.aboutUsDrawerMenuUser) {
-            Intent intent = new Intent(getApplicationContext(), AboutUsActivity.class);
+            Intent intent = new Intent(getApplicationContext(), UserAboutUsActivity.class);
             startActivity(intent);
         } else if (id == R.id.signOutDrawerMenuUser) {
 //            Intent intent = new Intent(getApplicationContext(), ViewOrdersActivity.class);

@@ -33,7 +33,8 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.rt.data.EventHandler;
-import com.example.gronthomongol.ui.util.adapters.BooklistAdapterRV_admin;
+import com.example.gronthomongol.ui.main.admin.BookDetailsActivity;
+import com.example.gronthomongol.ui.util.adapters.AdminBooksAdapter;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 import com.example.gronthomongol.backend.models.Order;
 import com.example.gronthomongol.R;
@@ -45,8 +46,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class BooklistAdminActivity extends AppCompatActivity implements BooklistAdapterRV_admin.OnBookClickListener {
-    private BooklistAdapterRV_admin booklistAdapterRV_admin;
+public class BooklistAdminActivity extends AppCompatActivity implements AdminBooksAdapter.OnBookClickListener {
+    private AdminBooksAdapter booklistAdapterRV_admin;
     private Button btnProfile;
     private Button btnRequest;
     private Button btnOrders;
@@ -324,7 +325,7 @@ public class BooklistAdminActivity extends AppCompatActivity implements Booklist
         rvLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(rvLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
-        booklistAdapterRV_admin = new BooklistAdapterRV_admin(CONSTANTS.bookListCached, getApplicationContext(), this);
+        booklistAdapterRV_admin = new AdminBooksAdapter(CONSTANTS.bookListCached, getApplicationContext(), this);
         recyclerView.setAdapter(booklistAdapterRV_admin);
 
         endlessScrollEventListener = new EndlessScrollEventListener((LinearLayoutManager) rvLayoutManager) {

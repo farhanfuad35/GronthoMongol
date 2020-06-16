@@ -38,10 +38,10 @@ import com.example.gronthomongol.backend.models.Order;
 import com.example.gronthomongol.ui.auth.AuthActivity;
 import com.example.gronthomongol.ui.main.admin.AdminMainActivity;
 import com.example.gronthomongol.ui.main.user.UserMainActivity;
-import com.example.gronthomongol.ui.util.adapters.BooklistAdapterRV;
-import com.example.gronthomongol.ui.util.adapters.BooklistAdapterRV_admin;
+import com.example.gronthomongol.ui.util.adapters.UserBooksAdapter;
+import com.example.gronthomongol.ui.util.adapters.AdminBooksAdapter;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
-import com.example.gronthomongol.ui.util.adapters.OrderlistAdapterRV;
+import com.example.gronthomongol.ui.util.adapters.OrdersAdapter;
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.ui.welcome.WelcomeScreenActivity;
 
@@ -77,7 +77,7 @@ public class CONSTANTS {
     public static double min_version;
     public static int maximum_order_per_day;
     public static int currentOrderFilter = 0;       // none. index according to values/array_filter_by.xml
-    public static OrderlistAdapterRV orderlistAdapterRV;
+    public static OrdersAdapter orderlistAdapterRV;
 
     public static int CURRENT_NUMBER_OF_ORDERS = 0;
 
@@ -434,7 +434,7 @@ public class CONSTANTS {
 
     }
 
-    public static void backendlessBookQuery(final Context context, final Dialog dialog, String whereClause, final BooklistAdapterRV_admin booklistAdapterRV_admin){
+    public static void backendlessBookQuery(final Context context, final Dialog dialog, String whereClause, final AdminBooksAdapter booklistAdapterRV_admin){
         final DataQueryBuilder searchBookQueryBuilder = DataQueryBuilder.create();
         searchBookQueryBuilder.setWhereClause(whereClause);
         Backendless.Data.of(Book.class).find(searchBookQueryBuilder, new AsyncCallback<List<Book>>() {
@@ -478,7 +478,7 @@ public class CONSTANTS {
 
     // TODO REMEMBER TO PASTE UPDATES HERE TOO FROM THE ABOVE
 
-    public static void backendlessBookQuery(final Context context, final Dialog dialog, String whereClause, final BooklistAdapterRV booklistAdapterRV){
+    public static void backendlessBookQuery(final Context context, final Dialog dialog, String whereClause, final UserBooksAdapter booklistAdapterRV){
         final DataQueryBuilder searchBookQueryBuilder = DataQueryBuilder.create();
         searchBookQueryBuilder.setWhereClause(whereClause);
         Backendless.Data.of(Book.class).find(searchBookQueryBuilder, new AsyncCallback<List<Book>>() {
@@ -672,7 +672,7 @@ public class CONSTANTS {
         });
     }
 
-    public static void freshRetrieveFromDatabase(final Context context, final BooklistAdapterRV booklistAdapterRV, String sortBy, final Dialog dialog,
+    public static void freshRetrieveFromDatabase(final Context context, final UserBooksAdapter booklistAdapterRV, String sortBy, final Dialog dialog,
                                                  final RecyclerView recyclerView, final EndlessScrollEventListener endlessScrollEventListener){
 
 //      REQUIREMENTS: MUST BE CALLED AFTER IT IS DETERMINED IF THE USER IS AN ADMIN OR NOT
@@ -755,7 +755,7 @@ public class CONSTANTS {
 
     }
 
-    public static void freshRetrieveFromDatabase(final Context context, final BooklistAdapterRV_admin booklistAdapterRV_admin, String sortBy, final Dialog dialog,
+    public static void freshRetrieveFromDatabase(final Context context, final AdminBooksAdapter booklistAdapterRV_admin, String sortBy, final Dialog dialog,
                                                  final RecyclerView recyclerView, final EndlessScrollEventListener endlessScrollEventListener){
 
 //      REQUIREMENTS: MUST BE CALLED AFTER IT IS DETERMINED IF THE USER IS AN ADMIN OR NOT
@@ -838,7 +838,7 @@ public class CONSTANTS {
 
     }
 
-    public static void freshOrderRetrieveFromDatabase(final Context context, final OrderlistAdapterRV orderlistAdapterRV, String whereClause, final Dialog dialog,
+    public static void freshOrderRetrieveFromDatabase(final Context context, final OrdersAdapter orderlistAdapterRV, String whereClause, final Dialog dialog,
                                                       final EndlessScrollEventListener endlessScrollEventListener, final int which){
         final int oldOffset = CONSTANTS.getMYORDEROFFSET();
         CONSTANTS.setMYORDEROFFSET(0);
