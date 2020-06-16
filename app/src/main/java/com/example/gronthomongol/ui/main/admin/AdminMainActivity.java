@@ -8,17 +8,21 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gronthomongol.R;
+import com.example.gronthomongol.backend.BackendlessAPIMethods;
+import com.example.gronthomongol.ui.main.admin.archive.BooklistAdminActivity;
 import com.example.gronthomongol.ui.main.admin.fragment.AdminOrdersFragment;
 import com.example.gronthomongol.ui.main.admin.fragment.BookAddFragment;
 import com.example.gronthomongol.ui.main.admin.fragment.BooksFragment;
@@ -158,8 +162,22 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
             Intent intent = new Intent(getApplicationContext(), AdminAboutUsActivity.class);
             startActivity(intent);
         } else if (id == R.id.signOutDrawerMenuAdmin) {
-//            Intent intent = new Intent(getApplicationContext(), ViewOrdersActivity.class);
-//            startActivity(intent);
+            // Updating device ID while logging out to ensure no more notification is sent to that device
+            final Dialog dialog = new Dialog(AdminMainActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog_signing_out);
+            dialog.show();
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // BackendlessAPIMethods.updateDeviceId(booklist.this, user, "");
+                    BackendlessAPIMethods.logOut(AdminMainActivity.this, dialog);
+                }
+            });
+
+            thread.start();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
