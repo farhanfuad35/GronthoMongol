@@ -31,10 +31,10 @@ import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.models.Book;
 import com.example.gronthomongol.backend.CONSTANTS;
 import com.example.gronthomongol.backend.models.Order;
-import com.example.gronthomongol.ui.main.user.UserOrderDetailsActivity;
+import com.example.gronthomongol.ui.main.user.activity.UserOrderDetailsActivity;
 import com.example.gronthomongol.ui.util.adapters.OrdersAdapter;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
-import com.example.gronthomongol.ui.main.admin.AdminOrderDetailsActivity;
+import com.example.gronthomongol.ui.main.admin.activity.AdminOrderDetailsActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.main.admin;
+package com.example.gronthomongol.ui.main.admin.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.gronthomongol.ui.util.adapters.CartAdapter;

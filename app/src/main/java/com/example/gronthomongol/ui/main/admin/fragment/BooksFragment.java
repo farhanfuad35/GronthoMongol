@@ -1,18 +1,14 @@
-package com.example.gronthomongol.ui.main.admin;
+package com.example.gronthomongol.ui.main.admin.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,14 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -41,13 +32,9 @@ import com.example.gronthomongol.backend.BackendlessAPIMethods;
 import com.example.gronthomongol.backend.CONSTANTS;
 import com.example.gronthomongol.backend.models.Book;
 import com.example.gronthomongol.backend.models.Order;
-import com.example.gronthomongol.ui.main.admin.archive.AddBookActivity;
-import com.example.gronthomongol.ui.main.admin.archive.BooklistAdminActivity;
-import com.example.gronthomongol.ui.main.admin.archive.RequestListActivity;
-import com.example.gronthomongol.ui.main.user.archive.ViewOrdersActivity;
+import com.example.gronthomongol.ui.main.admin.activity.BookDetailsActivity;
 import com.example.gronthomongol.ui.util.adapters.AdminBooksAdapter;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -75,34 +62,34 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_books, container, false);
 
-//        handleIntent(getIntent());
+//        handleIntent(getActivity().getIntent());
         findXmlElements(view);
         setUpRecyclerView();   // Check this for endless scroll data retrieval
 
         // For orders
         initiateRealTimeDatabaseListenersOrder_admin();
 
-//        pref = getSharedPreferences("preferences", 0); // 0 - for private mode
+        pref = getContext().getSharedPreferences("preferences", 0); // 0 - for private mode
         initiateRealTimeDatabaseListeners();
 
         //Toast.makeText(getApplicationContext(), "DEBUG MODE", Toast.LENGTH_SHORT).show();
 
-//        fromActivityID = getIntent().getIntExtra(getString(R.string.activityIDName), 0);
+        fromActivityID = getActivity().getIntent().getIntExtra(getString(R.string.activityIDName), 0);
 
 
         return view;
     }
 
     private void findXmlElements(View view) {
-        recyclerView = view.findViewById(R.id.rvBookList_admin_BookList);
-        progressBar = view.findViewById(R.id.pbBooklist_admin_progressBar);
+        recyclerView = view.findViewById(R.id.recyclerViewBooks);
+        progressBar = view.findViewById(R.id.progressBarBooks);
     }
 
 
     private void setUpRecyclerView() {
         recyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), 0));
         adminBooksAdapter = new AdminBooksAdapter(CONSTANTS.bookListCached, getContext(), this);
         recyclerView.setAdapter(adminBooksAdapter);
 
@@ -342,24 +329,24 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
         startActivityForResult(intent, CONSTANTS.getIdBooklistadminBookdetails());
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        Log.i(TAG, "onActivityResult: ");
-//        if(requestCode == CONSTANTS.getIdBooklistadminBookdetails()){
-//            Log.i(TAG, "onActivityResult: request code matched");
-//            if(resultCode == getActivity().RESULT_OK){
-//                adminBooksAdapter.notifyDataSetChanged();
-//                Log.i(TAG, "onActivityResult: Data set changed notified");
-//            }
-//            if(!CONSTANTS.isShowingDefaultBooklist()) {
-//                CONSTANTS.bookListCached.clear();
-//                CONSTANTS.bookListCached.addAll(CONSTANTS.tempBookListCached);
-//                CONSTANTS.setShowingDefaultBooklist(true);
-//                adminBooksAdapter.notifyDataSetChanged();
-//            }
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, "onActivityResult: ");
+        if(requestCode == CONSTANTS.getIdBooklistadminBookdetails()){
+            Log.i(TAG, "onActivityResult: request code matched");
+            if(resultCode == getActivity().RESULT_OK){
+                adminBooksAdapter.notifyDataSetChanged();
+                Log.i(TAG, "onActivityResult: Data set changed notified");
+            }
+            if(!CONSTANTS.isShowingDefaultBooklist()) {
+                CONSTANTS.bookListCached.clear();
+                CONSTANTS.bookListCached.addAll(CONSTANTS.tempBookListCached);
+                CONSTANTS.setShowingDefaultBooklist(true);
+                adminBooksAdapter.notifyDataSetChanged();
+            }
+        }
+    }
 
     private void showSortByDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

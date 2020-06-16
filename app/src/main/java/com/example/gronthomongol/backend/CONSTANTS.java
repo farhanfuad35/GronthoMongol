@@ -912,9 +912,7 @@ public class CONSTANTS {
         }
     }
 
-    public static void showErrorDialog_splashScreen(final Context context, String title, String message, String positiveButton, String negativeButton)
-    {
-
+    public static void showErrorDialog_splashScreen(final Context context, String title, String message, String positiveButton, String negativeButton) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(((Activity)context));
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message);

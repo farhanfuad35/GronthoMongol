@@ -39,6 +39,8 @@ public class Request {
         this.resolved = resolved;
     }
 
+    public Request(){
+    }
 
     public void saveRequestInBackendless(final Context context, final Dialog dialog){
         final ArrayList<BackendlessUser> requestingUser = new ArrayList<>(1);
@@ -100,10 +102,6 @@ public class Request {
             }
         });
     }
-
-    public Request(){
-    }
-
 
     @Override
     public boolean equals(Object request) {

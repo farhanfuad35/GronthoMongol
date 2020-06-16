@@ -30,7 +30,6 @@ public class Book implements Serializable {
 //        this.language = language;
 //    }
 
-
     @Override
     public boolean equals(Object book) {
         if (!(book instanceof Book)) {
@@ -151,8 +150,7 @@ public class Book implements Serializable {
                             sortBookList(context, CONSTANTS.tempBookListCached);
                     }
 
-
-                    Toast.makeText(((Activity) context), "Book updated successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(((Activity) context), "বই আপডেট সফল হয়েছে", Toast.LENGTH_SHORT).show();
                     Log.i("book_update", "handleResponse: Book has been successfully updated");
                     Intent returnIntent = new Intent();
                     returnIntent.putExtra("info", "book_updated");
@@ -160,7 +158,7 @@ public class Book implements Serializable {
                     ((Activity) context).finish();
                 }
                 else{
-                    Toast.makeText(((Activity)context), "Book saved in the database successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(((Activity)context), "বই এ্যাড সফল হয়েছে", Toast.LENGTH_SHORT).show();
                     Log.i("book_save", "handleResponse: Book saved in the database");
                     ((Activity)context).finish();
                 }

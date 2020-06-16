@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.main.admin;
+package com.example.gronthomongol.ui.main.admin.minor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.gronthomongol.R;
 
-public class AdminFeedbackActivity extends AppCompatActivity {
+public class AdminDonateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_feedback);
+        setContentView(R.layout.activity_admin_donate);
     }
 }

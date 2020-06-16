@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.main.user;
+package com.example.gronthomongol.ui.main.admin.minor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.gronthomongol.R;
 
-public class UserAboutUsActivity extends AppCompatActivity {
+public class AdminAboutUsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_about_us);
+        setContentView(R.layout.activity_admin_about_us);
     }
 }

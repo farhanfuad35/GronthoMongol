@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.main.user;
+package com.example.gronthomongol.ui.main.admin.fragment;
 
 import android.os.Bundle;
 
@@ -10,20 +10,17 @@ import android.view.ViewGroup;
 
 import com.example.gronthomongol.R;
 
+public class BookAddFragment extends Fragment {
 
-public class EnglishBooksFragment extends Fragment {
 
-    public EnglishBooksFragment() {
+    public BookAddFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_english_books, container, false);
-
-
-
+        View view = inflater.inflate(R.layout.fragment_book_add, container, false);
 
 
 

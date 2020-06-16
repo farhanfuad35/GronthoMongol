@@ -1,4 +1,4 @@
-package com.example.gronthomongol.ui.main.user;
+package com.example.gronthomongol.ui.main.admin.fragment;
 
 import android.os.Bundle;
 
@@ -10,17 +10,20 @@ import android.view.ViewGroup;
 
 import com.example.gronthomongol.R;
 
+public class RequestsFragment extends Fragment {
 
-public class BagFragment extends Fragment {
-
-    public BagFragment() {
+    public RequestsFragment() {
         // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_bag, container, false);
+        View view = inflater.inflate(R.layout.fragment_requests, container, false);
+
+
+
+
 
 
 

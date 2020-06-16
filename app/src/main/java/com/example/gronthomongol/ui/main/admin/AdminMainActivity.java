@@ -19,8 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gronthomongol.R;
-import com.example.gronthomongol.ui.main.user.UserAboutUsActivity;
-import com.example.gronthomongol.ui.main.user.BengaliBooksFragment;
+import com.example.gronthomongol.ui.main.admin.fragment.AdminOrdersFragment;
+import com.example.gronthomongol.ui.main.admin.fragment.BookAddFragment;
+import com.example.gronthomongol.ui.main.admin.fragment.BooksFragment;
+import com.example.gronthomongol.ui.main.admin.fragment.RequestsFragment;
+import com.example.gronthomongol.ui.main.admin.minor.AdminAboutUsActivity;
+import com.example.gronthomongol.ui.main.admin.minor.AdminFeedbackActivity;
+import com.example.gronthomongol.ui.main.admin.minor.AdminDonateActivity;
+import com.example.gronthomongol.ui.main.user.fragment.BengaliBooksFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -143,7 +149,7 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
         if (id == R.id.donateDrawerMenuAdmin) {
-            Intent intent = new Intent(getApplicationContext(), DonateActivity.class);
+            Intent intent = new Intent(getApplicationContext(), AdminDonateActivity.class);
             startActivity(intent);
         } else if (id == R.id.feedbackDrawerMenuAdmin) {
             Intent intent = new Intent(getApplicationContext(), AdminFeedbackActivity.class);

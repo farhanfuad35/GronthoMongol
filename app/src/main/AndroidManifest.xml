@@ -12,15 +12,16 @@
         android:roundIcon="@drawable/pasheachi_logo_modified"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.main.admin.AdminAboutUsActivity"></activity>
-        <activity android:name=".ui.main.admin.AdminFeedbackActivity" />
-        <activity android:name=".ui.main.admin.DonateActivity" />
-        <activity android:name=".ui.main.user.UserAboutUsActivity" />
-        <activity android:name=".ui.main.user.UserFeedbackActivity" />
+        <activity android:name=".ui.main.user.minor.UserDonateActivity"></activity>
+        <activity android:name=".ui.main.admin.minor.AdminAboutUsActivity" />
+        <activity android:name=".ui.main.admin.minor.AdminFeedbackActivity" />
+        <activity android:name=".ui.main.admin.minor.AdminDonateActivity" />
+        <activity android:name=".ui.main.user.minor.UserAboutUsActivity" />
+        <activity android:name=".ui.main.user.minor.UserFeedbackActivity" />
         <activity android:name=".ui.main.admin.AdminMainActivity" />
         <activity android:name=".ui.main.user.UserMainActivity" />
         <activity android:name=".ui.auth.AuthActivity" />
-        <activity android:name=".ui.main.admin.AdminOrderDetailsActivity" />
+        <activity android:name=".ui.main.admin.activity.AdminOrderDetailsActivity" />
 
         <meta-data
             android:name="android.app.searchable"
@@ -39,12 +40,12 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".ui.main.admin.BookDetailsActivity" />
+        <activity android:name=".ui.main.admin.activity.BookDetailsActivity" />
         <activity android:name=".ui.auth.archive.ForgotPasswordActivity" />
         <activity android:name=".ui.main.user.archive.ViewOrdersActivity" />
-        <activity android:name=".ui.main.user.UserOrderDetailsActivity" />
-        <activity android:name=".ui.main.user.PlaceOrderActivity" />
-        <activity android:name=".ui.main.user.archive.RequestBookActivity" />
+        <activity android:name=".ui.main.user.activity.UserOrderDetailsActivity" />
+        <activity android:name=".ui.main.user.archive.PlaceOrderActivity" />
+        <activity android:name=".ui.main.user.activity.RequestBookActivity" />
         <activity
             android:name=".ui.main.user.archive.BooklistActivity"
             android:launchMode="singleTop">

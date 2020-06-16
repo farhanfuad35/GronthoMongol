@@ -1,18 +1,21 @@
-package com.example.gronthomongol.ui.main.user;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.gronthomongol.ui.main.user.fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,20 +23,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
+import com.example.gronthomongol.R;
+import com.example.gronthomongol.backend.CONSTANTS;
+import com.example.gronthomongol.backend.models.Book;
+import com.example.gronthomongol.backend.models.Order;
 import com.example.gronthomongol.ui.main.user.archive.BooklistActivity;
 import com.example.gronthomongol.ui.util.adapters.CartAdapter;
-import com.example.gronthomongol.R;
-import com.example.gronthomongol.backend.models.Book;
-import com.example.gronthomongol.backend.CONSTANTS;
-import com.example.gronthomongol.backend.models.Order;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 import static com.example.gronthomongol.backend.CONSTANTS.orderedBooks;
 
-public class PlaceOrderActivity extends AppCompatActivity implements  View.OnClickListener{
+
+public class BagFragment extends Fragment implements  View.OnClickListener{
 
     private EditText nameEditText;
     private EditText phoneNumberEditText;
@@ -41,8 +43,11 @@ public class PlaceOrderActivity extends AppCompatActivity implements  View.OnCli
     private TextView totalPriceEditText;
     private EditText commentEditText;
     private Button addMoreButton;
-    private Button cancelButton;
-    private Button submitButton;
+    private Button orderButton;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private CartAdapter cartAdapter;
 
     private int followedByProcessID;
     private String Recipient_Name;
@@ -52,51 +57,52 @@ public class PlaceOrderActivity extends AppCompatActivity implements  View.OnCli
     private String Comment;
     private String Delivery_Address;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
-    private CartAdapter cartAdapter;
-
     private final String TAG = "placeOrder";
 
+    public BagFragment() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_place_order);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_bag, container, false);
 
         orderedBooks = new ArrayList<Book>(CONSTANTS.getMaxNoOfBooksPerUserPerOrder());
-        findXmlElements();
+
+        findXmlElements(view);
         setUpRecyclerView();
         setUpItemTouchHelper();
 
-        orderedBooks.add((Book) getIntent().getSerializableExtra("selectedBook"));
+        orderedBooks.add((Book)  getActivity().getIntent().getSerializableExtra("selectedBook"));
 
         Log.i("placeorder", "ordered book array size = " + orderedBooks.size());
 
-        followedByProcessID = getIntent().getIntExtra("ID",0);
+        followedByProcessID = getActivity().getIntent().getIntExtra("ID",0);
 
         setFields();
 
         setUpListeners();
+
+        return view;
     }
 
-    private void findXmlElements(){
-        nameEditText = findViewById(R.id.nameEditTextPlaceOrder);
-        phoneNumberEditText = findViewById(R.id.phoneNumberEditTextPlaceOrder);
-        addressEditText = findViewById(R.id.addressEditTextPlaceOrderr);
-        totalPriceEditText = findViewById(R.id.totalPriceTextViewPlaceOrder);
-        commentEditText = findViewById(R.id.commentEditTextPlaceOrder);
-        recyclerView = findViewById(R.id.recyclerViewPlaceOrder);
-        addMoreButton = findViewById(R.id.addMoreButtonPlaceOrder);
-        cancelButton = findViewById(R.id.cancelButtonPlaceOrder);
-        submitButton = findViewById(R.id.submitButtonPlaceOrder);
+    private void findXmlElements(View view){
+        nameEditText = view.findViewById(R.id.nameEditTextBag);
+        phoneNumberEditText = view.findViewById(R.id.phoneNumberEditTextBag);
+        addressEditText = view.findViewById(R.id.addressEditTextBag);
+        totalPriceEditText = view.findViewById(R.id.totalPriceTextViewBag);
+        commentEditText = view.findViewById(R.id.commentEditTextBag);
+        recyclerView = view.findViewById(R.id.recyclerViewBag);
+        addMoreButton = view.findViewById(R.id.addMoreButtonBag);
+        orderButton = view.findViewById(R.id.orderButtonBag);
     }
 
     private void setUpRecyclerView() {
-        recyclerViewLayoutManager = new LinearLayoutManager(this);
+        recyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
-        cartAdapter = new CartAdapter(orderedBooks, getApplicationContext());
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        cartAdapter = new CartAdapter(orderedBooks, getContext());
         recyclerView.setAdapter(cartAdapter);
     }
 
@@ -105,7 +111,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements  View.OnCli
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                Toast.makeText(PlaceOrderActivity.this, "on Move", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "on Move", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -120,7 +126,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements  View.OnCli
                 orderedBooks.remove(position);
                 cartAdapter.notifyDataSetChanged();
                 addMoreButton.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), "বইটি রিমুভ করা হয়েছে", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "বইটি রিমুভ করা হয়েছে", Toast.LENGTH_SHORT).show();
             }
         };
 
@@ -140,8 +146,8 @@ public class PlaceOrderActivity extends AppCompatActivity implements  View.OnCli
     }
 
     private void setUpListeners(){
-        submitButton.setOnClickListener(this);
         addMoreButton.setOnClickListener(this);
+        orderButton.setOnClickListener(this);
     }
 
     private boolean isEmpty(EditText editText){
@@ -161,7 +167,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements  View.OnCli
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         // User Clicked on Add More Book and have come back after Selecting a new Book
@@ -175,7 +181,7 @@ public class PlaceOrderActivity extends AppCompatActivity implements  View.OnCli
                 Total_Price = Total_Price + newBook.getPrice();
                 totalPriceEditText.setText(Integer.toString(Total_Price));
                 if(orderedBooks.size() == CONSTANTS.getMaxNoOfBooksPerUserPerOrder()) {
-                    Toast.makeText(getApplicationContext(), "দুঃখিত, সর্বোচ্চ ১০ টি বই অর্ডার করা যাবে", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "দুঃখিত, সর্বোচ্চ ১০ টি বই অর্ডার করা যাবে", Toast.LENGTH_SHORT).show();
                     addMoreButton.setVisibility(View.INVISIBLE);
                 }
             }
@@ -183,27 +189,22 @@ public class PlaceOrderActivity extends AppCompatActivity implements  View.OnCli
 
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
 
     @Override
     public void onClick(View view) {
         if(view==addMoreButton){
-            Intent intent = new Intent(getApplicationContext(), BooklistActivity.class);
+            Intent intent = new Intent(getContext(), BooklistActivity.class);
             intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdPlaceOrderAddMoreBook());
             startActivityForResult(intent, CONSTANTS.getIdPlaceOrderAddMoreBook());
-        } else if(view == submitButton){
+        } else if(view == orderButton){
             if(!isEmpty(nameEditText) && !isEmpty(phoneNumberEditText) && !isEmpty(addressEditText)){
                 // First Check if orderedBookList is empty or not
                 if(orderedBooks.size() == 0){
-                    Toast.makeText(getApplicationContext(), getString(R.string.add_atleast_one_book), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.add_atleast_one_book), Toast.LENGTH_LONG).show();
                 }
                 else {
 
-                    final Dialog dialog = new Dialog(PlaceOrderActivity.this);
+                    final Dialog dialog = new Dialog(getContext());
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     dialog.setCancelable(false);
                     dialog.setContentView(R.layout.dialog_loading);
@@ -221,12 +222,11 @@ public class PlaceOrderActivity extends AppCompatActivity implements  View.OnCli
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            newOrder.saveOrderInBackendless(orderedBooks, PlaceOrderActivity.this, dialog);
+                            newOrder.saveOrderInBackendless(orderedBooks, getContext(), dialog);
                         }
                     });
 
                     thread.start();
-
                 }
             }
         }

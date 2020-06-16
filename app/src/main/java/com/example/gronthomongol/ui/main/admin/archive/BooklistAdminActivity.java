@@ -33,7 +33,7 @@ import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.DataQueryBuilder;
 import com.backendless.rt.data.EventHandler;
-import com.example.gronthomongol.ui.main.admin.BookDetailsActivity;
+import com.example.gronthomongol.ui.main.admin.activity.BookDetailsActivity;
 import com.example.gronthomongol.ui.util.adapters.AdminBooksAdapter;
 import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 import com.example.gronthomongol.backend.models.Order;
@@ -46,16 +46,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
-public class BooklistAdminActivity extends AppCompatActivity implements AdminBooksAdapter.OnBookClickListener {
-    private AdminBooksAdapter booklistAdapterRV_admin;
+public class BooklistAdminActivity extends AppCompatActivity implements AdminBooksAdapter.OnBookClickListener, View.OnClickListener {
+    private AdminBooksAdapter adminBooksAdapter;
     private Button btnProfile;
     private Button btnRequest;
     private Button btnOrders;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private EndlessScrollEventListener endlessScrollEventListener;
+
     private FloatingActionButton fabAddNewBook;
     private ProgressBar progressBar;
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager rvLayoutManager;
-    private EndlessScrollEventListener endlessScrollEventListener;
+
     private EventHandler<Book> bookEventHandler = Backendless.Data.of(Book.class).rt();
     private EventHandler<Order> orderEventHandler = Backendless.Data.of(Order.class).rt();
 
@@ -63,7 +66,6 @@ public class BooklistAdminActivity extends AppCompatActivity implements AdminBoo
     private final String TAG = "booklist_admin";
     private final int PLACE_ORDER_RETURN_REQUEST_CODE = 93;
     private SharedPreferences pref;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,53 +75,121 @@ public class BooklistAdminActivity extends AppCompatActivity implements AdminBoo
         setTitle("Book List");
         androidx.appcompat.widget.Toolbar toolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar_BookList_admin);
         setSupportActionBar(toolbar);
-        handleIntent(getIntent());
-        initializeGUIElements();
-        initializeRecyclerView();   // Check this for endless scroll data retrieval
 
+        handleIntent(getIntent());
+        findXmlElements();
+        setUpRecyclerView();   // Check this for endless scroll data retrieval
 
         // For orders
-        initiateRealTimeDatabaseListenersOrder_admin();
+        setUpRealtimeDatabaseListenerForOrderAdmin();
 
         pref = getSharedPreferences("preferences", 0); // 0 - for private mode
-        initiateRealTimeDatabaseListeners();
+        setUpRealtimeDatabaseListenerForBookAdmin();
 
         //Toast.makeText(getApplicationContext(), "DEBUG MODE", Toast.LENGTH_SHORT).show();
-
         fromActivityID = getIntent().getIntExtra(getString(R.string.activityIDName), 0);
 
-
-        btnRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RequestListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnOrders.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "onClick: starting viewOrders");
-                Intent intent = new Intent(BooklistAdminActivity.this, ViewOrdersActivity.class);
-                intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdBooklistAdmin());
-                startActivity(intent);
-            }
-        });
-
-        fabAddNewBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(BooklistAdminActivity.this, AddBookActivity.class);
-                startActivity(intent);
-            }
-        });
-
+        setUpListeners();
     }
 
-    private void initiateRealTimeDatabaseListenersOrder_admin() {
+
+    private void handleIntent(Intent intent) {
+        Log.i("search", "handleIntent: ");
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY).trim();
+            //use the query to search your data somehow
+            Log.i("search", "came to search. query: " + query);
+            if(query.length() < 2){
+                Toast.makeText(BooklistAdminActivity.this, "Search query is too small", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                final Dialog waitDialog = new Dialog(BooklistAdminActivity.this);
+                waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                waitDialog.setCancelable(false);
+                waitDialog.setContentView(R.layout.dialog_searching_books);
+                waitDialog.show();
+
+                final String whereClause = "name LIKE '" + query + "%' OR writer LIKE '" + query + "%'";
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CONSTANTS.backendlessBookQuery(BooklistAdminActivity.this, waitDialog, whereClause, adminBooksAdapter);
+                    }
+                });
+
+                thread.start();
+                recyclerView.requestFocus();    // So that keyboard doesn't pop open
+            }
+        }
+    }
+
+    private void findXmlElements() {
+        btnProfile = findViewById(R.id.btnBookList_admin_Profile);
+        btnRequest = findViewById(R.id.btnBookList_admin_RequestBook);
+        btnOrders = findViewById(R.id.btnBookList_admin_Orders);
+        fabAddNewBook = findViewById(R.id.fabBookList_admin_addNewBook);
+//      listView = findViewById(R.id.lvBookList_BookList);
+        recyclerView = findViewById(R.id.rvBookList_admin_BookList);
+        progressBar = findViewById(R.id.pbBooklist_admin_progressBar);
+    }
+
+    private void setUpRecyclerView() {
+        recyclerViewLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+        adminBooksAdapter = new AdminBooksAdapter(CONSTANTS.bookListCached, getApplicationContext(), this);
+        recyclerView.setAdapter(adminBooksAdapter);
+
+        endlessScrollEventListener = new EndlessScrollEventListener((LinearLayoutManager) recyclerViewLayoutManager) {
+            @Override
+            public void onLoadMore(int pageNum, RecyclerView recyclerView) {
+                if (CONSTANTS.isShowingDefaultBooklist()) {
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    DataQueryBuilder queryBuilder = CONSTANTS.getBookListQueryBuilder();
+                    queryBuilder.prepareNextPage();
+
+                    Log.i(TAG, "onLoadMore: Came to OnloadMore");
+
+                    Backendless.Data.of(Book.class).find(queryBuilder,
+                            new AsyncCallback<List<Book>>() {
+                                @Override
+                                public void handleResponse(List<Book> response) {
+                                    Log.i("booklist_paging", "new response received");
+
+                                    CONSTANTS.bookListCached.addAll(response);
+                                    progressBar.setVisibility(View.GONE);
+                                    adminBooksAdapter.notifyDataSetChanged();
+
+                                }
+
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+                                    Log.i("booklist_paging", "new response failed");
+                                    // use the getCode(), getMessage() or getDetail() on the fault object
+                                    // to see the details of the error
+                                }
+                            });
+                }
+
+
+            }
+        };
+
+        recyclerView.addOnScrollListener(endlessScrollEventListener);
+    }
+
+    private void setUpListeners(){
+        btnRequest.setOnClickListener(this);
+        btnOrders.setOnClickListener(this);
+        fabAddNewBook.setOnClickListener(this);
+    }
+
+    private void setUpRealtimeDatabaseListenerForOrderAdmin() {
         Log.i(TAG, "initiateRealTimeDatabaseListeners: update Listener initiated");
-        // update listener
+
+        // Update Listener
         orderEventHandler.addUpdateListener( new AsyncCallback<Order>() {
             @Override
             public void handleResponse(Order updatedOrder) {
@@ -143,7 +213,7 @@ public class BooklistAdminActivity extends AppCompatActivity implements AdminBoo
             }
         });
 
-        // save listener
+        // Save Listener
         orderEventHandler.addCreateListener(new AsyncCallback<Order>() {
             @Override
             public void handleResponse(Order response) {
@@ -161,47 +231,7 @@ public class BooklistAdminActivity extends AppCompatActivity implements AdminBoo
         });
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleIntent(intent);
-        setIntent(intent);          // MIGHT CAUSE ISSUE
-        Log.i("search", "onNewIntent: ");
-    }
-
-    private void handleIntent(Intent intent) {
-        Log.i("search", "handleIntent: ");
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY).trim();
-            //use the query to search your data somehow
-            Log.i("search", "came to search. query: " + query);
-            if(query.length() < 2){
-                Toast.makeText(BooklistAdminActivity.this, "Search query is too small", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                final Dialog waitDialog = new Dialog(BooklistAdminActivity.this);
-                waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                waitDialog.setCancelable(false);
-                waitDialog.setContentView(R.layout.dialog_searching_books);
-                waitDialog.show();
-
-                final String whereClause = "name LIKE '" + query + "%' OR writer LIKE '" + query + "%'";
-
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        CONSTANTS.backendlessBookQuery(BooklistAdminActivity.this, waitDialog, whereClause, booklistAdapterRV_admin);
-                    }
-                });
-
-                thread.start();
-                recyclerView.requestFocus();    // So that keyboard doesn't pop open
-            }
-        }
-    }
-
-
-    public void initiateRealTimeDatabaseListeners() {
+    public void setUpRealtimeDatabaseListenerForBookAdmin() {
         // Create Listener
         bookEventHandler.addCreateListener(new AsyncCallback<Book>() {
             @Override
@@ -225,13 +255,12 @@ public class BooklistAdminActivity extends AppCompatActivity implements AdminBoo
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        CONSTANTS.freshRetrieveFromDatabase(BooklistAdminActivity.this, booklistAdapterRV_admin, pref.getString("sortBy", "name"), waitDialog, recyclerView, endlessScrollEventListener);
+                        CONSTANTS.freshRetrieveFromDatabase(BooklistAdminActivity.this, adminBooksAdapter, pref.getString("sortBy", "name"), waitDialog, recyclerView, endlessScrollEventListener);
 
                     }
                 });
 
                 thread.start();
-
             }
 
             @Override
@@ -239,6 +268,53 @@ public class BooklistAdminActivity extends AppCompatActivity implements AdminBoo
                 Log.i("MYAPP", "Server reported an error " + fault.getDetail());
             }
         });
+    }
+
+    private void showSortByDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(BooklistAdminActivity.this);
+        builder.setTitle("Sort By")
+                .setItems(R.array.sortByArray_admin, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String sortBy;
+                        if (which == 0)
+                            sortBy = "name";
+                        else if(which == 1)
+                            sortBy = "writer";
+                        else
+                            sortBy = "quantity";
+
+                        // Search query book number not handled
+
+                        Log.i("booklist_retrieve", "booklist_admin: sortBy = " + sortBy);
+
+                        final Dialog waitDialog = new Dialog(BooklistAdminActivity.this);
+                        waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                        waitDialog.setCancelable(false);
+                        waitDialog.setContentView(R.layout.dialog_please_wait);
+                        waitDialog.show();
+
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                CONSTANTS.freshRetrieveFromDatabase(BooklistAdminActivity.this, adminBooksAdapter, sortBy, waitDialog, recyclerView, endlessScrollEventListener);
+
+                            }
+                        });
+
+                        thread.start();
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
+        setIntent(intent);          // MIGHT CAUSE ISSUE
+        Log.i("search", "onNewIntent: ");
     }
 
     @Override
@@ -265,7 +341,7 @@ public class BooklistAdminActivity extends AppCompatActivity implements AdminBoo
                 if(!CONSTANTS.isShowingDefaultBooklist()){
                     CONSTANTS.bookListCached.clear();
                     CONSTANTS.bookListCached.addAll(CONSTANTS.tempBookListCached);
-                    booklistAdapterRV_admin.notifyDataSetChanged();
+                    adminBooksAdapter.notifyDataSetChanged();
                     CONSTANTS.setShowingDefaultBooklist(true);
                 }
 
@@ -311,62 +387,6 @@ public class BooklistAdminActivity extends AppCompatActivity implements AdminBoo
         return super.onOptionsItemSelected(item);
     }
 
-    private void initializeGUIElements() {
-        btnProfile = findViewById(R.id.btnBookList_admin_Profile);
-        btnRequest = findViewById(R.id.btnBookList_admin_RequestBook);
-        btnOrders = findViewById(R.id.btnBookList_admin_Orders);
-        fabAddNewBook = findViewById(R.id.fabBookList_admin_addNewBook);
-//      listView = findViewById(R.id.lvBookList_BookList);
-        recyclerView = findViewById(R.id.rvBookList_admin_BookList);
-        progressBar = findViewById(R.id.pbBooklist_admin_progressBar);
-    }
-
-    private void initializeRecyclerView() {
-        rvLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(rvLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
-        booklistAdapterRV_admin = new AdminBooksAdapter(CONSTANTS.bookListCached, getApplicationContext(), this);
-        recyclerView.setAdapter(booklistAdapterRV_admin);
-
-        endlessScrollEventListener = new EndlessScrollEventListener((LinearLayoutManager) rvLayoutManager) {
-            @Override
-            public void onLoadMore(int pageNum, RecyclerView recyclerView) {
-                if (CONSTANTS.isShowingDefaultBooklist()) {
-                    progressBar.setVisibility(View.VISIBLE);
-
-                    DataQueryBuilder queryBuilder = CONSTANTS.getBookListQueryBuilder();
-                    queryBuilder.prepareNextPage();
-
-                    Log.i(TAG, "onLoadMore: Came to OnloadMore");
-
-                    Backendless.Data.of(Book.class).find(queryBuilder,
-                            new AsyncCallback<List<Book>>() {
-                                @Override
-                                public void handleResponse(List<Book> response) {
-                                    Log.i("booklist_paging", "new response received");
-
-                                    CONSTANTS.bookListCached.addAll(response);
-                                    progressBar.setVisibility(View.GONE);
-                                    booklistAdapterRV_admin.notifyDataSetChanged();
-
-                                }
-
-                                @Override
-                                public void handleFault(BackendlessFault fault) {
-                                    Log.i("booklist_paging", "new response failed");
-                                    // use the getCode(), getMessage() or getDetail() on the fault object
-                                    // to see the details of the error
-                                }
-                            });
-                }
-
-
-            }
-        };
-
-        recyclerView.addOnScrollListener(endlessScrollEventListener);
-    }
-
     @Override
     public void onBookClick(int position) {
 
@@ -384,54 +404,33 @@ public class BooklistAdminActivity extends AppCompatActivity implements AdminBoo
         if(requestCode == CONSTANTS.getIdBooklistadminBookdetails()){
             Log.i(TAG, "onActivityResult: request code matched");
             if(resultCode == RESULT_OK){
-                booklistAdapterRV_admin.notifyDataSetChanged();
+                adminBooksAdapter.notifyDataSetChanged();
                 Log.i(TAG, "onActivityResult: Data set changed notified");
             }
             if(!CONSTANTS.isShowingDefaultBooklist()) {
                 CONSTANTS.bookListCached.clear();
                 CONSTANTS.bookListCached.addAll(CONSTANTS.tempBookListCached);
                 CONSTANTS.setShowingDefaultBooklist(true);
-                booklistAdapterRV_admin.notifyDataSetChanged();
+                adminBooksAdapter.notifyDataSetChanged();
             }
         }
     }
 
-    private void showSortByDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(BooklistAdminActivity.this);
-        builder.setTitle("Sort By")
-                .setItems(R.array.sortByArray_admin, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        final String sortBy;
-                        if (which == 0)
-                            sortBy = "name";
-                        else if(which == 1)
-                            sortBy = "writer";
-                        else
-                            sortBy = "quantity";
+    @Override
+    public void onClick(View view) {
+        if(view == btnRequest){
+            Intent intent = new Intent(getApplicationContext(), RequestListActivity.class);
+            startActivity(intent);
+        } else if(view == btnOrders){
+            Log.i(TAG, "onClick: starting viewOrders");
+            Intent intent = new Intent(BooklistAdminActivity.this, ViewOrdersActivity.class);
+            intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdBooklistAdmin());
+            startActivity(intent);
+        } else if(view == btnProfile){
 
-                        // Search query book number not handled
-
-                        Log.i("booklist_retrieve", "booklist_admin: sortBy = " + sortBy);
-
-                        final Dialog waitDialog = new Dialog(BooklistAdminActivity.this);
-                        waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        waitDialog.setCancelable(false);
-                        waitDialog.setContentView(R.layout.dialog_please_wait);
-                        waitDialog.show();
-
-                        Thread thread = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                CONSTANTS.freshRetrieveFromDatabase(BooklistAdminActivity.this, booklistAdapterRV_admin, sortBy, waitDialog, recyclerView, endlessScrollEventListener);
-
-                            }
-                        });
-
-                        thread.start();
-                    }
-                });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+        } else if(view == fabAddNewBook){
+            Intent intent = new Intent(BooklistAdminActivity.this, AddBookActivity.class);
+            startActivity(intent);
+        }
     }
 }

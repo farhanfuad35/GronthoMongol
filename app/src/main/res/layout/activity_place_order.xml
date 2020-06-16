@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.main.user.PlaceOrderActivity">
+    tools:context=".ui.main.user.archive.PlaceOrderActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,7 +25,7 @@
     </LinearLayout>
 
     <ScrollView
-        android:id="@+id/scrollViewOrderDetailsUser"
+        android:id="@+id/scrollViewPlaceOrder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -61,17 +61,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="20dp"
-                android:backgroundTint="@color/colorSecondary"
-                android:text="আরও এ্যাড করুন"
-                android:textColor="@color/secondary_text"
+                android:backgroundTint="@color/white"
+                android:text="+ আরও এ্যাড করুন"
+                android:textColor="@color/colorPrimary"
                 android:textSize="14sp"
-                app:backgroundTint="@android:color/transparent"
-                app:cornerRadius="5dp"
-                app:icon="@drawable/ic_baseline_add_24"
-                app:iconTint="@color/secondary_text"
-                app:rippleColor="@color/colorPrimaryDark"
-                app:strokeColor="@color/secondary_text"
-                app:strokeWidth="2dp" />
+                android:outlineProvider="background"
+                android:outlineAmbientShadowColor="@color/colorPrimary"
+                android:background="@drawable/background_shape_button_with_stroke"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,7 +149,7 @@
                     android:textSize="14sp" />
 
                 <EditText
-                    android:id="@+id/addressEditTextPlaceOrderr"
+                    android:id="@+id/addressEditTextPlaceOrder"
                     android:layout_width="match_parent"
                     android:layout_height="40sp"
                     android:layout_marginTop="5dp"

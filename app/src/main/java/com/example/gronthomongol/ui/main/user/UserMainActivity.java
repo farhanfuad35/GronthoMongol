@@ -19,7 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gronthomongol.R;
-import com.example.gronthomongol.ui.main.user.archive.RequestBookActivity;
+import com.example.gronthomongol.ui.main.user.activity.RequestBookActivity;
+import com.example.gronthomongol.ui.main.user.fragment.BagFragment;
+import com.example.gronthomongol.ui.main.user.fragment.BengaliBooksFragment;
+import com.example.gronthomongol.ui.main.user.fragment.EnglishBooksFragment;
+import com.example.gronthomongol.ui.main.user.fragment.UserOrdersFragment;
+import com.example.gronthomongol.ui.main.user.minor.UserAboutUsActivity;
+import com.example.gronthomongol.ui.main.user.minor.UserFeedbackActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 

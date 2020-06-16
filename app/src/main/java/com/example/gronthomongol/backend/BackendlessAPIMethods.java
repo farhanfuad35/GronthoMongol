@@ -54,13 +54,11 @@ public class BackendlessAPIMethods {
                             CONSTANTS.showErrorDialog((Activity)context, title, message, "Okay", null, 0);
                         }
                         else {
-                            Toast.makeText(context, "Sorry cannot logout right now", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "দুঃখিত, সাইন আউট করা যাচ্ছে না", Toast.LENGTH_SHORT).show();
                         }
                         Log.i("errorCode", "handleFault: error Code: " + fault.getCode() + "\t Error Message = " + fault.getMessage());
                     }
                 });
-
-
             }
 
             @Override
