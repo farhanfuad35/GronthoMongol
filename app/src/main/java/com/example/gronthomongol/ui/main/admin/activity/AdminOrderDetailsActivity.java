@@ -138,7 +138,7 @@ public class AdminOrderDetailsActivity extends AppCompatActivity implements View
             orderStatusTextView.setTextColor(Color.parseColor("#918200"));
         }
         else{
-            orderStatusTextView.setText("পেমেন্ট করা হয়নি");
+            orderStatusTextView.setText("পেমেন্ট বাকি আছে");
             orderStatusTextView.setTextColor(Color.parseColor("#800A0A"));
         }
     }

@@ -1,6 +1,7 @@
 package com.example.gronthomongol.ui.main.admin.fragment;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.models.Book;
@@ -49,6 +51,7 @@ public class BookAddFragment extends Fragment implements AdapterView.OnItemSelec
         View view = inflater.inflate(R.layout.fragment_book_add, container, false);
 
         findXmlElements(view);
+        setUpSpinner();
         setUpNumberPicker();
         setUpListeners();
 
@@ -62,6 +65,16 @@ public class BookAddFragment extends Fragment implements AdapterView.OnItemSelec
         languageSpinner = view.findViewById(R.id.languageSpinnerBookAdd);
         countNumberPicker = view.findViewById(R.id.countNumberPickerBookAdd);
         addButton = view.findViewById(R.id.addButtonBookAdd);
+    }
+
+    private void setUpSpinner(){
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.language_array, R.layout.language_spinner_color_layout);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(R.layout.language_spinner_dropdown_layout);
+        // Apply the adapter to the spinner
+        languageSpinner.setAdapter(adapter);
     }
 
     private void setUpNumberPicker(){
@@ -109,6 +122,8 @@ public class BookAddFragment extends Fragment implements AdapterView.OnItemSelec
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.secondary_text));
+        ((TextView) parent.getChildAt(0)).setTextSize(14);
         language = parent.getItemAtPosition(position).toString();
     }
 

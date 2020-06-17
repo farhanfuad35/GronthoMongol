@@ -17,7 +17,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,14 +43,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserOrdersFragment extends Fragment implements OrdersAdapter.OnOrderClickListener{
-
+public class UserOrdersFragment extends Fragment implements OrdersAdapter.OnOrderClickListener, AdapterView.OnItemSelectedListener{
+    private Spinner filterSpinner;
     private OrdersAdapter ordersAdapter;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private TextView noOrderTextView;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private EndlessScrollEventListener endlessScrollEventListener;
+
+    private String filter;
+    private ArrayAdapter<CharSequence> adapter;
 
     private int fromActivityID;
     private int ID_ORDER_DETAILS_ADMIN = 91;
@@ -63,15 +69,32 @@ public class UserOrdersFragment extends Fragment implements OrdersAdapter.OnOrde
         View view = inflater.inflate(R.layout.fragment_user_orders, container, false);
 
         findXmlElements(view);
+        setUpSpinner();
+        setUpListeners();
         loadOrders();
 
         return view;
     }
 
     private void findXmlElements(View view){
+        filterSpinner = view.findViewById(R.id.filterSpinnerUserOrders);
         recyclerView = view.findViewById(R.id.recyclerViewUserOrder);
         progressBar = view.findViewById(R.id.progressBarUserOrder);
         noOrderTextView = view.findViewById(R.id.noOrderTextViewUserOrder);
+    }
+
+    private void setUpSpinner(){
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.filterByArrayUser, R.layout.language_spinner_color_layout);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(R.layout.language_spinner_dropdown_layout);
+        // Apply the adapter to the spinner
+        filterSpinner.setAdapter(adapter);
+    }
+
+    private void setUpListeners(){
+        filterSpinner.setOnItemSelectedListener(this);
     }
 
     private void loadOrders(){
@@ -160,7 +183,7 @@ public class UserOrdersFragment extends Fragment implements OrdersAdapter.OnOrde
 
     private void showFilterByDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Filter By").setItems(R.array.filterByArray, new DialogInterface.OnClickListener() {
+        builder.setTitle("Filter By").setItems(R.array.filterByArrayUser, new DialogInterface.OnClickListener() {
             public void onClick(final DialogInterface dialog, final int which) {
                 dialog.dismiss();
                 if (which != CONSTANTS.currentOrderFilter) {
@@ -268,4 +291,47 @@ public class UserOrdersFragment extends Fragment implements OrdersAdapter.OnOrde
 //        onBackPressed();
 //        return true;
 //    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        ((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.secondary_text));
+        ((TextView) parent.getChildAt(0)).setTextSize(14);
+        filter = parent.getItemAtPosition(position).toString();
+//        Toast.makeText(getContext(), "Position: " + position +"\n" + "Id : " + id, Toast.LENGTH_SHORT).show();
+        final int filterPos = position;
+
+        if (position != CONSTANTS.currentOrderFilter) {
+            String whereClause = "user.email = '" + CONSTANTS.getCurrentUser().getEmail() + "'";
+            if (filterPos == 0)
+                whereClause = "user.email = '" + CONSTANTS.getCurrentUser().getEmail() + "'";     // sensitive
+            else if (filterPos == 1)
+                whereClause = "delivered = FALSE AND paid = TRUE AND user.email = '" + CONSTANTS.getCurrentUser().getEmail() + "'";
+            else if (filterPos == 2)
+                whereClause = "delivered = FALSE AND paid = FALSE AND user.email = '" + CONSTANTS.getCurrentUser().getEmail() + "'";
+            else if (filterPos == 3)
+                whereClause = "delivered = TRUE AND user.email = '" + CONSTANTS.getCurrentUser().getEmail() + "'";
+            Log.i("orderlist_retrieve", "orderlist: filterBy = " + whereClause);
+
+            final Dialog waitDialog = new Dialog(getContext());
+            waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            waitDialog.setCancelable(false);
+            waitDialog.setContentView(R.layout.dialog_please_wait);
+            waitDialog.show();
+
+            final String finalWhereClause = whereClause;
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CONSTANTS.freshOrderRetrieveFromDatabase(getContext(), ordersAdapter, finalWhereClause, waitDialog, endlessScrollEventListener, filterPos);
+                }
+            });
+
+            thread.start();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

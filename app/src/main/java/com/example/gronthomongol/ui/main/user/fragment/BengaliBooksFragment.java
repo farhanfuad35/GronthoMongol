@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,6 +32,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -52,7 +55,10 @@ import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 
 import java.util.List;
 
-public class BengaliBooksFragment extends Fragment implements UserBooksAdapter.OnBookClickListener {
+public class BengaliBooksFragment extends Fragment implements UserBooksAdapter.OnBookClickListener, View.OnClickListener{
+    private EditText searchEditText;
+    private ImageButton sortImageButton;
+
     private UserBooksAdapter userBooksAdapter;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
@@ -78,6 +84,7 @@ public class BengaliBooksFragment extends Fragment implements UserBooksAdapter.O
 
 //        handleIntent(getIntent());
         findXmlElements(view);
+        setUpListeners();
         setUpRecyclerView();   // Check this for endless scroll data retrieval
 
         pref = getContext().getSharedPreferences("preferences", 0); // 0 - for private mode
@@ -107,8 +114,31 @@ public class BengaliBooksFragment extends Fragment implements UserBooksAdapter.O
     }
 
     private void findXmlElements(View view) {
+        searchEditText = view.findViewById(R.id.searchEditTextBengaliBooks);
+        sortImageButton = view.findViewById(R.id.sortImageButtonBengaliBooks);
+
         recyclerView = view.findViewById(R.id.recyclerViewBengaliBooks);
         progressBar = view.findViewById(R.id.progressBarBengaliBooks);
+    }
+
+    private void setUpListeners(){
+        sortImageButton.setOnClickListener(this);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
     }
 
     private void setUpRecyclerView() {
@@ -376,5 +406,12 @@ public class BengaliBooksFragment extends Fragment implements UserBooksAdapter.O
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view == sortImageButton){
+            showSortByDialog();
+        }
     }
 }

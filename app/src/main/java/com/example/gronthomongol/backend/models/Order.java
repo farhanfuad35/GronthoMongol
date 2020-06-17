@@ -401,8 +401,11 @@ public class Order implements Serializable {
             {
                 // Contact instance has been updated
                 if(updateCode.equals("bkash")){
-                    Button button = ((Activity)context).findViewById(R.id.submitButtonOrderDetailsUser);
-                    button.setVisibility(View.GONE);
+                    Button submit = ((Activity)context).findViewById(R.id.submitButtonOrderDetailsUser);
+                    Button cancel = ((Activity)context).findViewById(R.id.cancelButtonOrderDetailsUser);
+                    submit.setVisibility(View.GONE);
+                    cancel.setVisibility(View.GONE);
+
                     EditText etBkash = ((Activity)context).findViewById(R.id.transactionIdEditTextOrderDetailsUser);
                     etBkash.setCursorVisible(false);
                     etBkash.setFocusableInTouchMode(false);
@@ -414,8 +417,10 @@ public class Order implements Serializable {
                     Toast.makeText((Activity)context, "TxnId Submitted", Toast.LENGTH_SHORT).show();
                 }
                 else if(updateCode.equals("delivered")){
-                    Button button = ((Activity)context).findViewById(R.id.deliveredButtonOrderDetailsAdmin);
-                    button.setVisibility(View.GONE);
+                    Button delivered = ((Activity)context).findViewById(R.id.deliveredButtonOrderDetailsAdmin);
+                    Button reject = ((Activity)context).findViewById(R.id.rejectButtonOrderDetailsAdmin);
+                    delivered.setVisibility(View.GONE);
+                    reject.setVisibility(View.GONE);
 
                     updateIfFound(updatedOrder);
                 }

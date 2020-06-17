@@ -10,12 +10,57 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/background_shape_item"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:outlineAmbientShadowColor="@color/colorSecondaryDark"
+            android:outlineProvider="background"
+            android:outlineSpotShadowColor="@color/colorSecondaryDark">
+
+            <EditText
+                android:id="@+id/searchEditTextEnglishBooks"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="6"
+                android:drawableLeft="@drawable/ic_search"
+                android:drawablePadding="15dp"
+                android:gravity="left|center"
+                android:hint="বই খোঁজ করুন..."
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingLeft="15dp"
+                android:scrollHorizontally="true"
+                android:textColor="@color/colorPrimary"
+                android:textColorHint="@color/secondary_text"
+                android:textCursorDrawable="@null"
+                android:textSize="14sp"
+                android:textStyle="normal" />
+
+            <ImageButton
+                android:id="@+id/sortImageButtonEnglishBooks"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:gravity="center"
+                android:src="@drawable/ic_sort" />
+
+        </LinearLayout>
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewEnglishBooks"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="10"
             android:layout_marginTop="10dp"
+            android:layout_weight="10"
             android:scrollbars="vertical" />
 
         <ProgressBar

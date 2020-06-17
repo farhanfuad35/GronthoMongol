@@ -88,7 +88,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderItemV
             holder.statusTextView.setText("ডেলিভার করা হয়েছে");
             holder.statusTextView.setTextColor(Color.parseColor("#157015"));
         } else if(order.isPaid()){
-            holder.statusTextView.setText("প্রসেস করা হচ্ছে...");
+            holder.statusTextView.setText("পেমেন্ট করা হয়েছে");
             holder.statusTextView.setTextColor(Color.parseColor("#918200"));
         } else{
             holder.statusTextView.setText("পেমেন্ট বাকি আছে");

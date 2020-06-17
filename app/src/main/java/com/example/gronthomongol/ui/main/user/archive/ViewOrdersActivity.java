@@ -95,7 +95,7 @@ public class ViewOrdersActivity extends AppCompatActivity implements OrdersAdapt
 
     private void showFilterByDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ViewOrdersActivity.this);
-        builder.setTitle("Filter By").setItems(R.array.filterByArray, new DialogInterface.OnClickListener() {
+        builder.setTitle("Filter By").setItems(R.array.filterByArrayAdmin, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int which) {
                         dialog.dismiss();
                         if (which != CONSTANTS.currentOrderFilter) {

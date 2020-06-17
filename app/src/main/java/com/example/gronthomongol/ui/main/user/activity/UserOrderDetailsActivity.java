@@ -33,7 +33,7 @@ public class UserOrderDetailsActivity extends AppCompatActivity implements View.
     private TextView phoneNumberTextView;
     private TextView addressTextView;
     private TextView totalPriceTextView;
-    private TextView commentTextView;
+    private EditText commentEditText;
     private EditText transactionIdEditText;
     private Button submitButton;
     private Button cancelButton;
@@ -80,7 +80,7 @@ public class UserOrderDetailsActivity extends AppCompatActivity implements View.
         phoneNumberTextView = findViewById(R.id.phoneNumberTextViewOrderDetailsUser);
         addressTextView = findViewById(R.id.addressTextViewOrderDetailsUser);
         totalPriceTextView = findViewById(R.id.totalPriceTextViewOrderDetailsUser);
-        commentTextView = findViewById(R.id.commentEditTextOrderDetailsUser);
+        commentEditText = findViewById(R.id.commentEditTextOrderDetailsUser);
         transactionIdEditText = findViewById(R.id.transactionIdEditTextOrderDetailsUser);
 
         submitButton = findViewById(R.id.submitButtonOrderDetailsUser);
@@ -113,8 +113,12 @@ public class UserOrderDetailsActivity extends AppCompatActivity implements View.
         totalPriceTextView.setText(totalPrice);
         addressTextView.setText(address);
 
-        commentTextView.setText(currentOrder.getComment());
-        commentTextView.setHint(getString(R.string.comment_neat));
+        submitButton.setVisibility(View.VISIBLE);
+        cancelButton.setVisibility(View.VISIBLE);
+
+        if(!currentOrder.getComment().equals(CONSTANTS.NULLMARKER)){
+            commentEditText.setText(currentOrder.getComment());
+        }
 
         if(!currentOrder.getbKashTxnId().equals(CONSTANTS.NULLMARKER)){
             transactionIdEditText.setText(currentOrder.getbKashTxnId());
@@ -122,12 +126,18 @@ public class UserOrderDetailsActivity extends AppCompatActivity implements View.
             transactionIdEditText.setClickable(false);
             transactionIdEditText.setFocusableInTouchMode(false);
             transactionIdEditText.setCursorVisible(false);
+
+            commentEditText.setFocusable(false);
+            commentEditText.setClickable(false);
+            commentEditText.setFocusableInTouchMode(false);
+            commentEditText.setCursorVisible(false);
+
             submitButton.setVisibility(View.GONE);
             cancelButton.setVisibility(View.GONE);
         }
     }
 
-    private void showTxnIdConfirmationDialog() {
+    private void showTrxIdConfirmationDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(UserOrderDetailsActivity.this);
         alertDialogBuilder.setTitle("TrxID নিশ্চিত করুন");
         alertDialogBuilder.setMessage("এই TxnID: '" + trxId + "' কি সঠিক?");
@@ -136,9 +146,14 @@ public class UserOrderDetailsActivity extends AppCompatActivity implements View.
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+
+                        submitButton.setVisibility(View.GONE);
+                        cancelButton.setVisibility(View.GONE);
+
                         //Toast.makeText(Splash_Screen.this,"You clicked yes button",Toast.LENGTH_LONG).show();
                         currentOrder.setbKashTxnId(trxId);
                         currentOrder.setPaid(true);
+
                         final Dialog dialog = new Dialog(UserOrderDetailsActivity.this);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         dialog.setCancelable(false);
@@ -183,7 +198,7 @@ public class UserOrderDetailsActivity extends AppCompatActivity implements View.
                 transactionIdEditText.setError("সঠিক নয়");
             }
             else{
-                showTxnIdConfirmationDialog();
+                showTrxIdConfirmationDialog();
             }
         } else if(view == cancelButton){
 

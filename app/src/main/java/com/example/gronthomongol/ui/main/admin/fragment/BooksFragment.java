@@ -14,11 +14,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -39,13 +43,17 @@ import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 import java.util.List;
 import java.util.Objects;
 
-public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookClickListener{
+public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookClickListener, View.OnClickListener{
+
+    private EditText searchEditText;
+    private ImageButton sortImageButton;
 
     private AdminBooksAdapter adminBooksAdapter;
     private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
     private EndlessScrollEventListener endlessScrollEventListener;
+
     private EventHandler<Book> bookEventHandler = Backendless.Data.of(Book.class).rt();
     private EventHandler<Order> orderEventHandler = Backendless.Data.of(Order.class).rt();
 
@@ -65,6 +73,7 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
 
 //        handleIntent(getActivity().getIntent());
         findXmlElements(view);
+        setUpListeners();
         setUpRecyclerView();   // Check this for endless scroll data retrieval
 
         // For orders
@@ -82,10 +91,32 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
     }
 
     private void findXmlElements(View view) {
+        searchEditText = view.findViewById(R.id.searchEditTextBooks);
+        sortImageButton = view.findViewById(R.id.sortImageButtonBooks);
+
         recyclerView = view.findViewById(R.id.recyclerViewBooks);
         progressBar = view.findViewById(R.id.progressBarBooks);
     }
 
+    private void setUpListeners(){
+        sortImageButton.setOnClickListener(this);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+    }
 
     private void setUpRecyclerView() {
         recyclerViewLayoutManager = new LinearLayoutManager(getContext());
@@ -386,5 +417,12 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view == sortImageButton){
+            showSortByDialog();
+        }
     }
 }

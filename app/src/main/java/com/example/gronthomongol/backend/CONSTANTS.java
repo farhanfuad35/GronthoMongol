@@ -76,7 +76,7 @@ public class CONSTANTS {
     public static String non_operational_message;
     public static double min_version;
     public static int maximum_order_per_day;
-    public static int currentOrderFilter = 0;       // none. index according to values/array_filter_by.xml
+    public static int currentOrderFilter = 0;       // none. index according to values/array_filter_by_admin.xml
     public static OrdersAdapter orderlistAdapterRV;
 
     public static int CURRENT_NUMBER_OF_ORDERS = 0;
@@ -852,18 +852,21 @@ public class CONSTANTS {
         Backendless.Data.of(Order.class).find(dataQueryBuilder, new AsyncCallback<List<Order>>() {
             @Override
             public void handleResponse(List<Order> response) {
-                CONSTANTS.myOrdersCached.clear();
-                CONSTANTS.myOrdersCached.addAll(response);
+                if(response.size()>0){
+                    CONSTANTS.myOrdersCached.clear();
+                    CONSTANTS.myOrdersCached.addAll(response);
 
-                Log.i("orderlist_retrieve", "received list[0] = " + response.get(0).getRecipient_Name());
+                    Log.i("orderlist_retrieve", "received list[0] = " + response.get(0).getRecipient_Name());
 
-                endlessScrollEventListener.reset();
-                orderlistAdapterRV.notifyDataSetChanged();
-                CONSTANTS.setOrderListQueryBuilder(dataQueryBuilder);    // To make this exact querybuilder accessible from all over the app
-                Log.i("orderlist_retrieve", "Booklist retrieved. Size = " + response.size());
-                CONSTANTS.setMYORDEROFFSET(CONSTANTS.getMYORDEROFFSET()+CONSTANTS.getMyOrderPageSize());
+                    endlessScrollEventListener.reset();
+                    orderlistAdapterRV.notifyDataSetChanged();
+                    CONSTANTS.setOrderListQueryBuilder(dataQueryBuilder);    // To make this exact querybuilder accessible from all over the app
+                    Log.i("orderlist_retrieve", "Booklist retrieved. Size = " + response.size());
+                    CONSTANTS.setMYORDEROFFSET(CONSTANTS.getMYORDEROFFSET()+CONSTANTS.getMyOrderPageSize());
 
-                CONSTANTS.currentOrderFilter = which;
+                    CONSTANTS.currentOrderFilter = which;
+                }
+
                 dialog.dismiss();
             }
 
