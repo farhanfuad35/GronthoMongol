@@ -42,9 +42,9 @@
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/white"
                     app:menu="@menu/bottom_navigation_menu_user"
-                    app:itemTextColor="@color/secondary_text"
+                    app:itemTextColor="@drawable/selector"
                     app:itemBackground="@color/white"
-                    app:itemIconTint="@color/secondary_text"
+                    app:itemIconTint="@drawable/selector"
                     android:layout_alignParentBottom="true"
                     app:labelVisibilityMode="labeled">
 
@@ -64,6 +64,9 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu_user"
+        app:itemTextColor="@drawable/selector"
+        app:itemBackground="@color/white"
+        app:itemIconTint="@drawable/selector"
         android:theme="@style/drawerStyle">
 
     </com.google.android.material.navigation.NavigationView>

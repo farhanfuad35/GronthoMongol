@@ -1,66 +1,271 @@
 package com.example.gronthomongol.ui.main.user.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.DataQueryBuilder;
+import com.backendless.persistence.LoadRelationsQueryBuilder;
 import com.example.gronthomongol.R;
+import com.example.gronthomongol.backend.CONSTANTS;
+import com.example.gronthomongol.backend.models.Book;
+import com.example.gronthomongol.backend.models.Order;
+import com.example.gronthomongol.ui.main.admin.activity.AdminOrderDetailsActivity;
+import com.example.gronthomongol.ui.main.user.activity.UserOrderDetailsActivity;
+import com.example.gronthomongol.ui.main.user.archive.ViewOrdersActivity;
+import com.example.gronthomongol.ui.util.adapters.OrdersAdapter;
+import com.example.gronthomongol.ui.util.listeners.EndlessScrollEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link UserOrdersFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class UserOrdersFragment extends Fragment {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class UserOrdersFragment extends Fragment implements OrdersAdapter.OnOrderClickListener{
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private OrdersAdapter ordersAdapter;
+    private ProgressBar progressBar;
+    private RecyclerView recyclerView;
+    private TextView noOrderTextView;
+    private RecyclerView.LayoutManager recyclerViewLayoutManager;
+    private EndlessScrollEventListener endlessScrollEventListener;
+
+    private int fromActivityID;
+    private int ID_ORDER_DETAILS_ADMIN = 91;
+    private final String TAG = "viewOrders";
 
     public UserOrdersFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment UserOrdersFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static UserOrdersFragment newInstance(String param1, String param2) {
-        UserOrdersFragment fragment = new UserOrdersFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_orders, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_orders, container, false);
+
+        findXmlElements(view);
+        loadOrders();
+
+        return view;
     }
+
+    private void findXmlElements(View view){
+        recyclerView = view.findViewById(R.id.recyclerViewUserOrder);
+        progressBar = view.findViewById(R.id.progressBarUserOrder);
+        noOrderTextView = view.findViewById(R.id.noOrderTextViewUserOrder);
+    }
+
+    private void loadOrders(){
+        if(CONSTANTS.myOrdersCached.isEmpty()){
+            recyclerView.setVisibility(View.GONE);
+            noOrderTextView.setVisibility(View.VISIBLE);
+        }
+        else {
+            setUpRecyclerView();
+        }
+    }
+
+    private void setUpRecyclerView() {
+        recyclerViewLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(recyclerViewLayoutManager);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), 0));
+        ordersAdapter = new OrdersAdapter(CONSTANTS.myOrdersCached, getContext(), this);
+        recyclerView.setAdapter(ordersAdapter);
+
+        // Store this adapter in CONSTANT so that it can be used to update order list on real time from booklist
+        CONSTANTS.orderlistAdapterRV = ordersAdapter;
+
+        endlessScrollEventListener = new EndlessScrollEventListener((LinearLayoutManager) recyclerViewLayoutManager) {
+            @Override
+            public void onLoadMore(int pageNum, RecyclerView recyclerView) {
+                Log.i(TAG, "onLoadMore: ");
+
+                if(CONSTANTS.myOrdersCached.size() > CONSTANTS.getMyOrderPageSize() - 1) {
+
+                    Log.i(TAG, "onLoadMore: Requesting more orders");
+
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    DataQueryBuilder queryBuilder = CONSTANTS.getOrderListQueryBuilder();
+                    queryBuilder.prepareNextPage();
+
+                    Log.i(TAG, "onLoadMore: Came to OnloadMore");
+
+                    Backendless.Data.of(Order.class).find(queryBuilder, new AsyncCallback<List<Order>>() {
+                        @Override
+                        public void handleResponse(List<Order> response) {
+                            CONSTANTS.myOrdersCached.addAll(response);
+                            progressBar.setVisibility(View.GONE);
+                            ordersAdapter.notifyDataSetChanged();
+                            Log.i(TAG, "handleResponse: Order list refreshed");
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Log.i(TAG, "handleFault: " + fault.getMessage());
+                            if(fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless))){
+                                Toast.makeText(getContext(), "Please check your network connection", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(getContext(), "Error retrieving data from the database", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        };
+
+        recyclerView.addOnScrollListener(endlessScrollEventListener);
+    }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        if((boolean) CONSTANTS.getCurrentUser().getProperty("admin")) {
+//            MenuInflater inflater = getActivity().getMenuInflater();
+//            inflater.inflate(R.menu.options_menu_orders, menu);
+//            return true;
+//        }
+//
+//        return false;
+//    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//        if(id == R.id.menuMain_orders_filter){
+//            showFilterByDialog();
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+
+    private void showFilterByDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Filter By").setItems(R.array.filterByArray, new DialogInterface.OnClickListener() {
+            public void onClick(final DialogInterface dialog, final int which) {
+                dialog.dismiss();
+                if (which != CONSTANTS.currentOrderFilter) {
+                    String whereClause = CONSTANTS.NULLMARKER;
+                    if (which == 0)
+                        whereClause = CONSTANTS.NULLMARKER;     // sensitive
+                    else if (which == 1)
+                        whereClause = "delivered = FALSE";
+                    else if (which == 2)
+                        whereClause = "delivered = FALSE AND paid = TRUE";
+                    else if (which == 3)
+                        whereClause = "delivered = FALSE AND paid = FALSE";
+                    else if (which == 4)
+                        whereClause = "delivered = TRUE";
+                    Log.i("orderlist_retrieve", "orderlist: filterBy = " + whereClause);
+
+                    final Dialog waitDialog = new Dialog(getContext());
+                    waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    waitDialog.setCancelable(false);
+                    waitDialog.setContentView(R.layout.dialog_please_wait);
+                    waitDialog.show();
+
+                    final String finalWhereClause = whereClause;
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            CONSTANTS.freshOrderRetrieveFromDatabase(getContext(), ordersAdapter, finalWhereClause, waitDialog, endlessScrollEventListener, which);
+                        }
+                    });
+
+                    thread.start();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onOrderClick(final int position) {
+        //Toast.makeText(getApplicationContext(), "You have clicked an order", Toast.LENGTH_SHORT).show();
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_please_wait);
+        dialog.show();
+
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                LoadRelationsQueryBuilder<Book> loadRelationsQueryBuilder;
+                loadRelationsQueryBuilder = LoadRelationsQueryBuilder.of( Book.class );
+                loadRelationsQueryBuilder.setRelationName( "orderedBookList" );
+                String parentObjectId = CONSTANTS.myOrdersCached.get(position).getObjectId();
+
+                Backendless.Data.of("Order").loadRelations(parentObjectId, loadRelationsQueryBuilder, new AsyncCallback<List<Book>>() {
+                    @Override
+                    public void handleResponse(List<Book> response) {
+                        // TODO: Do something with it
+                        Log.i(TAG, "handleResponse: Loading orderedBooks successful. List size: " + response.size());
+                        ArrayList<Book> orderedBooks = new ArrayList<>(response);
+                        dialog.dismiss();
+                        Intent intent = new Intent(getContext(), UserOrderDetailsActivity.class);
+                        intent.putExtra(getString(R.string.activityIDName), CONSTANTS.getIdViewOrders());
+                        intent.putExtra("orderedBooks", orderedBooks);
+                        intent.putExtra("currentOrder", (Serializable) CONSTANTS.myOrdersCached.get(position));
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        dialog.dismiss();
+                        String title;
+                        String message;
+                        if( fault.getMessage().equals(getString(R.string.connectionErrorMessageBackendless) )) {
+                            title = "Connection Failed!";
+                            message = "Please Check Your Internet Connection";
+                            CONSTANTS.showErrorDialog(getContext(), title, message, "Okay", null, 0);
+                        }
+                        else {
+                            Toast.makeText(getContext(), "Error in communication. Please try again later", Toast.LENGTH_LONG).show();
+                        }
+                        Log.i(TAG, "handleFault: loading ordered books failed" + fault.getMessage());
+                    }
+                });
+            }
+        });
+
+        thread.start();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == ID_ORDER_DETAILS_ADMIN){
+            if(resultCode == getActivity().RESULT_OK){
+                ordersAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+//    @Override
+//    public boolean onSupportNavigateUp() {
+//        onBackPressed();
+//        return true;
+//    }
 }

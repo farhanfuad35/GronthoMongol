@@ -8,23 +8,28 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.gronthomongol.R;
+import com.example.gronthomongol.backend.BackendlessAPIMethods;
+import com.example.gronthomongol.ui.main.admin.AdminMainActivity;
 import com.example.gronthomongol.ui.main.user.activity.RequestBookActivity;
 import com.example.gronthomongol.ui.main.user.fragment.BagFragment;
 import com.example.gronthomongol.ui.main.user.fragment.BengaliBooksFragment;
 import com.example.gronthomongol.ui.main.user.fragment.EnglishBooksFragment;
 import com.example.gronthomongol.ui.main.user.fragment.UserOrdersFragment;
 import com.example.gronthomongol.ui.main.user.minor.UserAboutUsActivity;
+import com.example.gronthomongol.ui.main.user.minor.UserDonateActivity;
 import com.example.gronthomongol.ui.main.user.minor.UserFeedbackActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -149,6 +154,9 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
         if (id == R.id.requestsDrawerMenuUser) {
             Intent intent = new Intent(getApplicationContext(), RequestBookActivity.class);
             startActivity(intent);
+        } else if(id == R.id.donateDrawerMenuUser) {
+            Intent intent = new Intent(getApplicationContext(), UserDonateActivity.class);
+            startActivity(intent);
         } else if (id == R.id.feedbackDrawerMenuUser) {
             Intent intent = new Intent(getApplicationContext(), UserFeedbackActivity.class);
             startActivity(intent);
@@ -156,8 +164,22 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
             Intent intent = new Intent(getApplicationContext(), UserAboutUsActivity.class);
             startActivity(intent);
         } else if (id == R.id.signOutDrawerMenuUser) {
-//            Intent intent = new Intent(getApplicationContext(), ViewOrdersActivity.class);
-//            startActivity(intent);
+            // Updating device ID while logging out to ensure no more notification is sent to that device
+            final Dialog dialog = new Dialog(UserMainActivity.this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.dialog_signing_out);
+            dialog.show();
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // BackendlessAPIMethods.updateDeviceId(booklist.this, user, "");
+                    BackendlessAPIMethods.logOut(UserMainActivity.this, dialog);
+                }
+            });
+
+            thread.start();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

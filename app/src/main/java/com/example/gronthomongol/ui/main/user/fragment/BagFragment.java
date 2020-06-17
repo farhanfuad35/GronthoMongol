@@ -68,21 +68,21 @@ public class BagFragment extends Fragment implements  View.OnClickListener{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bag, container, false);
 
-        orderedBooks = new ArrayList<Book>(CONSTANTS.getMaxNoOfBooksPerUserPerOrder());
-
-        findXmlElements(view);
-        setUpRecyclerView();
-        setUpItemTouchHelper();
-
-        orderedBooks.add((Book)  getActivity().getIntent().getSerializableExtra("selectedBook"));
-
-        Log.i("placeorder", "ordered book array size = " + orderedBooks.size());
-
-        followedByProcessID = getActivity().getIntent().getIntExtra("ID",0);
-
-        setFields();
-
-        setUpListeners();
+//        orderedBooks = new ArrayList<Book>(CONSTANTS.getMaxNoOfBooksPerUserPerOrder());
+//
+//        findXmlElements(view);
+//        setUpRecyclerView();
+//        setUpItemTouchHelper();
+//
+//        orderedBooks.add((Book)  getActivity().getIntent().getSerializableExtra("selectedBook"));
+//
+//        Log.i("placeorder", "ordered book array size = " + orderedBooks.size());
+//
+//        followedByProcessID = getActivity().getIntent().getIntExtra("ID",0);
+//
+//        setFields();
+//
+//        setUpListeners();
 
         return view;
     }
@@ -101,7 +101,7 @@ public class BagFragment extends Fragment implements  View.OnClickListener{
     private void setUpRecyclerView() {
         recyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), 0));
         cartAdapter = new CartAdapter(orderedBooks, getContext());
         recyclerView.setAdapter(cartAdapter);
     }

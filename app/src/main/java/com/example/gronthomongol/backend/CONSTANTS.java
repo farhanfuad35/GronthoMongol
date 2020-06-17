@@ -672,7 +672,7 @@ public class CONSTANTS {
         });
     }
 
-    public static void freshRetrieveFromDatabase(final Context context, final UserBooksAdapter booklistAdapterRV, String sortBy, final Dialog dialog,
+    public static void freshRetrieveFromDatabase(final Context context, final UserBooksAdapter userBooksAdapter, String sortBy, final Dialog dialog,
                                                  final RecyclerView recyclerView, final EndlessScrollEventListener endlessScrollEventListener){
 
 //      REQUIREMENTS: MUST BE CALLED AFTER IT IS DETERMINED IF THE USER IS AN ADMIN OR NOT
@@ -691,7 +691,6 @@ public class CONSTANTS {
 
         Log.i("shared_preference", "freshRetrieveFromDatabase: sortBy = " + sortBy);
         Log.i("shared_preference", "freshRetrieveFromDatabase: value from sharedPreference: " + pref.getString("sortBy", "default"));
-
 
         // Database Stuff
         final DataQueryBuilder queryBuilder = DataQueryBuilder.create();
@@ -719,7 +718,7 @@ public class CONSTANTS {
                         Log.i("booklist_retrieve", "cached list[0] = " + CONSTANTS.bookListCached.get(0).getName());
 
                         endlessScrollEventListener.reset();
-                        booklistAdapterRV.notifyDataSetChanged();
+                        userBooksAdapter.notifyDataSetChanged();
                         CONSTANTS.setBookListQueryBuilder(queryBuilder);    // To make this exact querybuilder accessible from all over the app
                         Log.i("booklist_retrieve", "Booklist retrieved. Size = " + response.size());
                         CONSTANTS.setOFFSET(CONSTANTS.getOFFSET()+CONSTANTS.getPageSize());
@@ -755,7 +754,7 @@ public class CONSTANTS {
 
     }
 
-    public static void freshRetrieveFromDatabase(final Context context, final AdminBooksAdapter booklistAdapterRV_admin, String sortBy, final Dialog dialog,
+    public static void freshRetrieveFromDatabase(final Context context, final AdminBooksAdapter adminBooksAdapter, String sortBy, final Dialog dialog,
                                                  final RecyclerView recyclerView, final EndlessScrollEventListener endlessScrollEventListener){
 
 //      REQUIREMENTS: MUST BE CALLED AFTER IT IS DETERMINED IF THE USER IS AN ADMIN OR NOT
@@ -801,7 +800,7 @@ public class CONSTANTS {
                         Log.i("booklist_retrieve", "cached list[0] = " + CONSTANTS.bookListCached.get(0).getName());
 
                         endlessScrollEventListener.reset();
-                        booklistAdapterRV_admin.notifyDataSetChanged();
+                        adminBooksAdapter.notifyDataSetChanged();
                         CONSTANTS.setBookListQueryBuilder(queryBuilder);    // To make this exact querybuilder accessible from all over the app
                         Log.i("booklist_retrieve", "Booklist retrieved. Size = " + response.size());
                         CONSTANTS.setOFFSET(CONSTANTS.getOFFSET()+CONSTANTS.getPageSize());

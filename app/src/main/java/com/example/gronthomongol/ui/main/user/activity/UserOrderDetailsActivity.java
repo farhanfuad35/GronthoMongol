@@ -95,7 +95,7 @@ public class UserOrderDetailsActivity extends AppCompatActivity implements View.
     private void setUpRecyclerView() {
         recycleViewLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recycleViewLayoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getApplicationContext(), 0));
         cartAdapter = new CartAdapter(orderedBooks, getApplicationContext());
         recyclerView.setAdapter(cartAdapter);
     }
@@ -113,13 +113,8 @@ public class UserOrderDetailsActivity extends AppCompatActivity implements View.
         totalPriceTextView.setText(totalPrice);
         addressTextView.setText(address);
 
-        if(currentOrder.getComment().equals(CONSTANTS.NULLMARKER)){
-            commentTextView.setVisibility(View.GONE);
-        }
-        else{
-            commentTextView.setText(currentOrder.getComment());
-            commentTextView.setHint(getString(R.string.comment_neat));
-        }
+        commentTextView.setText(currentOrder.getComment());
+        commentTextView.setHint(getString(R.string.comment_neat));
 
         if(!currentOrder.getbKashTxnId().equals(CONSTANTS.NULLMARKER)){
             transactionIdEditText.setText(currentOrder.getbKashTxnId());

@@ -5,10 +5,29 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.user.fragment.EnglishBooksFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewEnglishBooks"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:layout_marginTop="10dp"
+            android:scrollbars="vertical" />
+
+        <ProgressBar
+            android:id="@+id/progressBarEnglishBooks"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:indeterminateTint="@color/colorPrimary"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
 
 </FrameLayout>
