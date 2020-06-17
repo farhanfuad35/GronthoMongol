@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filterByArray">
+        <item>"ফিল্টার করুন"</item>
+        <item>"ডেলিভারি বাকি আছে"</item>
+        <item>"পেমেন্ট করা হয়েছে"</item>
+        <item>"পেমেন্ট বাকি আছে"</item>
+        <item>"ডেলিভার করা হয়েছে"</item>
+    </string-array>
+</resources>
