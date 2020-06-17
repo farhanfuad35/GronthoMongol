@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.gronthomongol.R;
+import com.example.gronthomongol.ui.auth.fragment.ForgotPasswordFragment;
+import com.example.gronthomongol.ui.auth.fragment.SignInFragment;
+import com.example.gronthomongol.ui.auth.fragment.SignUpFragment;
 
 public class AuthActivity extends AppCompatActivity implements View.OnClickListener {
 

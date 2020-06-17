@@ -64,9 +64,9 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu_admin"
-        app:itemTextColor="@drawable/selector"
-        app:itemBackground="@color/white"
-        app:itemIconTint="@drawable/selector"
+        app:itemIconTint="@drawable/drawer_item"
+        app:itemTextColor="@drawable/drawer_item"
+        android:background="@color/white"
         android:theme="@style/drawerStyle">
 
     </com.google.android.material.navigation.NavigationView>

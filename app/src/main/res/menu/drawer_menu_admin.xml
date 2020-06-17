@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/top_drawer">
         <item
+            android:id="@+id/homeDrawerMenuAdmin"
+            android:icon="@drawable/ic_home"
+            android:title="হোম"/>
+
+        <item
             android:id="@+id/donateDrawerMenuAdmin"
             android:icon="@drawable/ic_donate"
             android:title="ডোনেট"/>

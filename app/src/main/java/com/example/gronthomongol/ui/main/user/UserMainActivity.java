@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.BackendlessAPIMethods;
+import com.example.gronthomongol.backend.CONSTANTS;
 import com.example.gronthomongol.ui.main.admin.AdminMainActivity;
 import com.example.gronthomongol.ui.main.user.activity.RequestBookActivity;
 import com.example.gronthomongol.ui.main.user.fragment.BagFragment;
@@ -86,11 +87,20 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void initializeUI(){
-//        navigationView.getMenu().findItem(R.id.home_option).setCheckable(true);
-//        navigationView.getMenu().findItem(R.id.home_option).setChecked(true);
+        updateNavigationView();
+        navigationView.getMenu().findItem(R.id.homeDrawerMenuUser).setChecked(true);
+        profileNameTextView.setText(CONSTANTS.getCurrentUser().getProperty("name").toString());
+        profileEmailTextView.setText(CONSTANTS.getCurrentUser().getEmail());
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerUserMain, new BengaliBooksFragment()).commit();
     }
 
+    private void updateNavigationView(){
+        navigationView.getMenu().findItem(R.id.homeDrawerMenuUser).setChecked(false);
+        navigationView.getMenu().findItem(R.id.donateDrawerMenuUser).setChecked(false);
+        navigationView.getMenu().findItem(R.id.feedbackDrawerMenuUser).setChecked(false);
+        navigationView.getMenu().findItem(R.id.aboutUsDrawerMenuUser).setChecked(false);
+        navigationView.getMenu().findItem(R.id.signOutDrawerMenuUser).setChecked(false);
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -151,19 +161,34 @@ public class UserMainActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
-        if (id == R.id.requestsDrawerMenuUser) {
+        if (id == R.id.homeDrawerMenuUser) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.homeDrawerMenuUser).setChecked(true);
+            Intent intent = new Intent(getApplicationContext(), UserMainActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.requestsDrawerMenuUser) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.requestsDrawerMenuUser).setChecked(true);
             Intent intent = new Intent(getApplicationContext(), RequestBookActivity.class);
             startActivity(intent);
         } else if(id == R.id.donateDrawerMenuUser) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.donateDrawerMenuUser).setChecked(true);
             Intent intent = new Intent(getApplicationContext(), UserDonateActivity.class);
             startActivity(intent);
         } else if (id == R.id.feedbackDrawerMenuUser) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.feedbackDrawerMenuUser).setChecked(true);
             Intent intent = new Intent(getApplicationContext(), UserFeedbackActivity.class);
             startActivity(intent);
         } else if (id == R.id.aboutUsDrawerMenuUser) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.aboutUsDrawerMenuUser).setChecked(true);
             Intent intent = new Intent(getApplicationContext(), UserAboutUsActivity.class);
             startActivity(intent);
         } else if (id == R.id.signOutDrawerMenuUser) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.signOutDrawerMenuUser).setChecked(true);
             // Updating device ID while logging out to ensure no more notification is sent to that device
             final Dialog dialog = new Dialog(UserMainActivity.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

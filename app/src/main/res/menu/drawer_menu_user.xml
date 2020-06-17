@@ -2,6 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:id="@+id/top_drawer">
         <item
+            android:id="@+id/homeDrawerMenuUser"
+            android:icon="@drawable/ic_home"
+            android:title="হোম"/>
+
+        <item
             android:id="@+id/requestsDrawerMenuUser"
             android:icon="@drawable/ic_requests"
             android:title="রিকোয়েস্ট"/>

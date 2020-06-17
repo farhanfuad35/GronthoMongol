@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.gronthomongol.R;
 import com.example.gronthomongol.backend.BackendlessAPIMethods;
+import com.example.gronthomongol.backend.CONSTANTS;
 import com.example.gronthomongol.ui.main.admin.archive.BooklistAdminActivity;
 import com.example.gronthomongol.ui.main.admin.fragment.AdminOrdersFragment;
 import com.example.gronthomongol.ui.main.admin.fragment.BookAddFragment;
@@ -87,9 +88,20 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void initializeUI(){
-//        navigationView.getMenu().findItem(R.id.home_option).setCheckable(true);
-//        navigationView.getMenu().findItem(R.id.home_option).setChecked(true);
+        updateNavigationView();
+        navigationView.getMenu().findItem(R.id.homeDrawerMenuAdmin).setChecked(true);
+
+        profileNameTextView.setText(CONSTANTS.getCurrentUser().getProperty("name").toString());
+        profileEmailTextView.setText(CONSTANTS.getCurrentUser().getEmail());
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerAdminMain, new BooksFragment()).commit();
+    }
+
+    private void updateNavigationView(){
+        navigationView.getMenu().findItem(R.id.homeDrawerMenuAdmin).setChecked(false);
+        navigationView.getMenu().findItem(R.id.donateDrawerMenuAdmin).setChecked(false);
+        navigationView.getMenu().findItem(R.id.feedbackDrawerMenuAdmin).setChecked(false);
+        navigationView.getMenu().findItem(R.id.aboutUsDrawerMenuAdmin).setChecked(false);
+        navigationView.getMenu().findItem(R.id.signOutDrawerMenuAdmin).setChecked(false);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener bottomNavigationListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -151,16 +163,29 @@ public class AdminMainActivity extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         int id = menuItem.getItemId();
-        if (id == R.id.donateDrawerMenuAdmin) {
+        if (id == R.id.homeDrawerMenuAdmin) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.homeDrawerMenuAdmin).setChecked(true);
+            Intent intent = new Intent(getApplicationContext(), AdminMainActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.donateDrawerMenuAdmin) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.donateDrawerMenuAdmin).setChecked(true);
             Intent intent = new Intent(getApplicationContext(), AdminDonateActivity.class);
             startActivity(intent);
         } else if (id == R.id.feedbackDrawerMenuAdmin) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.feedbackDrawerMenuAdmin).setChecked(true);
             Intent intent = new Intent(getApplicationContext(), AdminFeedbackActivity.class);
             startActivity(intent);
         } else if (id == R.id.aboutUsDrawerMenuAdmin) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.aboutUsDrawerMenuAdmin).setChecked(true);
             Intent intent = new Intent(getApplicationContext(), AdminAboutUsActivity.class);
             startActivity(intent);
         } else if (id == R.id.signOutDrawerMenuAdmin) {
+            updateNavigationView();
+            navigationView.getMenu().findItem(R.id.signOutDrawerMenuAdmin).setChecked(true);
             // Updating device ID while logging out to ensure no more notification is sent to that device
             final Dialog dialog = new Dialog(AdminMainActivity.this);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
