@@ -1,5 +1,6 @@
 package com.example.gronthomongol.ui.main.admin.fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
@@ -17,13 +18,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
@@ -100,6 +104,19 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
 
     private void setUpListeners(){
         sortImageButton.setOnClickListener(this);
+
+        searchEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String queryString = searchEditText.getText().toString().trim();
+                    handleSearch(queryString);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -113,7 +130,9 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                if(editable.toString().equals("")){
+                    reloadDefaultItems();
+                }
             }
         });
     }
@@ -122,6 +141,7 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
         recyclerViewLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity().getApplicationContext(), 0));
+
         adminBooksAdapter = new AdminBooksAdapter(CONSTANTS.bookListCached, getContext(), this);
         recyclerView.setAdapter(adminBooksAdapter);
 
@@ -160,7 +180,6 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
 
         recyclerView.addOnScrollListener(endlessScrollEventListener);
     }
-
 
     private void initiateRealTimeDatabaseListenersOrder_admin() {
         Log.i(TAG, "initiateRealTimeDatabaseListeners: update Listener initiated");
@@ -204,6 +223,40 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
                 Log.e(TAG, "Server reported an error in create order listener " + fault.getDetail());
             }
         });
+    }
+
+    private void handleSearch(String queryString){
+        if(queryString.length() < 2){
+            Toast.makeText(getContext(), "কম পক্ষে ২ অক্ষর দিতে হবে", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            final Dialog waitDialog = new Dialog(getContext());
+            waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            waitDialog.setCancelable(false);
+            waitDialog.setContentView(R.layout.dialog_searching_books);
+            waitDialog.show();
+
+            final String whereClause = "name LIKE '" + queryString + "%' OR writer LIKE '" + queryString + "%'";
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CONSTANTS.backendlessBookQuery(getContext(), waitDialog, whereClause, adminBooksAdapter);
+                }
+            });
+
+            thread.start();
+            recyclerView.requestFocus();    // So that keyboard doesn't pop open
+        }
+    }
+
+    private void reloadDefaultItems(){
+        if(!CONSTANTS.isShowingDefaultBooklist()){
+            CONSTANTS.bookListCached.clear();
+            CONSTANTS.bookListCached.addAll(CONSTANTS.tempBookListCached);
+            adminBooksAdapter.notifyDataSetChanged();
+            CONSTANTS.setShowingDefaultBooklist(true);
+        }
     }
 
 //    @Override
@@ -319,38 +372,6 @@ public class BooksFragment extends Fragment implements AdminBooksAdapter.OnBookC
 //        return true;
 //    }
 //
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        int id = item.getItemId();
-//
-//        if (id == R.id.menuMain_Logout) {
-//
-//            // Updating device ID while logging out to ensure no more notification is sent to that device
-//            final Dialog dialog = new Dialog(getContext());
-//            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//            dialog.setCancelable(false);
-//            dialog.setContentView(R.layout.dialog_signing_out);
-//            dialog.show();
-//
-//            Thread thread = new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    // BackendlessAPIMethods.updateDeviceId(booklist.this, user, "");
-//                    BackendlessAPIMethods.logOut(getContext(), dialog);
-//                }
-//            });
-//
-//            thread.start();
-//
-//        }
-//
-//        // If sort by is clicked
-//        if (id == R.id.menuMain_sortBy) {
-//            showSortByDialog();
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @Override
     public void onBookClick(int position) {

@@ -35,6 +35,7 @@
                 android:hint="বই খোঁজ করুন..."
                 android:inputType="text"
                 android:maxLines="1"
+                android:imeOptions="actionDone"
                 android:paddingLeft="15dp"
                 android:scrollHorizontally="true"
                 android:textColor="@color/colorPrimary"

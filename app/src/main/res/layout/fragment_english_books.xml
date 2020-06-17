@@ -41,6 +41,7 @@
                 android:textColorHint="@color/secondary_text"
                 android:textCursorDrawable="@null"
                 android:textSize="14sp"
+                android:imeOptions="actionDone"
                 android:textStyle="normal" />
 
             <ImageButton

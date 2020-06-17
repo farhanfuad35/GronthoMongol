@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,10 +31,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.backendless.Backendless;
@@ -123,6 +126,18 @@ public class BengaliBooksFragment extends Fragment implements UserBooksAdapter.O
 
     private void setUpListeners(){
         sortImageButton.setOnClickListener(this);
+        searchEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String queryString = searchEditText.getText().toString().trim();
+                    handleSearch(queryString);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -136,7 +151,9 @@ public class BengaliBooksFragment extends Fragment implements UserBooksAdapter.O
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                if(editable.toString().equals("")){
+                    reloadDefaultItems();
+                }
             }
         });
     }
@@ -266,6 +283,40 @@ public class BengaliBooksFragment extends Fragment implements UserBooksAdapter.O
                 Log.i("MYAPP", "Server reported an error " + fault.getDetail());
             }
         });
+    }
+
+    private void handleSearch(String queryString){
+        if(queryString.length() < 2){
+            Toast.makeText(getContext(), "কম পক্ষে ২ অক্ষর দিতে হবে", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            final Dialog waitDialog = new Dialog(getContext());
+            waitDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            waitDialog.setCancelable(false);
+            waitDialog.setContentView(R.layout.dialog_searching_books);
+            waitDialog.show();
+
+            final String whereClause = "name LIKE '" + queryString + "%' OR writer LIKE '" + queryString + "%'";
+
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    CONSTANTS.backendlessBookQuery(getContext(), waitDialog, whereClause, userBooksAdapter);
+                }
+            });
+
+            thread.start();
+            recyclerView.requestFocus();    // So that keyboard doesn't pop open
+        }
+    }
+
+    private void reloadDefaultItems(){
+        if(!CONSTANTS.isShowingDefaultBooklist()){
+            CONSTANTS.bookListCached.clear();
+            CONSTANTS.bookListCached.addAll(CONSTANTS.tempBookListCached);
+            userBooksAdapter.notifyDataSetChanged();
+            CONSTANTS.setShowingDefaultBooklist(true);
+        }
     }
 
 
