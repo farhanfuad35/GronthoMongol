@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.user.fragment.BagFragment">
+
+    <ScrollView
+        android:id="@+id/scrollViewBag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="বই অর্ডার করুন"
+                android:textAlignment="center"
+                android:textColor="@color/secondary_text"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewBag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp" />
+
+            <Button
+                android:id="@+id/addMoreButtonBag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/background_shape_button_with_stroke"
+                android:backgroundTint="@color/white"
+                android:outlineAmbientShadowColor="@color/colorPrimary"
+                android:outlineProvider="background"
+                android:text="+ আরও এ্যাড করুন"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="নাম"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/nameEditTextBag"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:text="Farhan Fuad Hoque"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="ফোন নাম্বার"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/phoneNumberEditTextBag"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:text="01********"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="ঠিকানা"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/addressEditTextBag"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:text="আমার বাড়ি, তোমার বাড়ি, সবার বাড়ি"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="মোট মূল্য"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/totalPriceTextViewBag"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:text="2000 BDT"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="মন্তব্য"
+                    android:textAllCaps="false"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/commentEditTextBag"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:padding="10dp"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/orderButtonBag"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_shape_button"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:padding="10dp"
+                    android:text="অর্ডার করুন"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

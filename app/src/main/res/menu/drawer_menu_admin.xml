@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/top_drawer">
+        <item
+            android:id="@+id/homeDrawerMenuAdmin"
+            android:icon="@drawable/ic_home"
+            android:title="হোম"/>
+
+        <item
+            android:id="@+id/donateDrawerMenuAdmin"
+            android:icon="@drawable/ic_donate"
+            android:title="ডোনেট"/>
+    </group>
+
+    <group android:id="@+id/middle_drawer">
+
+        <item
+            android:id="@+id/feedbackDrawerMenuAdmin"
+            android:icon="@drawable/ic_feedback"
+            android:title="মতামত"/>
+
+        <item
+            android:id="@+id/aboutUsDrawerMenuAdmin"
+            android:icon="@drawable/ic_about_us"
+            android:title="আমাদের সম্পর্কে"/>
+
+    </group>
+
+    <group android:id="@+id/bottom_drawer">
+        <item
+            android:id="@+id/signOutDrawerMenuAdmin"
+            android:icon="@drawable/ic_sign_out"
+            android:title="সাইন আউট"/>
+    </group>
+
+</menu>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.admin.fragment.BookAddFragment">
+
+
+    <ScrollView
+        android:id="@+id/scrollViewBookAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="বইয়ের বিস্তারিত তথ্য"
+                android:textAlignment="center"
+                android:textColor="@color/secondary_text"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="বাংলা বই এর জন্য বাংলা এবং ইংরেজি বইয়ের জন্য ইংরেজি ভাষা ব্যাবহার করতে অনুরোধ করা হচ্ছে।"
+                android:textAlignment="center"
+                android:textColor="@color/secondary_text"
+                android:textSize="11sp" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="বইয়ের নাম *"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/nameEditTextBookAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="লেখকের নাম *"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/authorEditTextBookAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="মূল্য *"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/priceEditTextBookAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="numberDecimal"
+                    android:padding="10dp"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="@string/language"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <Spinner
+                        android:id="@+id/languageSpinnerBookAdd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40sp"
+                        android:layout_gravity="right|center"
+                        android:entries="@array/language_array" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="@string/number_of_books"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
+                    android:id="@+id/countNumberPickerBookAdd"
+                    android:layout_width="0dp"
+                    android:layout_height="40sp"
+                    android:layout_gravity="right|center"
+                    android:layout_weight="1"
+                    android:textColor="@color/secondary_text"
+                    app:snp_buttonIconLeft="@drawable/ic_arrow_left"
+                    app:snp_buttonIconRight="@drawable/ic_arrow_right"
+                    app:snp_value="1"
+                    app:snp_buttonPaddingBottom="0dp"
+                    app:snp_buttonPaddingLeft="15dp"
+                    app:snp_buttonPaddingRight="15dp"
+                    app:snp_buttonPaddingTop="0dp"
+                    app:snp_buttonTouchScaleFactor="0.8"
+                    app:snp_maxValue="300"
+                    app:snp_minValue="1"
+                    app:snp_orientation="horizontal"
+                    app:snp_value_text_color="@color/secondary_text"
+                    app:snp_value_text_size="14sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/errorTextViewBookAdd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="তথ্য সঠিক নয়"
+                android:textAlignment="center"
+                android:textColor="#dd0000"
+                android:textSize="11sp"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/addButtonBookAdd"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/background_shape_button"
+                android:fontFamily="@font/vag_rounded_bold"
+                android:padding="10dp"
+                android:text="এ্যাড করুন"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</FrameLayout>

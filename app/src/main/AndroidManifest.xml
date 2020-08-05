@@ -7,21 +7,30 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/pasheachi_log_removebg"
-        android:label="Grontho Mongol"
-        android:roundIcon="@drawable/pasheachi_log_removebg"
+        android:icon="@drawable/pasheachi_logo_modified"
+        android:label="গ্রন্থমঙ্গল"
+        android:roundIcon="@drawable/pasheachi_logo_modified"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".orderDetails_admin"></activity>
+        <activity android:name=".ui.main.user.minor.UserDonateActivity"></activity>
+        <activity android:name=".ui.main.admin.minor.AdminAboutUsActivity" />
+        <activity android:name=".ui.main.admin.minor.AdminFeedbackActivity" />
+        <activity android:name=".ui.main.admin.minor.AdminDonateActivity" />
+        <activity android:name=".ui.main.user.minor.UserAboutUsActivity" />
+        <activity android:name=".ui.main.user.minor.UserFeedbackActivity" />
+        <activity android:name=".ui.main.admin.AdminMainActivity" />
+        <activity android:name=".ui.main.user.UserMainActivity" />
+        <activity android:name=".ui.auth.AuthActivity" />
+        <activity android:name=".ui.main.admin.activity.AdminOrderDetailsActivity" />
 
         <meta-data
             android:name="android.app.searchable"
             android:resource="@xml/searchable" />
 
-        <activity android:name=".addBook" />
-        <activity android:name=".requestList" />
+        <activity android:name=".ui.main.admin.archive.AddBookActivity" />
+        <activity android:name=".ui.main.admin.archive.RequestListActivity" />
         <activity
-            android:name=".booklist_admin"
+            android:name=".ui.main.admin.archive.BooklistAdminActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -31,15 +40,14 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".bookDetails" />
-        <activity android:name=".forgotPassword" />
-        <activity android:name=".viewOrders" />
-        <activity android:name=".orderDetails" />
-        <activity android:name=".SplashScreen" />
-        <activity android:name=".placeOrder" />
-        <activity android:name=".postRequest" />
+        <activity android:name=".ui.main.admin.activity.BookDetailsActivity" />
+        <activity android:name=".ui.auth.archive.ForgotPasswordActivity" />
+        <activity android:name=".ui.main.user.archive.ViewOrdersActivity" />
+        <activity android:name=".ui.main.user.activity.UserOrderDetailsActivity" />
+        <activity android:name=".ui.main.user.archive.PlaceOrderActivity" />
+        <activity android:name=".ui.main.user.activity.RequestBookActivity" />
         <activity
-            android:name=".booklist"
+            android:name=".ui.main.user.archive.BooklistActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -49,9 +57,9 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-        <activity android:name=".register" />
-        <activity android:name=".login" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.auth.archive.SignUpActivity" />
+        <activity android:name=".ui.auth.archive.SignInActivity" />
+        <activity android:name=".ui.welcome.WelcomeScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bengaliTab"
+        android:icon="@drawable/ic_books"
+        android:title="বাংলা"/>
+
+    <item
+        android:id="@+id/englishTab"
+        android:icon="@drawable/ic_books"
+        android:title="ইংরেজি"/>
+
+    <item
+        android:id="@+id/bagTab"
+        android:icon="@drawable/ic_bag"
+        android:title="ব্যাগ"/>
+
+    <item
+        android:id="@+id/ordersTab"
+        android:icon="@drawable/ic_orders"
+        android:title="অর্ডার"/>
+
+</menu>

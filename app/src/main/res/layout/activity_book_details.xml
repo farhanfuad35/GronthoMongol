@@ -1,198 +1,278 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".bookDetails">
+    tools:context=".ui.main.admin.activity.BookDetailsActivity">
 
-    <include
-        android:id="@+id/toolbar_BookDetails"
-        layout="@layout/toolbar" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="30dp">
+
+        <Button
+            android:id="@+id/backButtonBookDetails"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="32dp"
+            android:backgroundTint="@color/white"
+            android:foreground="@drawable/ic_back"
+            android:stateListAnimator="@null" />
+    </LinearLayout>
 
     <ScrollView
-        android:id="@+id/svBookDetails_scrollview"
+        android:id="@+id/scrollViewBookDetails"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingHorizontal="32dp"
+            android:paddingVertical="10dp">
 
-
-            <com.google.android.material.textfield.TextInputLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxCornerRadiusBottomEnd="40dp"
-                app:boxCornerRadiusBottomStart="40dp"
-                app:boxCornerRadiusTopEnd="40dp"
-                app:boxCornerRadiusTopStart="40dp"
-                app:boxStrokeWidth="0dp"
-                android:hint="@string/book_name">
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="বইয়ের বিস্তারিত তথ্য"
+                android:textAlignment="center"
+                android:textColor="@color/secondary_text"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etBookDetails_BookName"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="20dp"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxCornerRadiusBottomEnd="40dp"
-                app:boxCornerRadiusBottomStart="40dp"
-                app:boxCornerRadiusTopEnd="40dp"
-                app:boxCornerRadiusTopStart="40dp"
-                app:boxStrokeWidth="0dp"
-                android:hint="@string/writer_name">
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="বাংলা বই এর জন্য বাংলা এবং ইংরেজি বইয়ের জন্য ইংরেজি ভাষা ব্যাবহার করতে অনুরোধ করা হচ্ছে।"
+                android:textAlignment="center"
+                android:textColor="@color/secondary_text"
+                android:textSize="11sp" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etBookDetails_WriterName"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="match_parent"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxCornerRadiusBottomEnd="40dp"
-                app:boxCornerRadiusBottomStart="40dp"
-                app:boxCornerRadiusTopEnd="40dp"
-                app:boxCornerRadiusTopStart="40dp"
-                app:boxStrokeWidth="0dp"
-                android:hint="@string/price">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etBookDetails_Price"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="5dp"
-                    android:inputType="number"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="match_parent"
-                    android:textSize="15sp"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_height="wrap_content">
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvBookDetails_Language"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
-                    android:textSize="15sp"
-                    android:text="@string/language"
-                    android:layout_weight="1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="বইয়ের নাম *"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
 
-                <Spinner
-                    android:id="@+id/spnRequest_language"
-                    android:layout_weight="3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/nameEditTextBookDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/tvBookDetails_NumberOfBooks"
-                    android:layout_width="0dp"
-                    android:layout_weight="4"
-                    android:textSize="15sp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="20dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="লেখকের নাম *"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/authorEditTextBookDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="@string/number_of_books"
-                    android:layout_height="wrap_content" />
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
 
-                <NumberPicker
-                    android:id="@+id/npBookDetails_NumberOfBooks"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:layout_height="100dp" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="মূল্য *"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/priceEditTextBookDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="numberDecimal"
+                    android:padding="10dp"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="@string/language"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/languageSpinnerBookDetails"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40sp"
+                        android:entries="@array/language_array"
+                        android:layout_gravity="right|center" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="@string/number_of_books"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <com.michaelmuenzer.android.scrollablennumberpicker.ScrollableNumberPicker
+                    android:id="@+id/countNumberPickerBookDetails"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40sp"
+                    android:layout_gravity="right|center"
+                    android:textColor="@color/secondary_text"
+                    app:snp_orientation="horizontal"
+                    app:snp_buttonTouchScaleFactor="0.8"
+                    app:snp_value_text_color="@color/secondary_text"
+                    app:snp_value_text_size="14sp"
+                    app:snp_buttonPaddingBottom="0dp"
+                    app:snp_buttonPaddingLeft="15dp"
+                    app:snp_buttonPaddingRight="15dp"
+                    app:snp_buttonPaddingTop="0dp"
+                    app:snp_buttonIconLeft="@drawable/ic_arrow_left"
+                    app:snp_buttonIconRight="@drawable/ic_arrow_right"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/errorTextViewBookDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp"
+                android:text="তথ্য সঠিক নয়"
+                android:textAlignment="center"
+                android:textColor="#dd0000"
+                android:textSize="11sp"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnBookDetails_update"
-                    android:layout_weight="1"
+                <Button
+                    android:id="@+id/deleteButtonBookDetails"
+                    style="?android:attr/borderlessButtonStyle"
                     android:layout_width="0dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
                     android:layout_height="wrap_content"
-                    app:rippleColor="@color/colorPrimaryDark"
-                    app:cornerRadius="90dp"
-                    app:strokeColor="@color/colorPrimaryDark"
-                    app:strokeWidth="4dp"
-                    android:textSize="14sp"
-                    app:backgroundTint="@color/colorPrimary"
-                    android:text="Update"/>
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnBookDetails_delete"
                     android:layout_weight="1"
+                    android:background="@drawable/background_shape_button"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:padding="10dp"
+                    android:text="ডিলিট"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <View
                     android:layout_width="0dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.1" />
+
+                <Button
+                    android:id="@+id/updateButtonBookDetails"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:rippleColor="@color/colorPrimaryDark"
-                    app:cornerRadius="90dp"
-                    app:strokeColor="@color/colorPrimaryDark"
-                    app:strokeWidth="4dp"
-                    android:textSize="14sp"
-                    app:backgroundTint="@color/red"
-                    android:text="Delete"/>
+                    android:layout_weight="1"
+                    android:background="@drawable/background_shape_button"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:padding="10dp"
+                    android:text="আপডেট"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
-
 
 </LinearLayout>

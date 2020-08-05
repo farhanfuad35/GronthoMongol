@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.auth.fragment.SignInFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:paddingHorizontal="32dp"
+                android:paddingVertical="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/vag_rounded_bold"
+                        android:text="ইমেইল *"
+                        android:textAllCaps="true"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/emailEditTextSignIn"
+                        android:layout_width="match_parent"
+                        android:layout_height="40sp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/background_shape_edit_text"
+                        android:fontFamily="sans-serif-light"
+                        android:inputType="textEmailAddress"
+                        android:padding="10dp"
+                        android:textColor="@color/secondary_text"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/vag_rounded_bold"
+                        android:text="পাসওয়ার্ড *"
+                        android:textAllCaps="true"
+                        android:textColor="@color/secondary_text"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/passwordEditTextSignIn"
+                        android:layout_width="match_parent"
+                        android:layout_height="40sp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/background_shape_edit_text"
+                        android:fontFamily="sans-serif-light"
+                        android:inputType="textWebPassword"
+                        android:padding="10dp"
+                        android:textColor="@color/secondary_text"
+                        android:textCursorDrawable="@null"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/forgotPasswordButtonSignIn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginBottom="40dp"
+                    android:alpha="0.8"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:minWidth="0dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:textAppearance="@style/Widget.AppCompat.Spinner.Underlined"
+                    android:minHeight="0dp"
+                    android:text="পাসওয়ার্ড ভুলে গেছেন?"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="11sp" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:elevation="4dp"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="20dp">
+
+        <TextView
+            android:id="@+id/errorTextViewSignIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ইমেইল অথবা পাসওয়ার্ড সঠিক নয়"
+            android:textColor="#dd0000"
+            android:textSize="11sp"
+            android:textAlignment="center"
+            android:padding="20px"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/signInButtonSignIn"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_shape_button"
+            android:fontFamily="@font/vag_rounded_bold"
+            android:padding="10dp"
+            android:text="সাইন ইন"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:alpha="0.5"
+                android:fontFamily="@font/vag_rounded_bold"
+                android:text="এখানে নতুন?"
+                android:textAllCaps="true"
+                android:textColor="@color/secondary_text"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/signUpButtonSignIn"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background ="@android:color/transparent"
+                android:fontFamily="@font/vag_rounded_bold"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="সাইন আপ করুন"
+                android:textColor="@color/primary_text"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

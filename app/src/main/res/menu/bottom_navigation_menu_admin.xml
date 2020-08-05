@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/booksTab"
+        android:icon="@drawable/ic_books"
+        android:title="বই"/>
+
+    <item
+        android:id="@+id/ordersTab"
+        android:icon="@drawable/ic_orders"
+        android:title="অর্ডার"/>
+
+    <item
+        android:id="@+id/requestsTab"
+        android:icon="@drawable/ic_requests"
+        android:iconTint="@color/secondary_text"
+        android:title="রিকোয়েস্ট"/>
+
+    <item
+        android:id="@+id/bookAddTab"
+        android:icon="@drawable/ic_book_add"
+        android:title="এ্যাড"/>
+
+</menu>

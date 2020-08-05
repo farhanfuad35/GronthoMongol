@@ -5,274 +5,318 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".orderDetails_admin">
+    tools:context=".ui.main.user.activity.UserOrderDetailsActivity">
 
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:paddingHorizontal="32dp"-->
+<!--        android:paddingVertical="30dp">-->
 
-    <include
-        android:id="@+id/toolbar_orderDetails_admin"
-        layout="@layout/toolbar" />
+<!--        <Button-->
+<!--            android:id="@+id/backButtonOrderDetailsAdmin"-->
+<!--            style="?android:attr/borderlessButtonStyle"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:backgroundTint="@color/white"-->
+<!--            android:foreground="@drawable/ic_back"-->
+<!--            android:stateListAnimator="@null" />-->
+<!--    </LinearLayout>-->
 
     <ScrollView
-        android:id="@+id/svOrderDetails_admin_scrollview"
+        android:id="@+id/scrollViewOrderDetailsAdmin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingVertical="10dp">
 
             <TextView
-                android:id="@+id/tvOrderDetails_admin_OrderId"
+                android:id="@+id/orderIdTextViewOrderDetailsAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="5dp"
                 android:gravity="center"
-                android:text="@string/place_an_order"
+                android:text="অর্ডার আইডি # 2323DFSDSAsda"
                 android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="19sp"
+                android:textColor="@color/secondary_text"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvOrderDetails_admin_orderStatus"
+                android:id="@+id/orderStatusViewOrderDetailsAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="@string/place_an_order"
+                android:text="প্রসেস করা হচ্ছে"
                 android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
+                android:textColor="@color/yellow"
+                android:textSize="11sp" />
+
+            <TextView
+                android:id="@+id/bkashNumberTextViewOrderDetailsAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="20dp"
+                android:gravity="center"
+                android:text="বিকাশের মাধ্যমে ০১৭******** নাম্বারে পেমেন্ট পাঠানো হয়েছে"
+                android:textAlignment="center"
+                android:textColor="@color/secondary_text"
+                android:textSize="11sp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvOrderDetails_admin_BookList"
-                android:layout_width="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_height="wrap_content" />
-
-
-            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/recyclerViewOrderDetailsAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxCornerRadiusBottomEnd="40dp"
-                app:boxCornerRadiusBottomStart="40dp"
-                app:boxCornerRadiusTopEnd="40dp"
-                app:boxCornerRadiusTopStart="40dp"
-                app:boxStrokeWidth="0dp"
-                android:hint="@string/recipientsName">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etOrderDetails_admin_RecipientName"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:textSize="15sp"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:inputType="textPersonName"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxCornerRadiusBottomEnd="40dp"
-                app:boxCornerRadiusBottomStart="40dp"
-                app:boxCornerRadiusTopEnd="40dp"
-                app:boxCornerRadiusTopStart="40dp"
-                app:boxStrokeWidth="0dp"
-                android:hint="@string/phoneNumber">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etOrderDetails_admin_PhoneNumber"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:textSize="15sp"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:inputType="phone"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxCornerRadiusBottomEnd="40dp"
-                app:boxCornerRadiusBottomStart="40dp"
-                app:boxCornerRadiusTopEnd="40dp"
-                app:boxCornerRadiusTopStart="40dp"
-                app:boxStrokeWidth="0dp"
-                android:hint="@string/address">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etOrderDetails_admin_Address"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:textSize="15sp"
-                    android:layout_marginTop="5dp"
-                    android:inputType="textPostalAddress"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxCornerRadiusBottomEnd="40dp"
-                app:boxCornerRadiusBottomStart="40dp"
-                app:boxCornerRadiusTopEnd="40dp"
-                app:boxCornerRadiusTopStart="40dp"
-                app:boxStrokeWidth="0dp"
-                android:hint="@string/total_price">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etOrderDetails_admin_TotalPrice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="15sp"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginBottom="5dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:boxCornerRadiusBottomEnd="40dp"
-                app:boxCornerRadiusBottomStart="40dp"
-                app:boxCornerRadiusTopEnd="40dp"
-                app:boxCornerRadiusTopStart="40dp"
-                app:boxStrokeWidth="0dp"
-                android:hint="@string/comment">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etOrderDetails_admin_Comment"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:textSize="15sp"
-                    android:inputType="textLongMessage"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:boxCornerRadiusBottomEnd="40dp"
-                app:boxCornerRadiusBottomStart="40dp"
-                app:boxCornerRadiusTopEnd="40dp"
-                app:boxCornerRadiusTopStart="40dp"
-                app:boxStrokeWidth="0dp"
-                android:hint="bKash TxnID">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etOrderDetails_admin_BkashTxnId"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="5dp"
-                    android:clickable="false"
-                    android:cursorVisible="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
-                    android:textSize="15sp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginBottom="20dp" />
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnOrderDetails_admin_MarkAsDelivered"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:rippleColor="@color/colorPrimaryDark"
-                    app:cornerRadius="90dp"
-                    app:strokeColor="@color/colorPrimaryDark"
-                    app:strokeWidth="4dp"
-                    android:textSize="14sp"
-                    app:backgroundTint="@color/green"
-                    android:text="Mark Delivered"/>
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="নাম"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnOrderDetails_admin_Delete"
-                    android:layout_width="0dp"
-                    android:background="@color/colorPrimaryDark"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    app:rippleColor="@color/colorPrimaryDark"
-                    app:cornerRadius="90dp"
-                    app:strokeColor="@color/colorPrimaryDark"
-                    app:strokeWidth="4dp"
+                <TextView
+                    android:id="@+id/nameTextViewOrderDetailsAdmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:text="Farhan Fuad Hoque"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
                     android:textSize="14sp"
-                    app:backgroundTint="@color/red"
-                    android:text="Delete"/>
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="ফোন নাম্বার"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/phoneNumberTextViewOrderDetailsAdmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:text="01********"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="ঠিকানা"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/addressTextViewOrderDetailsAdmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:text="আমার বাড়ি, তোমার বাড়ি, সবার বাড়ি"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="মোট মূল্য"
+                    android:textAllCaps="true"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/totalPriceTextViewOrderDetailsAdmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:inputType="textCapWords"
+                    android:padding="10dp"
+                    android:text="2000 BDT"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="Bkash TrxID"
+                    android:textAllCaps="false"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/transactionIdTextViewOrderDetailsAdmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:padding="10dp"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginBottom="20dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:text="মন্তব্য"
+                    android:textAllCaps="false"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/commentTextViewOrderDetailsAdmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/background_shape_edit_text"
+                    android:fontFamily="sans-serif-light"
+                    android:padding="10dp"
+                    android:textColor="@color/secondary_text"
+                    android:textCursorDrawable="@null"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/rejectButtonOrderDetailsAdmin"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_shape_button"
+                    android:backgroundTint="@color/colorSecondary"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:padding="10dp"
+                    android:text="ক্যান্সেল"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.1" />
+
+                <Button
+                    android:id="@+id/deliveredButtonOrderDetailsAdmin"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_shape_button"
+                    android:fontFamily="@font/vag_rounded_bold"
+                    android:padding="10dp"
+                    android:text="ডেলিভার করা হয়েছে"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
-
 
 </LinearLayout>

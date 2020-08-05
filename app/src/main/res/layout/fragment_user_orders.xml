@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.user.fragment.UserOrdersFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp"
+            android:background="@drawable/background_shape_item"
+            android:elevation="6dp"
+            android:orientation="horizontal"
+            android:outlineAmbientShadowColor="@color/colorSecondaryDark"
+            android:outlineProvider="background"
+            android:gravity="center"
+            android:outlineSpotShadowColor="@color/colorSecondaryDark">
+
+            <Spinner
+                android:id="@+id/filterSpinnerUserOrders"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:paddingHorizontal="20dp"
+                android:entries="@array/filterByArrayUser" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewUserOrder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:scrollbars="vertical" />
+
+        <ProgressBar
+            android:id="@+id/progressBarUserOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:indeterminateTint="@color/colorPrimary"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/noOrderTextViewUserOrder"
+            android:text="এখন পর্যন্ত কোনো অর্ডার নেই"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:layout_marginHorizontal="32dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</FrameLayout>

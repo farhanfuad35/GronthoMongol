@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="#dddddd"
+    android:layout_gravity="center"
+    android:layout_height="wrap_content" >
+
+        <ProgressBar
+            android:id="@+id/pbLoggingOut"
+            android:layout_width="wrap_content"
+            android:indeterminate="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateTintMode="src_atop" />
+
+
+        <TextView
+            android:id="@+id/tvLoggingOut"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="15sp"
+            android:layout_marginLeft="60dp"
+            android:layout_width="match_parent"
+            android:text="সাইন আউট হচ্ছে..."
+            android:background="@android:color/transparent"
+            android:textColor="@color/secondary_text"
+            android:layout_alignLeft="@+id/pbLoggingOut"
+            android:layout_centerInParent="true" />
+
+</RelativeLayout>

@@ -32,9 +32,9 @@
             android:textSize="15sp"
             android:layout_marginLeft="60dp"
             android:layout_width="match_parent"
-            android:text="Sending your request..."
+            android:text="রিকোয়েস্ট পাঠানো হচ্ছে..."
             android:background="@android:color/transparent"
-            android:textColor="#222222"
+            android:textColor="@color/secondary_text"
             android:layout_alignLeft="@+id/pbPostRequest_Loading"
             android:layout_centerInParent="true" />
 
